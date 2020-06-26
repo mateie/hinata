@@ -102,6 +102,8 @@ client.on('ready', () => {
                     } else {
                         if (channel.guild.id === res.serverID) {
 
+                            console.log(channel.messages);
+
                             try {
                                 channel.messages.fetch();
                             } catch (err) {
