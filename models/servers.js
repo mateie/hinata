@@ -19,7 +19,6 @@ const serversSchema = mongoose.Schema({
         notifications: String,
         reactions: String,
     },
-    reactionChannels: Array,
     notifications: {
         member: {
             join: Boolean,
