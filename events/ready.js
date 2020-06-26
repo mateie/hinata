@@ -109,9 +109,9 @@ client.on('ready', () => {
                                 return;
                             }
 
-                            let reactionMessage = channel.messages.cache.first().id;
+                            let messages = channel.messages.cache.first().id || undefined;
 
-                            if (!reactionMessage) {
+                            if (!messages) {
                                 console.info('There is no message in the channel');
                             } else {
                                 res.messageID = channel.messages.cache.first().id;
