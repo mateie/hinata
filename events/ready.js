@@ -114,14 +114,10 @@ client.on('ready', () => {
                             if (!reactionMessage) {
                                 console.info('There is no message in the channel');
                             } else {
-                                if (!channel.messages.cache.first().id) {
-                                    console.log('The channel has no messages');
-                                } else {
-                                    res.messageID = channel.messages.cache.first().id;
-                                    res.save();
+                                res.messageID = channel.messages.cache.first().id;
+                                res.save();
 
-                                    console.log(`Watching message '${res.messageID}' in ${res.servername} for reactions...`);
-                                }
+                                console.log(`Watching message '${res.messageID}' in ${res.servername} for reactions...`);
                             }
                         }
                     }
