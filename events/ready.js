@@ -93,10 +93,10 @@ client.on('ready', () => {
                 client.emit('guildCreate', customGuild);
                 console.debug(`Adding new guild to the database... (Guild ID: ${guild.id})`);
             } else {
-                if (res.reactionchannels.length < 0) {
+                if (res.channels.reactions.length < 0) {
                     console.log('This guild doesn\'t have reaction channel');
                 } else {
-                    const channel = client.channels.cache.find(ch => ch.name === res.reactionchannels[0]);
+                    const channel = client.channels.cache.find(ch => ch.name === res.channels.reactions);
                     if (channel.guild.id === res.serverID) {
 
                         try {

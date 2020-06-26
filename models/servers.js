@@ -12,7 +12,6 @@ const serversSchema = mongoose.Schema({
         user: String,
         mute: String,
     },
-    gameroles: Object,
     channels: {
         commands: String,
         logs: String,

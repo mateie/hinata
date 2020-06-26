@@ -27,8 +27,8 @@ client.on('guildCreate', guild => {
             logs: 'logs',
             spam: 'spam',
             notifications: 'welcome',
+            reactions: 'roles',
         },
-        reactionchannels: ['games'],
         notifications: {
             member: {
                 join: false,
