@@ -102,8 +102,6 @@ client.on('ready', () => {
                     } else {
                         if (channel.guild.id === res.serverID) {
 
-                            console.log(channel.messages);
-
                             try {
                                 channel.messages.fetch();
                             } catch (err) {
@@ -111,13 +109,19 @@ client.on('ready', () => {
                                 return;
                             }
 
-                            if (!channel.messages.cache.first().id) {
-                                console.log('The channel has no messages');
-                            } else {
-                                res.messageID = channel.messages.cache.first().id;
-                                res.save();
+                            let reactionMessage = channel.messages.cache.first().id;
 
-                                console.log(`Watching message '${res.messageID}' in ${res.servername} for reactions...`);
+                            if (!reactionMessage) {
+                                console.info('There is no message in the channel');
+                            } else {
+                                if (!channel.messages.cache.first().id) {
+                                    console.log('The channel has no messages');
+                                } else {
+                                    res.messageID = channel.messages.cache.first().id;
+                                    res.save();
+
+                                    console.log(`Watching message '${res.messageID}' in ${res.servername} for reactions...`);
+                                }
                             }
                         }
                     }
