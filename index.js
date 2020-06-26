@@ -5,7 +5,7 @@ const Logging = require('./util/logging');
 const Loader = require('./util/loader');
 require('dotenv').config();
 
-const client = new Discord.Client({ partials: ['MESSAGE'] });
+const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION'] });
 
 client.prefix = '!';
 client.commands = new Discord.Collection();
