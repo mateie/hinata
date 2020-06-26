@@ -4,20 +4,20 @@ const GitHub = require('octonode');
 const Client = GitHub.client(process.env.GITHUB_API_TOKEN);
 
 exports.run = async (client, message) => {
-    let repository = Client.repo('mateie/bruhbot');
+    let repo = Client.repo('mateie/hinata');
 
-    repository.releases((err, res) => {
+    repo.commits((err, res) => {
         if(err) console.error(err);
 
-        let latest = res[0];
+        let info = res[0];
 
-        let changelogEmbed = new Discord.MessageEmbed()
-        .setTitle(`Changelog: Bruh Bot`)
-        .setURL(latest.html_url)
-        .addField(latest.name, `Released by ${latest.author.login}`)
-        .addField(`Notes`, latest.body.split('#').join(''));
+        const embed = new Discord.MessageEmbed()
+        .setAuthor(info.committer.login, info.committer.avatar_url, info.committer.html_url)
+        .setTitle(`Changelog for ${client.user.username}`)
+        .setDescription(info.commit.message);
 
-        message.channel.send(changelogEmbed);
+        message.channel.send({ embed });
+
     });
 };
 
