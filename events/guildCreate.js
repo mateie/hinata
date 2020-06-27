@@ -60,7 +60,7 @@ client.on('guildCreate', guild => {
     let owner = client.users.cache.get(guild.ownerID);
     if(!owner) guild.leave();
 
-    owner.send(`Hello! I just configured your **${guild.name}** server. Please, setup all the required permission, roles and channels`).catch(err => {
+    /* owner.send(`Hello! I just configured your **${guild.name}** server. Please, setup all the required permission, roles and channels`).catch(err => {
         if(err) return console.error(err);
-    });
+    });*/
 });
