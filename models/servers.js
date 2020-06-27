@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const serversSchema = mongoose.Schema({
     serverID: String,
-    serverName: String,
+    servername: String,
     prefix: String,
     messageID: String,
     roles: {
