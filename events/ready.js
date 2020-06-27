@@ -93,7 +93,7 @@ client.on('ready', () => {
                 client.emit('guildCreate', customGuild);
                 console.info(`Adding new guild to the database... (Guild ID: ${guild.id})`);
             } else {
-                if (res.channels.reactions.length < 0) {
+                /* if (res.channels.reactions.length < 0) {
                     console.info('This guild doesn\'t have reaction channel set in the database');
                 } else {
                     const channel = client.channels.cache.find(ch => ch.name === res.channels.reactions);
@@ -109,8 +109,6 @@ client.on('ready', () => {
                                 return;
                             }
 
-                            let messages = channel.messages.cache.first().id || undefined;
-
                             if (!messages) {
                                 console.info('There is no message in the channel');
                             } else {
@@ -121,7 +119,7 @@ client.on('ready', () => {
                             }
                         }
                     }
-                }
+                }*/
             }
 
         });
