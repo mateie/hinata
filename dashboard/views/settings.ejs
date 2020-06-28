@@ -6,10 +6,11 @@
 
 <h1><%= guild.name %></h1>
 <form style="margin-top: 1em;" method="POST">
-    Prefix: <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix"><br /><br />
+    Prefix: <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix"><hr />
     <% for (let i = 1; i < Object.keys(settings.roles).length; i++) { %>
-        <%= Object.keys(settings.roles)[i] %>: <input type="text" name="role<%= i %>" value="<%= Object.values(settings.roles)[i] %>" placeholder="Your role"><br /><br />
+        <%= Object.keys(settings.roles)[i] %> Role: <input type="text" name="role<%= i %>" value="<%= Object.values(settings.roles)[i] %>" placeholder="Your role">
     <% } %>
+    <br /><br />
     <button type="submit">Save Settings</button>
 </form>
 

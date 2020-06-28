@@ -6,7 +6,7 @@
 </head>
 <body>
   <% if (user) { %>
-    <p>Logged in as <%= user.username %>#<%= user.discriminator %>.</p>
+    <p>Logged in as <%= user.username %>#<%= user.discriminator %> <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=128" alt="<%= user.username %> Avatar" class="userAvatar" /></p>
     <a href="/logout">Logout</a>
   <% } else { %>
     <a type="button" href="/login">Login</a><br>
