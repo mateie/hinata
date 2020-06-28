@@ -12,7 +12,7 @@ const Users = require('../models/users');
 client.on('guildCreate', guild => {
     const newServer = new Servers({
         serverID: guild.id,
-        servername: guild.name,
+        serverName: guild.name,
         prefix: '!',
         messageID: '',
         roles: {
@@ -40,7 +40,6 @@ client.on('guildCreate', guild => {
     newServer.save().catch(err => console.error(err));
 
     let guildMembers = [];
-
     guild.members.cache.forEach(member => {
         if(!member.user.bot) {
             guildMembers.push({

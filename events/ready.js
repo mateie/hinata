@@ -11,7 +11,10 @@ mongoose.connect(process.env.DATABASE, {
 const Servers = require('../models/servers');
 const Users = require('../models/users');
 
-client.on('ready', () => {
+const { default: TwitchClient } = require('twitch');
+const twitch = TwitchClient.withCredentials(process.env.TWITCH_CLIENT_ID, process.env.TWITCH_CLIENT_SECRET);
+
+client.on('ready', async () => {
     let presence = [
         {
             status: 'online',
@@ -43,44 +46,53 @@ client.on('ready', () => {
         },
     ];
 
-    let ownerActivityObj, ownerActivity, ownerStatus;
+    if (process.env.STREAMERS === true) {
+        const kiritoStream = await twitch.kraken.streams.getStreamByChannel('275642622');
+        const stitchStream = await twitch.kraken.streams.getStreamByChannel('199764028');
 
-    setInterval(() => {
-        client.guilds.cache.forEach(guild => {
-            guild.members.cache.forEach(member => {
-                if (member.id === process.env.OWNER_ID) {
-                    ownerStatus = member.presence.status;
-                    ownerActivityObj = member.presence.activities;
-                    if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
-                        let index = Math.floor(Math.random() * presence.length);
-                        client.user.setPresence(presence[index]);
-                    } else {
-                        if (ownerActivityObj[0].type === 'LISTENING') {
-                            if (ownerActivityObj[0].state.includes(';')) {
-                                ownerActivityObj[0].state = ownerActivityObj[0].state.replace(';', ',');
+        const streams = [kiritoStream, stitchStream];
+        setInterval(() => {
+        }, 10000);
+    } else {
+        setInterval(() => {
+            client.guilds.cache.forEach(guild => {
+                guild.members.cache.forEach(member => {
+                    if (member.id === process.env.OWNER_ID) {
+                        ownerStatus = member.presence.status;
+                        ownerActivityObj = member.presence.activities;
+                        if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
+                            let index = Math.floor(Math.random() * presence.length);
+                            client.user.setPresence(presence[index]);
+                        } else {
+                            if (ownerActivityObj[0].type === 'LISTENING') {
+                                if (ownerActivityObj[0].state.includes(';')) {
+                                    ownerActivityObj[0].state = ownerActivityObj[0].state.replace(';', ',');
+                                }
+                                ownerActivity = {
+                                    name: `${ownerActivityObj[0].details} by ${ownerActivityObj[0].state}`,
+                                    type: 'LISTENING',
+                                };
+                            } else if (ownerActivityObj[0].type === 'PLAYING') {
+                                ownerActivity = {
+                                    name: `${ownerActivityObj[0].name}`,
+                                    type: 'PLAYING',
+                                };
                             }
-                            ownerActivity = {
-                                name: `${ownerActivityObj[0].details} by ${ownerActivityObj[0].state}`,
-                                type: 'LISTENING',
+
+                            let presence = {
+                                status: ownerStatus,
+                                activity: ownerActivity,
                             };
-                        } else if (ownerActivityObj[0].type === 'PLAYING') {
-                            ownerActivity = {
-                                name: `${ownerActivityObj[0].name}`,
-                                type: 'PLAYING',
-                            };
+
+                            client.user.setPresence(presence);
                         }
-
-                        let presence = {
-                            status: ownerStatus,
-                            activity: ownerActivity,
-                        };
-
-                        client.user.setPresence(presence);
                     }
-                }
+                });
             });
-        });
-    }, 10000);
+        }, 10000);
+    }
+
+    let ownerActivityObj, ownerActivity, ownerStatus;
 
     client.guilds.cache.forEach(guild => {
         Servers.findOne({

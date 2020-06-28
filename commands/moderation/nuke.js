@@ -38,7 +38,8 @@ exports.run = async (client, message, args) => {
             channel.delete();
             const newChannel = await message.guild.channels.create(channel.name, options);
 
-            return newChannel.send(`**${message.author.username}** nuked this channel :sunglasses:`, { files: [randomNukeGIF[Math.floor(Math.random() * randomNukeGIF.length)]] });
+            newChannel.send(`**${message.author.username}** nuked this channel :sunglasses:`, { files: [randomNukeGIF[Math.floor(Math.random() * randomNukeGIF.length)]] })
+            .then(msg => msg.delete({ timeout: 3000 }));
         } else if(channel.type === 'voice') {
             options = {
                 type: channel.type,
@@ -69,6 +70,8 @@ exports.run = async (client, message, args) => {
 
                     const child = channel.children;
 
+                    console.log(child);
+
                     child.forEach(async c => {
                         await c.delete();
                     });
@@ -93,6 +96,6 @@ exports.help = {
     name: 'nuke',
     aliases: [],
     args: ['[channel name]'],
-    permission: 'ADMIN',
+    permission: 'OWNER',
     description: 'Nukes the channel',
 };

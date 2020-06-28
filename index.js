@@ -6,10 +6,7 @@ const Loader = require('./util/loader');
 require('dotenv').config();
 
 const client = new Discord.Client({
-    ws: {
-        intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MESSAGE_REACTIONS'],
-    },
-    partials: ['MESSAGE', 'REACTION'],
+    partials: ['MESSAGE'],
 });
 
 client.prefix = '!';
