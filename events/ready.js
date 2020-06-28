@@ -11,9 +11,6 @@ mongoose.connect(process.env.DATABASE, {
 const Servers = require('../models/servers');
 const Users = require('../models/users');
 
-const { default: TwitchClient } = require('twitch');
-const twitch = TwitchClient.withCredentials(process.env.TWITCH_CLIENT_ID, process.env.TWITCH_CLIENT_SECRET);
-
 client.on('ready', async () => {
     let presence = [
         {
@@ -125,7 +122,7 @@ client.on('ready', async () => {
                                 } else {
                                     res.messageID = channel.messages.cache.first().id;
                                     res.save();
-    
+
                                     console.log(`Watching message '${res.messageID}' in ${res.servername} for reactions...`);
                                 }
                             }

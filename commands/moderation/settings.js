@@ -201,7 +201,7 @@ exports.run = async (client, message, args) => {
                 })
                 .catch(err => {
                     console.error(err);
-                    return message.channel.send('```Couldn\'t Update Server Settings!');
+                    return message.channel.send('```Couldn\'t Update Server Settings!```');
                 });
         });
     }

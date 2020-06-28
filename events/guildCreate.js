@@ -15,7 +15,6 @@ client.on('guildCreate', guild => {
         serverName: guild.name,
         prefix: '!',
         messageID: '',
-        streamers: [],
         roles: {
             owner: "Owner",
             admin: "Admin",
