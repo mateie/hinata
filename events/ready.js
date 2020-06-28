@@ -47,12 +47,6 @@ client.on('ready', async () => {
     ];
 
     if (process.env.STREAMERS === true) {
-        const kiritoStream = await twitch.kraken.streams.getStreamByChannel('275642622');
-        const stitchStream = await twitch.kraken.streams.getStreamByChannel('199764028');
-
-        const streams = [kiritoStream, stitchStream];
-        setInterval(() => {
-        }, 10000);
     } else {
         console.log('Streamers presence is disabled');
         setInterval(() => {
