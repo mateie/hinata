@@ -23,14 +23,4 @@ Loader.init();
 Loader.events(client);
 Loader.commands(client);
 
-exports.sendClientObject = () => {
-    return client;
-};
-
-exports.sendGuildsObject = () => {
-    let guilds = client.guilds;
-
-    return guilds;
-};
-
 client.login(process.env.BOT_TOKEN);
