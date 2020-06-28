@@ -5,7 +5,6 @@ const serversSchema = mongoose.Schema({
     serverName: String,
     prefix: String,
     messageID: String,
-    streamers: Array,
     roles: {
         owner: String,
         admin: String,
