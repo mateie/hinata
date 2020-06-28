@@ -9,7 +9,7 @@
     <% if(bot.guilds.cache.get(guild.id)) { %>
         <a href="/dashboard/<%= guild.id %>">Edit Settings</a>
     <% } else { %>
-        <a href="<%= `https://discord.com/api/oauth2/authorize?client_id=${bot.user.id}&guild_id=${guild.id}&scope=bot&response_type=code&redirect_uri=${encodeURIComponent(`${process.env.DOMAIN}${process.env.PORT == 8080 ? "" : `:${process.env.PORT}`}/callback`)}` %>">Add Bot</a>
+        <a href="<%= `https://discord.com/api/oauth2/authorize?client_id=${bot.user.id}&guild_id=${guild.id}&scope=bot&response_type=code&redirect_uri=${encodeURIComponent(`${process.env.DOMAIN}${process.env.PORT == 80 ? "" : `:${process.env.PORT}`}/callback`)}` %>">Add Bot</a>
     <% } %>
     <% }); %>
 <%- include('../partials/footer') %>
