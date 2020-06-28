@@ -1,0 +1,16 @@
+<%- include('../partials/header', { bot, user, path, title: 'Settings' }) %>
+
+<% if (alert) { %>
+    <p><%= alert %></p><br />
+<% } %>
+
+<h1><%= guild.name %></h1>
+<form style="margin-top: 1em;" method="POST">
+    Prefix: <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix"><br /><br />
+    <% for (let i = 1; i < Object.keys(settings.roles).length; i++) { %>
+        <%= Object.keys(settings.roles)[i] %>: <input type="text" name="role<%= i %>" value="<%= Object.values(settings.roles)[i] %>" placeholder="Your role"><br /><br />
+    <% } %>
+    <button type="submit">Save Settings</button>
+</form>
+
+<%- include('../partials/footer') %>

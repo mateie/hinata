@@ -1,6 +1,7 @@
 /* eslint-disable no-lonely-if */
 /* eslint-disable no-shadow */
 const { client } = require('../index');
+const Dashboard = require(`${process.cwd()}/dashboard/dashboard`);
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE, {
@@ -145,6 +146,8 @@ client.on('ready', async () => {
             });
         });
     });
+
+    Dashboard(client);
 
     console.info('Running...');
 });
