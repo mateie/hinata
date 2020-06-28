@@ -54,6 +54,7 @@ client.on('ready', async () => {
         setInterval(() => {
         }, 10000);
     } else {
+        console.log('Streamers presence is disabled');
         setInterval(() => {
             client.guilds.cache.forEach(guild => {
                 guild.members.cache.forEach(member => {
