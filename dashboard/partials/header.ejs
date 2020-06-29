@@ -11,15 +11,20 @@
 
 <body>
     <header>
-        <% if (user) { %>
+        <a href="/" class="logo">Hinata Bot</a>
+        <div class="header-right">
+            <% if (user) { %>
             <p class="loggedIn">Logged in as
                 <%= user.username %>#
-                    <%= user.discriminator %> <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=128" alt="<%= user.username %> Avatar" class="userAvatar" /></p>
+                <%= user.discriminator %><img
+                    src=" https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=128"
+                    alt="<%= user.username %> Avatar" class="userAvatar" />
+            </p>
+            <a href="/dashboard">Dashboard</a>
             <a href="/logout">Logout</a>
             <% } else { %>
-                <a type="button" href="/login">Login</a><br>
-                <% } %>
-                    <%- title === "Dashboard" ? "" : "<hr>" %>
-
-                        <a href="/dashboard">Dashboard</a>
+            <a type="button" href="/login">Login</a>
+            <% } %>
+            <%- title === "Dashboard" ? "" : "" %>
+        </div>
     </header>
