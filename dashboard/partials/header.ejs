@@ -1,14 +1,23 @@
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
+
 <body>
-  <% if (user) { %>
-    <p>Logged in as <%= user.username %>#<%= user.discriminator %> <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=128" alt="<%= user.username %> Avatar" class="userAvatar" /></p>
+  <header>
+    <% if (user) { %>
+    <p class="loggedIn">Logged in as <%= user.username %>#<%= user.discriminator %> <img
+        src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=128"
+        alt="<%= user.username %> Avatar" class="userAvatar" /></p>
     <a href="/logout">Logout</a>
-  <% } else { %>
+    <% } else { %>
     <a type="button" href="/login">Login</a><br>
-  <% } %>
-  <%- title === "Dashboard" ? "" : "<hr>" %>
+    <% } %>
+    <%- title === "Dashboard" ? "" : "<hr>" %>
+
+    <a href="/dashboard">Dashboard</a>
+  </header>

@@ -44,6 +44,7 @@ module.exports = async (client) => {
 
     app.engine('html', ejs.renderFile);
     app.set('view engine', 'html');
+    app.use(express.static(path.join(__dirname + '/public')));
 
     app.use(parser.json());
     app.use(parser.urlencoded({
@@ -135,6 +136,10 @@ module.exports = async (client) => {
 
         for(let i = 1; i < Object.keys(storedSettings.roles).length; i++) {
             storedSettings.roles[Object.keys(storedSettings.roles)[i]] = req.body[`role${i}`];
+        }
+
+        for(let j = 1; j < Object.keys(storedSettings.channels).length; j++) {
+            storedSettings.channels[Object.keys(storedSettings.channels)[j]] = req.body[`channel${j}`];
         }
 
         storedSettings.save();

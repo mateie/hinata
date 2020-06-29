@@ -1,14 +1,21 @@
 <%- include('../partials/header', { bot, user, path, title: 'Settings' }) %>
 
 <% if (alert) { %>
-    <p><%= alert %></p><br />
+<p><%= alert %></p><br />
 <% } %>
 
 <h1><%= guild.name %></h1>
 <form style="margin-top: 1em;" method="POST">
-    Prefix: <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix"><hr />
+    Prefix: <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix">
+    <hr />
     <% for (let i = 1; i < Object.keys(settings.roles).length; i++) { %>
-        <%= Object.keys(settings.roles)[i] %> Role: <input type="text" name="role<%= i %>" value="<%= Object.values(settings.roles)[i] %>" placeholder="Your role">
+    <%= Object.keys(settings.roles)[i] %> Role: <input type="text" name="role<%= i %>"
+        value="<%= Object.values(settings.roles)[i] %>" placeholder="Your role">
+    <% } %>
+    <br /><br />
+    <% for (let j = 1; j < Object.keys(settings.channels).length; j++) { %>
+    <%= Object.keys(settings.channels)[j] %> Channel: <input type="text" name="channel<%= j %>"
+        value="<%= Object.values(settings.channels)[j] %>" placeholder="Your channel">
     <% } %>
     <br /><br />
     <button type="submit">Save Settings</button>
