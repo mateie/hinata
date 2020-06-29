@@ -1,10 +1,14 @@
 <%- include('../partials/header', { bot, user, path, title: 'Settings' }) %>
 
 <% if (alert) { %>
-<p><%= alert %></p><br />
+<p>
+    <%= alert %>
+</p><br />
 <% } %>
 
-<h1><%= guild.name %></h1>
+<h1>
+    <%= guild.name %>
+</h1>
 <form style="margin-top: 1em;" method="POST">
     Prefix: <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix">
     <hr />
