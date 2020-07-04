@@ -9,12 +9,14 @@ exports.run = async (client, message) => {
     repo.commits((err, res) => {
         if(err) console.error(err);
 
-        let info = res[0];
+        let info = res;
 
         const embed = new Discord.MessageEmbed()
-        .setAuthor(info.committer.login, info.committer.avatar_url, info.committer.html_url)
-        .setTitle(`Changelog for ${client.user.username}`)
-        .setDescription(info.commit.message);
+        .setAuthor(info[0].committer.login, info[0].committer.avatar_url, info[0].committer.html_url)
+        .setTitle(`Last 5 Changes for ${client.user.username}`);
+        for(let i = 0; i < 5; i++) {
+            embed.addField(`\u200b`, `${info[i].commit.message}`);
+        }
 
         message.channel.send({ embed });
 

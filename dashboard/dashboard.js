@@ -23,7 +23,7 @@ module.exports = async (client) => {
     passport.use(new Strategy({
         clientID: process.env.BOT_ID,
         clientSecret: process.env.BOT_SECRET,
-        callbackURL: `${process.env.DOMAIN}${process.env.PORT === 80 ? '' : `:${process.env.PORT}`}/callback`,
+        callbackURL: `${process.env.DOMAIN}${process.env.PORT === 8080 ? '' : `:${process.env.PORT}`}/callback`,
         scope: ['identify', 'guilds'],
     },
     (accessToken, refreshToken, profile, done) => {
@@ -104,11 +104,15 @@ module.exports = async (client) => {
     });
 
     app.get('/', (req, res) => {
-        renderTemplate(res, req, 'index.ejs');
+        renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions });
     });
 
     app.get('/dashboard', checkAuth, (req, res) => {
         renderTemplate(res, req, 'dashboard.ejs', { perms: Discord.Permissions });
+    });
+
+    app.get('/profile', checkAuth, (req, res) => {
+        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions });
     });
 
     app.get('/dashboard/:guildID', checkAuth, async (req, res) => {
@@ -120,7 +124,7 @@ module.exports = async (client) => {
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: null });
+        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: null, perms: Discord.Permissions });
     });
 
     app.post('/dashboard/:guildID', checkAuth, async (req, res) => {

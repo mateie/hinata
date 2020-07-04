@@ -4,6 +4,9 @@
 ### Exe ###
 *.exe
 
+### Assets ###
+dashboard/public
+
 ### Node ###
 # Logs
 logs

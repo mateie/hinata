@@ -1,0 +1,52 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <% if (user) { %>
+        <li class="nav-item nav-profile">
+            <a href="/profile" class="nav-link">
+                <div class="profile-image">
+                    <img class="img-xs rounded-circle"
+                        src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=64"
+                        alt="Profile Image" />
+                    <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                    <p class="profile-name"><%= user.username %></p>
+                    <p class="designation"><%= user.discriminator %> </p>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item nav-category">
+            <span class="nav-link">Dashboard</span>
+        </li>
+        <% user.guilds.forEach(guild => {
+            const permsOnGuild = new perms(guild.permissions);
+            if(!permsOnGuild.has('MANAGE_GUILD')) return;
+            %>
+        <li class="nav-item">
+            <% if(bot.guilds.cache.get(guild.id)) { %>
+            <a class="nav-link" href="/dashboard/<%= guild.id %>">
+                <% if(guild.icon != undefined || guild.icon != null) { %>
+                <img class="img-xs rounded-circle"
+                    src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=64" alt="Guild Icon" />
+                <% } %>
+                <%= guild.name %>
+                <i class="icon-arrow-right-circle menu-icon"></i>
+            </a>
+            <% } else { %>
+            <a class="nav-link"
+                href="<%= `https://discord.com/api/oauth2/authorize?client_id=${bot.user.id}&guild_id=${guild.id}&scope=bot&response_type=code&redirect_uri=${encodeURIComponent(`${process.env.DOMAIN}${process.env.PORT == 8080 ? "" : `:${process.env.PORT}`}/callback`)}` %>">
+                <% if(guild.icon != undefined || guild.icon != null) { %>
+                <img class="img-xs rounded-circle"
+                    src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=64" alt="Guild Icon" />
+                <% } %>
+                <%= guild.name %>
+                <i class="icon-plus menu-icon"></i>
+            </a>
+            <% } %>
+        </li>
+
+        <% }); %>
+        <% } %>
+
+    </ul>
+</nav>

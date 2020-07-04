@@ -149,7 +149,7 @@ client.on('message', async message => {
                 }
             }
         });
-    } else if(!client.spamChannel.includes(message.channel.id)) {
+    } else {
         Users.findOne({
             serverID: message.guild.id,
             userName: message.member.user.username,
@@ -189,7 +189,7 @@ client.on('message', async message => {
 
                 if(res.xp >= XPCalc.getXp(res.level + 1)) {
                     res.level += 1;
-                    message.channel.send(`<@${message.member.id}> advanced to level ${res.level}`);
+                    // message.channel.send(`<@${message.member.id}> advanced to level ${res.level}`);
                 }
 
                 res.save();

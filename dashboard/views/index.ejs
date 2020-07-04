@@ -1,7 +1,28 @@
-<%- include('../partials/header', { bot, user, path, title: 'Home' }) %>
+<html lang="en">
+<%- include('../partials/_head', { bot, user, path, title: 'Home' }) %>
 
-<main>
+<body>
+    <div class="container-scroller">
 
-</main>
+        <%- include('../partials/_navbar') %>
 
-<%- include('../partials/footer') %>
+        <div class="container-fluid page-body-wrapper">
+
+            <%- include('../partials/_sidebar') %>
+
+            <div class="main-panel">
+
+                <div class="content-wrapper">
+                    
+                </div>
+
+                <%- include('../partials/_footer') %>
+
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/_scripts') %>
+</body>
+
+</html>

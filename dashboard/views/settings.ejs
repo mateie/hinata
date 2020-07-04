@@ -1,28 +1,110 @@
-<%- include('../partials/header', { bot, user, path, title: 'Settings' }) %>
+<html lang="en">
+<%- include('../partials/_head', { bot, user, path, title: 'Settings'}) %>
 
-<% if (alert) { %>
-<p>
-    <%= alert %>
-</p><br />
-<% } %>
+<body>
+    <div class="container-scroller">
+        <%- include('../partials/_navbar') %>
+        <div class="container-fluid page-body-wrapper">
+            <%- include('../partials/_sidebar') %>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="page-header">
+                        <h3 class="page-title">Settings for <%= guild.name %></h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Prefix</h4>
+                                    <form class="form-inline">
+                                        <div class="form-group row">
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control mb-2 mr-sm-2" id="prefix"
+                                                    placeholder="Prefix" value="<%= settings.prefix %>">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mb-2">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Roles</h4>
+                                    <form class="forms-sample">
+                                        <% for (let i = 1; i <= Object.keys(settings.roles).length; i++) { %>
+                                        <div class="form-group row">
+                                            <label for="role<%= i %>"
+                                                class="col-sm-3 col-form-label"><%= Object.keys(settings.roles)[i] %>
+                                                Role</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="role<%= i %>"
+                                                    placeholder="Role Name"
+                                                    value="<%= Object.values(settings.roles)[i] %>">
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <button type="submit" class="btn btn-primary mb-2">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Channels</h4>
+                                    <form class="forms-sample">
+                                        <% for (let j = 1; j <= Object.keys(settings.channels).length; j++) { %>
+                                        <div class="form-group row">
+                                            <label for="channel<%= j %>"
+                                                class="col-sm-3 col-form-label"><%= Object.keys(settings.channels)[j] %>
+                                                Channel</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="channel<%= j %>"
+                                                    placeholder="Channel Name"
+                                                    value="<%= Object.values(settings.channels)[j] %>">
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <button type="submit" class="btn btn-primary mb-2">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Notifications</h4>
+                                    <form class="forms-sample">
+                                        <div class="form-group row">
+                                            <% Object.keys(settings.notifications).forEach(notif => { %>
 
-<h1>
-    <%= guild.name %>
-</h1>
-<form style="margin-top: 1em;" method="POST">
-    Prefix: <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix">
-    <hr />
-    <% for (let i = 1; i < Object.keys(settings.roles).length; i++) { %>
-    <%= Object.keys(settings.roles)[i] %> Role: <input type="text" name="role<%= i %>"
-        value="<%= Object.values(settings.roles)[i] %>" placeholder="Your role">
-    <% } %>
-    <br /><br />
-    <% for (let j = 1; j < Object.keys(settings.channels).length; j++) { %>
-    <%= Object.keys(settings.channels)[j] %> Channel: <input type="text" name="channel<%= j %>"
-        value="<%= Object.values(settings.channels)[j] %>" placeholder="Your channel">
-    <% } %>
-    <br /><br />
-    <button type="submit">Save Settings</button>
-</form>
+                                            <% if(notif !== '$init') { %>
+                                            <%= console.log(notif) %>
+                                            <% Object.values(settings.notifications).forEach(value => { %>
+                                            <% if(typeof (value) === 'Object') { %>
+                                            <%= console.log(value) %>
+                                            <% } %>
 
-<%- include('../partials/footer') %>
+                                            <% }) %>
+                                            <label class="form-check-label col-sm-3 col-form-label"><%= notif %></label>
+                                            <div class="col-sm-9">
+                                                Notification Toggles
+                                            </div>
+                                            <% } %>
+                                            <% }) %>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
