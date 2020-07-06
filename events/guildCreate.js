@@ -29,13 +29,6 @@ client.on('guildCreate', guild => {
             notifications: 'welcome',
             reactions: 'roles',
         },
-        notifications: {
-            global: false,
-            member: {
-                join: false,
-                leave: false,
-            },
-        },
     });
 
     newServer.save().catch(err => console.error(err));

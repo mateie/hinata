@@ -72,33 +72,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Notifications</h4>
-                                    <form class="forms-sample">
-                                        <div class="form-group row">
-                                            <% Object.keys(settings.notifications).forEach(notif => { %>
-
-                                            <% if(notif !== '$init') { %>
-                                            <%= console.log(notif) %>
-                                            <% Object.values(settings.notifications).forEach(value => { %>
-                                            <% if(typeof (value) === 'Object') { %>
-                                            <%= console.log(value) %>
-                                            <% } %>
-
-                                            <% }) %>
-                                            <label class="form-check-label col-sm-3 col-form-label"><%= notif %></label>
-                                            <div class="col-sm-9">
-                                                Notification Toggles
-                                            </div>
-                                            <% } %>
-                                            <% }) %>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
