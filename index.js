@@ -14,7 +14,6 @@ client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.queue = new Map();
 client.categories = [];
-client.spamChannels = [];
 client.game = { hangman: new Map() };
 
 module.exports = { client: client };
