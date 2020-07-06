@@ -19,13 +19,6 @@ const serversSchema = mongoose.Schema({
         notifications: String,
         reactions: String,
     },
-    notifications: {
-        global: Boolean,
-        member: {
-            join: Boolean,
-            leave: Boolean,
-        },
-    },
 });
 
 module.exports = mongoose.model('Servers', serversSchema);
