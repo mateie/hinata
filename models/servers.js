@@ -20,6 +20,7 @@ const serversSchema = mongoose.Schema({
         reactions: String,
     },
     notifications: {
+        global: Boolean,
         member: {
             join: Boolean,
             leave: Boolean,

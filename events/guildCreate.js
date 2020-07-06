@@ -30,6 +30,7 @@ client.on('guildCreate', guild => {
             reactions: 'roles',
         },
         notifications: {
+            global: false,
             member: {
                 join: false,
                 leave: false,

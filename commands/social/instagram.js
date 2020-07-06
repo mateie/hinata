@@ -1,5 +1,6 @@
-const axios = require("axios");
+/* eslint-disable no-lonely-if */
 const Discord = require('discord.js');
+const userInstagram = require('user-instagram');
 
 exports.run = async (client, message, args) => {
     let userArg = args[0];
@@ -9,70 +10,74 @@ exports.run = async (client, message, args) => {
         return message.channel.send('Please provide a username');
     }
 
-    axios({
-        'method': 'GET',
-        'url': `https://instagramdimashirokovv1.p.rapidapi.com/user/${userArg}`,
-        'headers': {
-            "content-type": "application/octet-stream",
-            "x-rapidapi-host": "InstagramdimashirokovV1.p.rapidapi.com",
-            "x-rapidapi-key": "ee5d3766fcmsh1a5855f46b91c44p105263jsn1c212bea554b",
-            "useQueryString": true,
-        },
-    })
-        .then(res => {
-            let user = res.data;
-            if (postsArg == 'post') {
-                let posts = user.edge_owner_to_timeline_media.edges;
-                let post = posts[Math.floor(Math.random() * posts.length)];
-                console.log(post);
+    userInstagram(userArg)
+    .then(user => {
+        if(postsArg == 'post') {
+            let posts = user.posts;
+            let post = posts[Math.floor(Math.random() * posts.length)];
 
-                const embed = new Discord.MessageEmbed()
-                .setTitle(`${user.full_name}'s Random Post`);
-                if(post.edge_liked_by === 1) {
-                    embed.addField('Liked by', '1 Person', true);
-                }
-                if(post.edge_liked_by < 1) {
-                    embed.addField('Liked by', 'No one', true);
-                }
-                if(post.edge_liked_by > 1) {
-                    embed.addField('Liked by', `${post.edge_liked_by} people`, true);
-                }
-                embed.addField('Comments', post.edge_media_to_comment, true);
-                if(!post.comments_disabled) {
-                    embed.addField('Comments disabled?', 'No', true);
-                } else {
-                    embed.addField('Comments disabled?', 'Yes', true);
-                }
+            console.log(post);
 
-                return message.channel.send({ embed });
-            } else {
-                const embed = new Discord.MessageEmbed()
-                .setTitle(`${user.full_name}'s Profile`)
-                .setDescription(`${user.biography}`)
-                .setThumbnail(user.profile_pic_url_hd)
-                .addField('Username', user.username, true)
-                .addField('Followers', user.edge_followed_by.count, true)
-                .addField('Following', user.edge_follow.count, true)
-                .addField('Posts:', user.edge_owner_to_timeline_media.count, true);
-            if (!user.is_private) {
-                embed.addField('Private?', 'No', true);
-            } else {
-                embed.addField('Private?', 'Yes', true);
+            const embed = new Discord.MessageEmbed()
+            .setTitle(`${user.username}'s Random Post`)
+            .setURL(post.url)
+            .setDescription(`Caption: ${post.caption}`)
+            .setThumbnail(post.imageUrl);
+            if(post.likesCount === 1) {
+                embed.addField('Liked by', '1 Person', true);
+            } else if(post.likesCount < 1) {
+                embed.addField('Liked by', 'No One', true);
+            } else if(post.likesCount > 1) {
+                embed.addField('Liked by', `${post.likesCount} people`, true);
             }
 
-            if (!user.is_verified) {
-                embed.addField('Verified?', 'No', true);
+            if(post.commentsDisabled === true) {
+                embed.addField('Comments are disabled', '\u200B');
             } else {
-                embed.addField('Verified?', 'Yes', true);
+                if(post.commentsCount === 1) {
+                    embed.addField('Commented by', '1 Person', true);
+                } else if(post.commentsCount < 1) {
+                    embed.addField('Commented by', 'No One', true);
+                } else if(post.commentsCount > 1) {
+                    embed.addField('Commented by', `${post.commentsCount} people`, true);
+                }
             }
 
             return message.channel.send({ embed });
+
+        } else {
+            const embed = new Discord.MessageEmbed()
+            .setTitle(`${user.username}'s Profile`)
+            .setURL(user.link)
+            .setDescription(`${user.biography}`)
+            .setThumbnail(user.profilePicHD)
+            .addField('Full Name', user.fullName, true)
+            .addField('Followers', user.subscribersCount, true)
+            .addField('Following', user.subscribtions, true)
+            .addField('Posts', user.postsCount, true);
+
+            if(user.isPrivate === true) {
+                embed.addField('Private User', '\u200B');
             }
-        })
-        .catch(err => {
-            console.error(err);
-            return message.channel.send('Daily quota for Instagram API has been reached');
-        });
+
+            if(user.recentUser === true) {
+                embed.addField('Recent User', '\u200B');
+            }
+
+            if(user.isVerified === true) {
+                embed.addField('Verified User', '\u200B');
+            }
+
+            if(user.isBusinessAccount === true) {
+                embed.addField('Business Account', '\u200B');
+            }
+
+            return message.channel.send({ embed });
+        }
+    })
+    .catch(() => {
+        return message.reply('User not found');
+    });
 };
 
 exports.help = {
