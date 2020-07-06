@@ -138,6 +138,8 @@ module.exports = async (client) => {
 
         storedSettings.prefix = req.body.prefix;
 
+        console.log(req);
+
         for(let i = 1; i < Object.keys(storedSettings.roles).length; i++) {
             storedSettings.roles[Object.keys(storedSettings.roles)[i]] = req.body[`role${i}`];
         }
@@ -148,7 +150,7 @@ module.exports = async (client) => {
 
         storedSettings.save();
 
-        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: 'Your Settings have been saved' });
+        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: 'Your Settings have been saved', perms: Discord.Permissions });
     });
 
     app.listen(process.env.PORT, null, null, () => {

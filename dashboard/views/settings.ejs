@@ -16,10 +16,10 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Prefix</h4>
-                                    <form class="form-inline">
+                                    <form class="form-inline" method="POST">
                                         <div class="form-group row">
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control mb-2 mr-sm-2" id="prefix"
+                                                <input type="text" class="form-control mb-2 mr-sm-2" name="prefix"
                                                     placeholder="Prefix" value="<%= settings.prefix %>">
                                             </div>
                                         </div>
@@ -32,14 +32,15 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Roles</h4>
-                                    <form class="forms-sample">
-                                        <% for (let i = 1; i <= Object.keys(settings.roles).length; i++) { %>
+                                    <p class="card-description">Role Names are Case-Sensitive</p>
+                                    <form class="forms-sample" method="POST">
+                                        <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
                                         <div class="form-group row">
                                             <label for="role<%= i %>"
                                                 class="col-sm-3 col-form-label"><%= Object.keys(settings.roles)[i] %>
                                                 Role</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="role<%= i %>"
+                                                <input type="text" class="form-control" name="role<%= i %>"
                                                     placeholder="Role Name"
                                                     value="<%= Object.values(settings.roles)[i] %>">
                                             </div>
@@ -54,14 +55,15 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Channels</h4>
-                                    <form class="forms-sample">
-                                        <% for (let j = 1; j <= Object.keys(settings.channels).length; j++) { %>
+                                    <p class="card-description">Channel Names are Case-Sensitive</p>
+                                    <form class="forms-sample" method="POST">
+                                        <% for (let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
                                         <div class="form-group row">
                                             <label for="channel<%= j %>"
                                                 class="col-sm-3 col-form-label"><%= Object.keys(settings.channels)[j] %>
                                                 Channel</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="channel<%= j %>"
+                                                <input type="text" class="form-control" name="channel<%= j %>"
                                                     placeholder="Channel Name"
                                                     value="<%= Object.values(settings.channels)[j] %>">
                                             </div>
