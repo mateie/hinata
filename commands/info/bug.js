@@ -40,7 +40,7 @@ exports.run = (client, message, args) => {
 exports.help = {
     name: 'bug',
     aliases: [],
-    args: ['[bug explanaiton]'],
+    args: ['<bug explanation>'],
     permission: 'USER',
     description: 'Report a bug',
 };

@@ -83,7 +83,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'mute',
     aliases: ['unmute'],
-    args: ['@mention [reason]'],
+    args: ['<@mention>', '[reason]'],
     permission: 'ADMIN',
     description: 'mute/unmute a mentioned user',
 };

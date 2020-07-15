@@ -20,8 +20,8 @@ exports.run = (client, message) => {
 
 exports.help = {
     name: 'removerole',
-    aliases: ['rr'],
-    args: ['[role]'],
+    aliases: [],
+    args: ['<role>'],
     permission: 'ADMIN',
     description: 'Removes a role. It\'s same as adding a role',
 };

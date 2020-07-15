@@ -31,12 +31,12 @@ exports.run = async (client, message) => {
             rankEmbed.addField('There are not any members in the database', '\u200b');
         } else if(res.length < 10) {
             res.forEach((elem, index) => {
-                rankEmbed.addField(`${index + 1}. @${message.guild.members.get(elem.userID).user.tag}`, `${elem.xp > 1000 ? (`${(elem.xp / 1000).toFixed(3)}K`) : (elem.xp.toFixed(2))} XP (Level ${elem.level})`);
+                rankEmbed.addField(`${index + 1}. @${message.guild.members.cache.get(elem.userID).user.tag}`, `${elem.xp > 1000 ? (`${(elem.xp / 1000).toFixed(3)}K`) : (elem.xp.toFixed(2))} XP (Level ${elem.level})`);
             });
         } else if(res.length > 10) {
             for(let i = 0; i < 10; i++) {
                 let elem = res[i];
-                rankEmbed.addField(`${i + 1}. @${message.guild.members.get(elem.userID).user.tag}`, `${elem.xp > 1000 ? (`${(elem.xp / 1000).toFixed(3)}K`) : (elem.xp.toFixed(2))} XP (Level ${elem.level})`);
+                rankEmbed.addField(`${i + 1}. @${message.guild.members.cache.get(elem.userID).user.tag}`, `${elem.xp > 1000 ? (`${(elem.xp / 1000).toFixed(3)}K`) : (elem.xp.toFixed(2))} XP (Level ${elem.level})`);
             }
         }
 
@@ -46,7 +46,7 @@ exports.run = async (client, message) => {
 
 exports.help = {
     name: 'leaderboard',
-    aliases: ['rank'],
+    aliases: ['ranks'],
     args: [],
     permission: 'USER',
     description: 'Displays server\'s leaderboard',

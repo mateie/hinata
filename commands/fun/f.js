@@ -9,7 +9,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'f',
     aliases: [],
-    args: [],
+    args: ['[person]'],
     permission: 'USER',
     description: 'Press F to Pay Respect',
 };

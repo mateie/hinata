@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'remove',
     aliases: ['rm'],
-    args: ['[position]'],
+    args: ['<position>'],
     permission: 'DJ',
     description: 'Removes a track from the queue',
 };

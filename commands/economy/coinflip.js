@@ -10,7 +10,7 @@ exports.run = async (client, message) => {
 exports.help = {
     name: 'coinflip',
     aliases: ['cf'],
-    args: ['[amount]'],
+    args: [],
     permission: 'USER',
     description: 'Flip a coin',
 };

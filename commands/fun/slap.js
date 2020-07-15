@@ -32,7 +32,7 @@ exports.run = async (client, message) => {
 exports.help = {
     name: 'slap',
     aliases: [],
-    args: ['@mention'],
+    args: ['<@mention>'],
     permission: 'USER',
     description: 'Slap someone',
 };

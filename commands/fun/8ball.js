@@ -47,7 +47,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: '8ball',
     aliases: [],
-    args: ['(question)'],
+    args: ['<question>'],
     permission: 'USER',
     description: 'Ask the bot a Question.',
 };

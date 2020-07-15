@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'shutdown',
     aliases: ['stopbot'],
-    args: [],
+    args: ['[reason]'],
     permission: 'BOT_OWNER',
     description: 'Shutdown the bot',
     usage: 'shutdown',

@@ -9,7 +9,7 @@ exports.run = (client, message) => {
 exports.help = {
     name: 'hammer',
     aliases: [],
-    args: ['@mention'],
+    args: ['<@mention>'],
     permission: 'USER',
     description: 'Throws a hammer at a user',
 };

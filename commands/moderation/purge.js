@@ -1,5 +1,4 @@
 exports.run = function(client, message, args) {
-    if(!args[0]) return message.reply('Usage: purge all|bots|user|[author] <amount>');
     if(args[0] === 'all') {
         if(!args[1]) return message.channel.send('Specify the amount');
         if(isNaN(args[1])) return message.channel.send('Specify the valid amount');
@@ -44,15 +43,13 @@ exports.run = function(client, message, args) {
         }).catch(e => {
             if(e) return message.channel.send('Error: ', e);
         });
-    } else {
-        message.reply('Usage: purge all|bots|user|[author] <amount>');
     }
 };
 
 exports.help = {
     name: 'purge',
     aliases: [],
-    args: ['all|bots|user|[author] [amount]'],
+    args: ['<all|user|author>', '<amount>'],
     permission: 'ADMIN',
     description: 'Purge X amount of messages from a channel',
 };

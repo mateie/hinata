@@ -20,7 +20,7 @@ exports.run = async (client, message) => {
 exports.help = {
     name: 'spank',
     aliases: [],
-    args: ['@mention'],
+    args: ['<@mention>'],
     permission: 'USER',
     description: 'Spank someone',
 };

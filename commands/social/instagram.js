@@ -83,7 +83,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'instagram',
     aliases: ['ig'],
-    args: ['[user]'],
+    args: ['<user>', '[post]'],
     permission: 'USER',
     description: 'Displays information about a user on instagram',
 };

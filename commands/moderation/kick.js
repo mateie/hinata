@@ -51,7 +51,7 @@ exports.conf = {
 exports.help = {
     name: 'kick',
     aliases: [],
-    args: ['@mention [reason]'],
+    args: ['<@mention>', '[reason]'],
     permission: 'USER',
     description: 'Kicks the mentioned user',
 };

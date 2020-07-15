@@ -56,15 +56,13 @@ exports.run = (client, message, args) => {
             return message.channel.send({ embed });
 
         });
-    } else {
-        return message.reply('Choose either GIF or Video');
     }
 };
 
 exports.help = {
     name: 'porn',
     aliases: [],
-    args: ['[tag] [type]'],
+    args: ['<tag> <type>'],
     permission: 'USER',
     description: 'Gives a video with a providen tag',
 };

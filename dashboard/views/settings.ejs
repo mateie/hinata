@@ -37,7 +37,7 @@
                                         <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
                                         <div class="form-group row">
                                             <label for="role<%= i %>"
-                                                class="col-sm-3 col-form-label"><%= Object.keys(settings.roles)[i] %>
+                                                class="col-sm-3 col-form-label"><%= capL(Object.keys(settings.roles)[i]) %>
                                                 Role</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="role<%= i %>"
@@ -60,7 +60,7 @@
                                         <% for (let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
                                         <div class="form-group row">
                                             <label for="channel<%= j %>"
-                                                class="col-sm-3 col-form-label"><%= Object.keys(settings.channels)[j] %>
+                                                class="col-sm-3 col-form-label"><%= capL(Object.keys(settings.channels)[j]) %>
                                                 Channel</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="channel<%= j %>"

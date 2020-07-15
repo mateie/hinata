@@ -104,7 +104,7 @@ module.exports = async (client) => {
     });
 
     app.get('/', (req, res) => {
-        renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions });
+        renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
     app.get('/dashboard', checkAuth, (req, res) => {
@@ -124,7 +124,7 @@ module.exports = async (client) => {
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: null, perms: Discord.Permissions });
+        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: null, perms: Discord.Permissions, capL: capFirstLetter });
     });
 
     app.post('/dashboard/:guildID', checkAuth, async (req, res) => {
@@ -156,4 +156,12 @@ module.exports = async (client) => {
     app.listen(process.env.PORT, null, null, () => {
         console.log(`Dashboard is running on port ${process.env.PORT}`);
     });
+};
+
+const capFirstLetter = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+const capAllLetters = string => {
+    return string.toUpperCase();
 };

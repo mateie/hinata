@@ -20,7 +20,7 @@ exports.run = async (client, message) => {
 exports.help = {
     name: 'feed',
     aliases: [],
-    args: [],
+    args: ['<@mention>'],
     permission: 'USER',
     description: 'Feed someone UwU',
 };

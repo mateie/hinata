@@ -64,7 +64,7 @@ exports.run = (client, message, args) => {
 exports.help = {
     name: 'currency',
     aliases: [],
-    args: ['<amount> [Base Currency] [Target Currency]'],
+    args: ['<amount>', '<Base Currency>', '<Target Currency>'],
     permission: 'USER',
     description: 'Convert Currencies',
 };

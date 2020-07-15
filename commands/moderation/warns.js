@@ -34,15 +34,13 @@ exports.run = async (client, message) => {
 
             message.channel.send(warnsEmbed);
         });
-    } else {
-        message.channel.send('User not found');
     }
 };
 
 exports.help = {
     name: 'warns',
     aliases: ['warnlist'],
-    args: ['@mention'],
+    args: ['<@mention>'],
     permission: 'ADMIN',
     description: 'Displays user\'s warnings',
 };

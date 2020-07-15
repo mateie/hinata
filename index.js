@@ -6,7 +6,7 @@ const Loader = require('./util/loader');
 require('dotenv').config();
 
 const client = new Discord.Client({
-    partials: ['MESSAGE'],
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
 client.prefix = '!';
@@ -14,7 +14,6 @@ client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.queue = new Map();
 client.categories = [];
-client.game = { hangman: new Map() };
 
 module.exports = { client: client };
 

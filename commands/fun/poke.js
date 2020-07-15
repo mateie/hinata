@@ -26,7 +26,7 @@ exports.run = async (client, message) => {
 exports.help = {
     name: 'poke',
     aliases: [],
-    args: ['@mention'],
+    args: ['<@mention>'],
     permission: 'USER',
     description: 'Poke someone',
 };

@@ -130,21 +130,10 @@ client.on('message', async message => {
                     }
                 });
 
-                if(args.length >= requiredArgs || args.length <= requiredArgs) {
-                    client.settings = {
-                        roles: permission,
-                        version: packageInfo.version,
-                        repository: packageInfo.repository.url,
-                        iconURL: 'https://cdn.discordapp.com/avatars/401269337924829186/06bbff31bbf6f1114bdad5e17dfbc59f.png?size=4096',
-                    };
-
-                    if(process.env.DEBUG == 'true') {
-                        client.settings.version += '-dev';
-                    }
-
+                if(args.length >= requiredArgs) {
                     commandFile.run(client, message, args);
                 } else {
-                    let err = `Usage: ${client.prefix}${commandFile.help.name} ${commandFile.help.args.join(' ')}`;
+                    let err = `Usage:\`\`\`${client.prefix}${commandFile.help.name} ${commandFile.help.args.join(' ')}\`\`\``;
                     message.channel.send(err);
                 }
             }

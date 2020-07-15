@@ -13,7 +13,6 @@ exports.run = async (client, message, args) => {
             rateLimitPerUser: channel.rateLimitPerUser,
         };
 
-        // console.log(channel);
         channel.delete();
         const newChannel = await message.guild.channels.create(channel.name, options);
 
@@ -94,7 +93,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: 'nuke',
-    aliases: [],
+    aliases: ['[channel/category name]'],
     args: ['[channel name]'],
     permission: 'OWNER',
     description: 'Nukes the channel',

@@ -20,7 +20,7 @@ exports.run = (client, message) => {
 exports.help = {
     name: 'addrole',
     aliases: ['promote'],
-    args: ['@mention [role name]'],
+    args: ['<@mention>', '<role name>'],
     permission: 'ADMIN',
     description: 'Adds a role to a user',
 };

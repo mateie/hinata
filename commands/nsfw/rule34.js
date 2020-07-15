@@ -37,7 +37,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'rule34',
     aliases: ['r34'],
-    args: ['[tag]'],
+    args: ['<tag>'],
     permission: 'USER',
     description: 'Gives a random Rule34 image',
 };

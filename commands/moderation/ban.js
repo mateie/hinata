@@ -51,7 +51,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'ban',
     aliases: [],
-    args: ['@mention [reason]'],
+    args: ['<@mention>', '[reason]'],
     permission: 'ADMIN',
     description: 'Ban the mentioned user',
 };

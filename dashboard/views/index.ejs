@@ -28,7 +28,11 @@
                                         <div class="col-md-6 col-xl report-inner-card">
                                             <div class="inner-card-text">
                                                 <span class="report-title">Bot Status</span>
-                                                <h4><%= bot.presence.status %></h4>
+                                                <% if(bot.presence.status === 'dnd') { %>
+                                                <h4><%= capA(bot.presence.status) %></h4>
+                                                <% } else { %>
+                                                <h4><%= capL(bot.presence.status) %></h4>
+                                                <% } %>
                                             </div>
                                             <div class="inner-card-icon bg-success">
                                                 <i class="icon-feed"></i>

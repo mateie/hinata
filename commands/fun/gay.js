@@ -38,8 +38,8 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     name: 'gay',
-    aliases: ['pride'],
-    args: ['@mention'],
+    aliases: ['pride', 'lgbt'],
+    args: ['[@mention]'],
     permission: 'USER',
     description: 'Makes avatar with gay flag',
 };

@@ -44,46 +44,42 @@ client.on('ready', async () => {
         },
     ];
 
-    if (process.env.STREAMERS === true) {
-    } else {
-        console.log('Streamers presence is disabled');
-        setInterval(() => {
-            client.guilds.cache.forEach(guild => {
-                guild.members.cache.forEach(member => {
-                    if (member.id === process.env.OWNER_ID) {
-                        ownerStatus = member.presence.status;
-                        ownerActivityObj = member.presence.activities;
-                        if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
-                            let index = Math.floor(Math.random() * presence.length);
-                            client.user.setPresence(presence[index]);
-                        } else {
-                            if (ownerActivityObj[0].type === 'LISTENING') {
-                                if (ownerActivityObj[0].state.includes(';')) {
-                                    ownerActivityObj[0].state = ownerActivityObj[0].state.replace(';', ',');
-                                }
-                                ownerActivity = {
-                                    name: `${ownerActivityObj[0].details} by ${ownerActivityObj[0].state}`,
-                                    type: 'LISTENING',
-                                };
-                            } else if (ownerActivityObj[0].type === 'PLAYING') {
-                                ownerActivity = {
-                                    name: `${ownerActivityObj[0].name}`,
-                                    type: 'PLAYING',
-                                };
+    setInterval(() => {
+        client.guilds.cache.forEach(guild => {
+            guild.members.cache.forEach(member => {
+                if (member.id === process.env.OWNER_ID) {
+                    ownerStatus = member.presence.status;
+                    ownerActivityObj = member.presence.activities;
+                    if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
+                        let index = Math.floor(Math.random() * presence.length);
+                        client.user.setPresence(presence[index]);
+                    } else {
+                        if (ownerActivityObj[0].type === 'LISTENING') {
+                            if (ownerActivityObj[0].state.includes(';')) {
+                                ownerActivityObj[0].state = ownerActivityObj[0].state.replace(';', ',');
                             }
-
-                            let presence = {
-                                status: ownerStatus,
-                                activity: ownerActivity,
+                            ownerActivity = {
+                                name: `${ownerActivityObj[0].details} by ${ownerActivityObj[0].state}`,
+                                type: 'LISTENING',
                             };
-
-                            client.user.setPresence(presence);
+                        } else if (ownerActivityObj[0].type === 'PLAYING') {
+                            ownerActivity = {
+                                name: `${ownerActivityObj[0].name}`,
+                                type: 'PLAYING',
+                            };
                         }
+
+                        let presence = {
+                            status: ownerStatus,
+                            activity: ownerActivity,
+                        };
+
+                        client.user.setPresence(presence);
                     }
-                });
+                }
             });
-        }, 10000);
-    }
+        });
+    }, 10000);
 
     let ownerActivityObj, ownerActivity, ownerStatus;
 
@@ -106,24 +102,24 @@ client.on('ready', async () => {
                             console.info(`This server doesn't have ${res.channels.reaction} channel`);
                         } else {
                             if (channel.guild.id === res.serverID) {
-
+    
                                 try {
                                     channel.messages.fetch();
                                 } catch (err) {
                                     console.error('Error fetching messages', err);
                                     return;
                                 }
-
+    
                                 const messages = channel.messages;
-
+    
                                 console.log(messages);
-
+    
                                 if (!messages) {
                                     console.info('There is no message in the channel');
                                 } else {
                                     res.messageID = channel.messages.cache.first().id;
                                     res.save();
-
+    
                                     console.log(`Watching message '${res.messageID}' in ${res.servername} for reactions...`);
                                 }
                             }

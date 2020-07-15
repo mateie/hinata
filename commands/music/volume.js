@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'volume',
     aliases: ['vol'],
-    args: ['[0-200]'],
+    args: ['<0-200>'],
     permission: 'USER',
     description: 'Set a volume to an integer',
 };

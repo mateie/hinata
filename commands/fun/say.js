@@ -8,7 +8,7 @@ exports.run = (client, message, args) => {
 exports.help = {
     name: "say",
     aliases: [],
-    args: ['[message]'],
+    args: ['<message>'],
     permission: 'USER',
     description: "Makes the bot repeat your message",
 };

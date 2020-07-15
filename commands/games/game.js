@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
         }
 
         if (message.guild.roles.cache.find(ch => ch.name === game.toUpperCase())) {
-            return message.reply(`${game.toUpperCase()} already exists`);
+            return message.reply(`${game.toUpperCase()} role already exists`);
         }
 
         let emoji = message.attachments.first();
@@ -60,10 +60,10 @@ exports.run = (client, message, args) => {
                 };
 
                 let existsEmoji = message.guild.emojis.cache.find(e => e.name === game);
-                if(!existsEmoji) {
+                if (!existsEmoji) {
                     await message.guild.emojis.create(emoji.url, game, gameEmoji);
                 } else {
-                    message.channel.send('Not creating a new Emoji, it already exists');
+                    message.reply('Not creating a new Emoji, it already exists');
                 }
 
                 const gameCat = {
@@ -125,7 +125,7 @@ exports.run = (client, message, args) => {
                 Servers.findOne({
                     serverID: message.guild.id,
                 }, async (err, resp) => {
-                    if(err) console.error(err);
+                    if (err) console.error(err);
 
                     let channel = message.guild.channels.cache.find(ch => ch.name === resp.reactionChannels[0]);
                     let msg = channel.messages.cache.get(resp.messageID);
@@ -214,7 +214,7 @@ exports.run = (client, message, args) => {
                 Servers.findOne({
                     serverID: message.guild.id,
                 }, async (err, resp) => {
-                    if(err) console.error(err);
+                    if (err) console.error(err);
 
                     let channel = message.guild.channels.cache.find(ch => ch.name === resp.reactionChannels[0]);
                     let msg = channel.messages.cache.get(resp.messageID);
@@ -225,8 +225,6 @@ exports.run = (client, message, args) => {
 
                 await message.reply(`Game: ${game.toUpperCase()} removed`);
             });
-    } else {
-        return message.reply(`Usage: ${this.help.args[0]} ${this.help.args[1]}`);
     }
 };
 
@@ -234,7 +232,7 @@ exports.randomHex = () => {
     let letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+        color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
 };
@@ -242,7 +240,7 @@ exports.randomHex = () => {
 exports.help = {
     name: 'game',
     aliases: [],
-    args: ['<add/remove>', '[game name]'],
+    args: ['<add/remove>', '<game name>'],
     permission: 'OWNER',
     description: 'Game Managment',
 };

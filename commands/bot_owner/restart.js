@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'restart',
     aliases: [],
-    args: [],
+    args: ['[reason]'],
     permission: 'BOT_OWNER',
     description: 'Restart the bot',
     usage: 'restart',

@@ -16,11 +16,11 @@ client.on('guildCreate', guild => {
         prefix: '!',
         messageID: '',
         roles: {
-            owner: "Owner",
-            admin: "Admin",
-            dj: "DJ",
-            user: "Member",
-            mute: "Muted",
+            owner: "",
+            admin: "",
+            dj: "",
+            user: "",
+            mute: "",
         },
         channels: {
             commands: 'bot-commands',

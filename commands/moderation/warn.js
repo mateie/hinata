@@ -55,7 +55,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
     name: 'warn',
     aliases: [],
-    args: ['@mention', '[reason]'],
+    args: ['<@mention>', '[reason]'],
     permission: 'ADMIN',
     description: 'warns a user with a reason',
 };

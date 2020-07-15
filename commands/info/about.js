@@ -14,8 +14,8 @@ exports.run = (client, message) => {
         message.delete();
         const embed = new Discord.MessageEmbed()
         .setColor(0xFFFF00)
-        .setTitle('About the bot')
-        .addField('About The Bot', `Bruh is a bot created by ${process.env.OWNER_NAME}, made for any discord server that needs fun and moderating. It is written with Discord.js (A node.js module). Too see more info about the bot, type ${prefix}info`);
+        .setTitle('About the Bot')
+        .addField('About The Bot', `Bruh is a bot created by ${process.env.OWNER_NAME}, made for any discord server that needs fun and moderating. It is written with Discord.js (A node.js module).`);
 
         message.channel.send({ embed });
     });
