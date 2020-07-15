@@ -23,7 +23,8 @@ exports.run = async (client, message, args) => {
 
         if(!roleDB) {
             const embed = new Discord.MessageEmbed()
-            .setTitle(`${message.guild.name}'s Roles`);
+            .setTitle(`${message.guild.name}'s Roles`)
+            .setDescription('Values are case-sensitive');
             for(let i = 1; i < Object.keys(settings.roles).length; i++) {
                 let roleName = Object.keys(settings.roles)[i];
                 let roleValue = Object.values(settings.roles)[i];

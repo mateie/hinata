@@ -23,7 +23,8 @@ exports.run = async (client, message, args) => {
 
         if(!channelDB) {
             const embed = new Discord.MessageEmbed()
-            .setTitle(`${message.guild.name}'s Channels`);
+            .setTitle(`${message.guild.name}'s Channels`)
+            .setDescription('Values are case-sensitive');
             for(let i = 1; i < Object.keys(settings.channels).length; i++) {
                 let channelName = Object.keys(settings.channels)[i];
                 let channelValue = Object.values(settings.channels)[i];
