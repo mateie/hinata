@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const mongoose = require('mongoose');
 
 const Servers = require('../../models/servers');
