@@ -49,13 +49,13 @@ exports.commands = client => {
                 client.aliases.set(value, props);
             });
 
-            if(!props.help.enabled) {
+            if(typeof (props.help.enabled) === 'undefined') {
                 console.error('Command is missing enabled option');
             } else if(props.help.enabled === false) {
                 console.info(`${category}/${command} is disabled`);
             } else {
                 client.commands.set(props.help.name, props);
-                console.info(`${category}/${command} loaded`);
+                console.info(`${category}/${command} is enabled`);
             }
         });
     });
