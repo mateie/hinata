@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
                 let channelName = Object.keys(settings.channels)[i];
                 let channelValue = Object.values(settings.channels)[i];
 
-                embed.addField(channelName, channelValue);
+                embed.addField(`${channelName}`, `${channelValue}`);
             }
 
             return message.channel.send({ embed });

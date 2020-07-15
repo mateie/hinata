@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
                 let roleName = Object.keys(settings.roles)[i];
                 let roleValue = Object.values(settings.roles)[i];
 
-                embed.addField(roleName, roleValue);
+                embed.addField(`${roleName}`, `${roleValue}`);
             }
 
             return message.channel.send({ embed });
