@@ -29,8 +29,9 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'tatsumaki',
-    aliases: [],
+    aliases: ['tatsu'],
     args: [],
     permission: 'USER',
     description: 'Shows Tatsumaki\'s Pictures',

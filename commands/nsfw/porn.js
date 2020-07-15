@@ -60,9 +60,10 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'porn',
     aliases: [],
-    args: ['<tag> <type>'],
+    args: ['<tag>', '<type>'],
     permission: 'USER',
     description: 'Gives a video with a providen tag',
 };

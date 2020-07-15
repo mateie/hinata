@@ -27,7 +27,7 @@ exports.run = (client, message, args) => {
         },
     })
         .then(res => {
-            if(typeof (res.data) !== 'undefined') {
+            if (typeof (res.data) !== 'undefined') {
                 return message.channel.send('Bug report successfully sent');
             }
         })
@@ -38,6 +38,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'bug',
     aliases: [],
     args: ['<bug explanation>'],

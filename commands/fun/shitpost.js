@@ -17,6 +17,7 @@ exports.run = (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'shitpost',
     aliases: ['spost', 'sp', 'shitp'],
     args: [],

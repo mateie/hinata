@@ -27,6 +27,7 @@ exports.getPermName = (bitfield) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'lockdown',
     aliases: ['ld', 'lock'],
     args: [],

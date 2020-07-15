@@ -22,6 +22,7 @@ exports.run = (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'about',
     aliases: [],
     args: [],

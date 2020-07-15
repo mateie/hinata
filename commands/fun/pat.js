@@ -18,6 +18,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'pat',
     aliases: [],
     args: ['<@mention>'],

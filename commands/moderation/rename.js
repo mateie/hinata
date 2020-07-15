@@ -25,6 +25,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'rename',
     aliases: ['nick', 'nickname'],
     args: ['<@mention|userID>', '[new name]'],

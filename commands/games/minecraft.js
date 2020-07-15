@@ -362,6 +362,7 @@ exports.capitalize = (str) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'minecraft',
     args: ['<item/block/biomes/entity/server/user|account>', '<item name/block name/*/entity name/server ip|port or hostname/username>'],
     aliases: ['mc'],

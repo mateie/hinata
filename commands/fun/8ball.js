@@ -45,6 +45,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: '8ball',
     aliases: [],
     args: ['<question>'],

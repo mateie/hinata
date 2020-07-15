@@ -49,6 +49,7 @@ exports.conf = {
 };
 
 exports.help = {
+    enabled: true,
     name: 'kick',
     aliases: [],
     args: ['<@mention>', '[reason]'],

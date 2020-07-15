@@ -11,6 +11,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'shutdown',
     aliases: ['stopbot'],
     args: ['[reason]'],

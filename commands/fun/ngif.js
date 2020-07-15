@@ -14,6 +14,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'ngif',
     aliases: ['nekogif'],
     args: [],

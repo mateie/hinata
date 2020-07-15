@@ -238,6 +238,7 @@ exports.randomHex = () => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'game',
     aliases: [],
     args: ['<add/remove>', '<game name>'],

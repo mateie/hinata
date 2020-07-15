@@ -17,6 +17,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'cuddle',
     aliases: [],
     args: ['<@mention>'],

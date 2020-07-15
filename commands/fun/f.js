@@ -7,6 +7,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'f',
     aliases: [],
     args: ['[person]'],

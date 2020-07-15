@@ -10,6 +10,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'amiajoke',
     aliases: [],
     args: ['[@mention]'],

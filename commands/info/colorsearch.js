@@ -19,6 +19,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'colorsearch',
     aliases: ['clrsrch'],
     args: ['<hexcode>'],

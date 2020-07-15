@@ -208,6 +208,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: false,
     name: 'settings',
     aliases: ['sett', 'options', 'config', 'cfg'],
     args: ['[key]', '[value | @role]'],

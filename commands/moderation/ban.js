@@ -49,6 +49,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'ban',
     aliases: [],
     args: ['<@mention>', '[reason]'],

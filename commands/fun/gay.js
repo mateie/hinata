@@ -37,6 +37,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'gay',
     aliases: ['pride', 'lgbt'],
     args: ['[@mention]'],

@@ -92,6 +92,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'nuke',
     aliases: ['[channel/category name]'],
     args: ['[channel name]'],

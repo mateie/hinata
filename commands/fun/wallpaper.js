@@ -13,6 +13,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'wallpaper',
     aliases: ['wp'],
     args: [],

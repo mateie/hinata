@@ -18,6 +18,7 @@ exports.run = (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'addrole',
     aliases: ['promote'],
     args: ['<@mention>', '<role name>'],

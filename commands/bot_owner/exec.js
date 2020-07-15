@@ -9,6 +9,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'exec',
     aliases: [],
     args: [],

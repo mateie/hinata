@@ -29,6 +29,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'opm',
     aliases: ['onepunchman'],
     args: [],

@@ -21,6 +21,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'eval',
     aliases: [],
     args: [],

@@ -32,6 +32,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'help',
     aliases: ['?', 'hlep', 'hepl'],
     args: ['[category]'],

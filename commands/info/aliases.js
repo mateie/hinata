@@ -22,6 +22,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'aliases',
     aliases: ['more', 'moar'],
     args: ['[command]'],

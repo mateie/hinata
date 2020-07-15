@@ -18,6 +18,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'volume',
     aliases: ['vol'],
     args: ['<0-200>'],

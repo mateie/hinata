@@ -12,6 +12,7 @@ exports.conf = {
 };
 
 exports.help = {
+    enabled: true,
     name: 'copypasta',
     aliases: ['cp'],
     args: [],

@@ -16,6 +16,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'neko',
     aliases: [],
     args: [],

@@ -47,6 +47,7 @@ exports.run = function(client, message, args) {
 };
 
 exports.help = {
+    enabled: true,
     name: 'purge',
     aliases: [],
     args: ['<all|user|author>', '<amount>'],

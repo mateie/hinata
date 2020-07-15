@@ -45,6 +45,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'leaderboard',
     aliases: ['ranks'],
     args: [],

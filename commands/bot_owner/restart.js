@@ -15,6 +15,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'restart',
     aliases: [],
     args: ['[reason]'],

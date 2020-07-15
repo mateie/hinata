@@ -65,6 +65,7 @@ exports.createEmbed = (client, body, header) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'covid19',
     aliases: ['coronavirus', 'covid'],
     args: ['[country|world|global|all]'],

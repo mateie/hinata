@@ -49,9 +49,14 @@ exports.commands = client => {
                 client.aliases.set(value, props);
             });
 
-            client.commands.set(props.help.name, props);
-
-            console.info(`${category}/${command} loaded`);
+            if(!props.help.enabled) {
+                console.error('Command is missing enabled option');
+            } else if(props.help.enabled === false) {
+                console.info(`${category}/${command} is disabled`);
+            } else {
+                client.commands.set(props.help.name, props);
+                console.info(`${category}/${command} loaded`);
+            }
         });
     });
 

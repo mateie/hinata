@@ -12,6 +12,7 @@ exports.run = (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'uptime',
     aliases: [],
     args: [],

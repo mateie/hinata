@@ -19,6 +19,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'advice',
     aliases: [],
     args: [],

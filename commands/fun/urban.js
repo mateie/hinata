@@ -39,6 +39,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'urban',
     aliases: ['dictionary', 'urb'],
     args: ['<word>'],

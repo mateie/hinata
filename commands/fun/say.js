@@ -6,6 +6,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: "say",
     aliases: [],
     args: ['<message>'],

@@ -10,6 +10,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'fight',
     aliases: [],
     args: ['<user>'],

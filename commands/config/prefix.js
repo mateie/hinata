@@ -31,6 +31,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'prefix',
     aliases: ['pre'],
     args: ['[prefix]'],

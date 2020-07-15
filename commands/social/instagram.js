@@ -6,10 +6,6 @@ exports.run = async (client, message, args) => {
     let userArg = args[0];
     let postsArg = args[1];
 
-    if (!userArg) {
-        return message.channel.send('Please provide a username');
-    }
-
     userInstagram(userArg)
     .then(user => {
         if(postsArg == 'post') {
@@ -81,6 +77,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'instagram',
     aliases: ['ig'],
     args: ['<user>', '[post]'],

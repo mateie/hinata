@@ -8,6 +8,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'coinflip',
     aliases: ['cf'],
     args: [],

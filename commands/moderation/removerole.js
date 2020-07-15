@@ -19,6 +19,7 @@ exports.run = (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'removerole',
     aliases: [],
     args: ['<role>'],

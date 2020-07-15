@@ -105,6 +105,7 @@ exports.play = (client, message, song) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'play',
     aliases: ['p', 'music'],
     args: ['<video url/video name>'],

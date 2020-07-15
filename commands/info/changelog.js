@@ -24,6 +24,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'changelog',
     aliases: ['changes', 'github', 'updates'],
     args: [],

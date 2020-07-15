@@ -38,6 +38,7 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'warns',
     aliases: ['warnlist'],
     args: ['<@mention>'],

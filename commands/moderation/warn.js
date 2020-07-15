@@ -53,6 +53,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'warn',
     aliases: [],
     args: ['<@mention>', '[reason]'],

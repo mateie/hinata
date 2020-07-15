@@ -13,6 +13,7 @@ exports.conf = {
 };
 
 exports.help = {
+    enabled: true,
     name: 'leave',
     aliases: [],
     args: ['[guild id]'],

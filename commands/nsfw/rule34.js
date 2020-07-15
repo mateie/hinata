@@ -35,6 +35,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'rule34',
     aliases: ['r34'],
     args: ['<tag>'],
