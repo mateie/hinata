@@ -43,7 +43,7 @@
     "lavacord": "^1.1.9",
     "memorystore": "^1.6.2",
     "minecraft-assets": "^1.2.0",
-    "minecraft-data": "^2.56.0",
+    "minecraft-data": "^2.62.1",
     "minecraft-lib": "^1.1.6",
     "minecraft-server-status": "^1.0.1",
     "minecraft-server-util": "^1.3.0",
