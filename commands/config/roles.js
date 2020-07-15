@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
                 let roleName = Object.keys(settings.roles)[i];
                 let roleValue = Object.values(settings.roles)[i];
 
-                embed.addField(roleName, roleValue, true);
+                embed.addField(roleName, roleValue);
             }
 
             return message.channel.send({ embed });
@@ -44,7 +44,7 @@ exports.run = async (client, message, args) => {
 
         message.channel.send(`${roleDB} role value was set to ${roleGuild}`);
         settings.roles[roleDB] = roleGuild;
-        
+
         settings.save();
     });
 };
