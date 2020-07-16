@@ -132,7 +132,7 @@ client.on('message', async message => {
                 });
 
                 if(args.length >= requiredArgs) {
-                    commandFile.run(client, message, args);
+                    commandFile.run(client, message, args, permission);
                 } else {
                     let err = `Usage:\`\`\`${client.prefix}${commandFile.help.name} ${commandFile.help.args.join(' ')}\`\`\``;
                     message.channel.send(err);
