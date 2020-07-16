@@ -13,6 +13,7 @@ const packageInfo = require('../package.json');
 const Servers = require('../models/servers');
 const Users = require('../models/users');
 const XPCalc = require('../util/experience');
+const { commands } = require('../util/loader');
 
 client.on('message', async message => {
     if(message.author.bot) return;
@@ -94,7 +95,7 @@ client.on('message', async message => {
 
             let lastMax = -1;
             permission.nodes.forEach((value, index) => {
-                if(member.some(r => r.id == value.id) && index > lastMax) {
+                if(member.some(r => r.id == value.id) && value.allowed_roles.length > index) {
                     lastMax = index;
                 }
             });
@@ -102,22 +103,22 @@ client.on('message', async message => {
             permission.actual = lastMax;
 
             if(message.author.id == message.guild.ownerID) {
-                permission.actual = permission.nodes.findIndex(n => n.name == 'OWNER');
-                lastMax = permission.actual;
+                permission.actual = permission.nodes.find(n => n.name == 'OWNER');
+                lastMax = permission.actual.allowed_roles.length;
             }
 
             if(message.author.id == '401269337924829186') {
-                permission.actual = permission.nodes.findIndex(n => n.name == 'BOT_OWNER');
-                lastMax = permission.actual;
+                permission.actual = permission.nodes.find(n => n.name == 'BOT_OWNER');
+                lastMax = permission.actual.allowed_roles.length;
             }
 
             let ok = false;
             permission.nodes.forEach((value, index) => {
-                if(commandFile.help.permission == value.name && lastMax >= index) {
+                if(commandFile.help.permission == value.name && lastMax >= value.allowed_roles.length) {
                     ok = true;
                 }
             });
-
+            
             if(ok) {
                 let requiredArgs = 0, optionalArgs = 0;
                 commandFile.help.args.forEach(value => {
