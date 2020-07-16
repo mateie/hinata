@@ -1,34 +1,49 @@
 const Discord = require('discord.js');
+const mongoose = require('mongoose');
 
-exports.run = async (client, message, args) => {
+const Servers = require('../../models/servers');
+
+mongoose.connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
+exports.run = async (client, message, args, perms) => {
     let help = new Discord.MessageEmbed();
 
-    let roles = client.settings.roles;
-    let actual = roles.actual;
-    let allowedRoles = roles.nodes[actual].allowed_roles;
-    let totalCommands = 0;
+    Servers.findOne({
+        serverID: message.guild.id,
+    }, (err, settings) => {
+        if (err) console.error(err);
 
-    if(!args[0] || !client.categories.includes(args[0])) {
-        help.addField(`Usage: ${client.prefix}${this.help.name} ${this.help.args}`, '\u200b')
-        .addField(`Available categories:`, client.categories.join(', '));
+        let roles = perms;
+        let actual = roles.actual;
+        let allowedRoles = actual.allowed_roles;
 
-        return message.channel.send(help);
-    }
+        let totalCommands = 0;
 
-    help.setTitle(`Help: ${args[0]}`);
+        if (!args[0] || !client.categories.includes(args[0])) {
+            help.addField(`Usage: ${client.prefix}${this.help.name} ${this.help.args}`, '\u200b')
+                .addField(`Available categories:`, client.categories.join(', '));
 
-    client.commands.forEach(value => {
-        if(value.help.category == args[0] && allowedRoles.includes(value.help.permission)) {
-            help.addField(`${client.prefix}${value.help.name} ${value.help.args.join(' ')}`, `${value.help.description}`);
-            totalCommands++;
+            return message.channel.send(help);
         }
+
+        help.setTitle(`Help: ${args[0]}`);
+
+        client.commands.forEach(value => {
+            if (value.help.category == args[0] && allowedRoles.includes(value.help.permission)) {
+                help.addField(`${client.prefix}${value.help.name} ${value.help.args.join(' ')}`, `${value.help.description}`);
+                totalCommands++;
+            }
+        });
+
+        if (totalCommands <= 0) {
+            help.addField(`There isn't any available command for you`, '\u200b');
+        }
+
+        message.channel.send(help);
     });
-
-    if(totalCommands <= 0) {
-        help.addField(`There isn't any available command for you`, '\u200b');
-    }
-
-    message.channel.send(help);
 };
 
 exports.help = {

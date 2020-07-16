@@ -28,6 +28,9 @@ exports.run = async (client, message, args) => {
             for(let i = 1; i < Object.keys(settings.channels).length; i++) {
                 let channelName = Object.keys(settings.channels)[i];
                 let channelValue = Object.values(settings.channels)[i];
+                if(channelValue === '' || channelValue.length < 1) {
+                    channelValue = 'Not Set';
+                }
 
                 embed.addField(`${channelName}`, `${channelValue}`);
             }

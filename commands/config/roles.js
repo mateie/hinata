@@ -28,6 +28,9 @@ exports.run = async (client, message, args) => {
             for(let i = 1; i < Object.keys(settings.roles).length; i++) {
                 let roleName = Object.keys(settings.roles)[i];
                 let roleValue = Object.values(settings.roles)[i];
+                if(roleValue === '' || roleValue.length < 1) {
+                    roleValue = 'Not Set';
+                }
 
                 embed.addField(`${roleName}`, `${roleValue}`);
             }
