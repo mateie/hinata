@@ -6,7 +6,7 @@
 
 ### Assets ###
 dashboard/public
-data/shitposts/*
+data/
 
 ### Node ###
 # Logs

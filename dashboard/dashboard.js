@@ -10,6 +10,10 @@ const parser = require('body-parser');
 const Discord = require('discord.js');
 const Servers = require(`${process.cwd()}/models/servers`);
 
+const flash = require('connect-flash');
+const toastr = require('express-toastr');
+const cookieParser = require('cookie-parser');
+
 const app = express();
 const MemoryStore = require('memorystore')(session);
 
@@ -30,9 +34,11 @@ module.exports = async (client) => {
             process.nextTick(() => done(null, profile));
         }));
 
+
+    app.use(cookieParser('secret'));
     app.use(session({
         store: new MemoryStore({ checkPeriod: 86400000 }),
-        secret: process.env.SESSION_SECRET,
+        secret: 'secret',
         resave: false,
         saveUninitialized: false,
     }));
@@ -51,11 +57,15 @@ module.exports = async (client) => {
         extended: true,
     }));
 
+    app.use(flash());
+    app.use(toastr());
+
     const renderTemplate = (res, req, template, data = {}) => {
         const baseData = {
             bot: client,
             path: req.path,
             user: req.isAuthenticated() ? req.user : null,
+            query: req.query,
         };
 
         res.render(path.resolve(`${templateDir}${path.sep}${template}`), Object.assign(baseData, data));
@@ -107,12 +117,12 @@ module.exports = async (client) => {
         renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.get('/dashboard', checkAuth, (req, res) => {
-        renderTemplate(res, req, 'dashboard.ejs', { perms: Discord.Permissions });
+    app.get('/profile', checkAuth, (req, res) => {
+        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.get('/profile', checkAuth, (req, res) => {
-        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions });
+    app.get('/commands', (req, res) => {
+        renderTemplate(res, req, 'commands.ejs', { res, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
     app.get('/dashboard/:guildID', checkAuth, async (req, res) => {
@@ -124,7 +134,7 @@ module.exports = async (client) => {
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: null, perms: Discord.Permissions, capL: capFirstLetter });
+        renderTemplate(res, req, 'settings.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
     app.post('/dashboard/:guildID', checkAuth, async (req, res) => {
@@ -154,7 +164,13 @@ module.exports = async (client) => {
 
         storedSettings.save();
 
-        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: 'Your Settings have been saved', perms: Discord.Permissions, capL: capFirstLetter });
+        renderTemplate(res, req, 'settings.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+    });
+
+    app.use((req, res, next) => {
+        res.status(404);
+        renderTemplate(res, req, '404.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+        next();
     });
 
     app.listen(process.env.PORT, null, null, () => {

@@ -127,7 +127,7 @@ exports.run = (client, message, args) => {
                 }, async (err, resp) => {
                     if (err) console.error(err);
 
-                    let channel = message.guild.channels.cache.find(ch => ch.name === resp.reactionChannels[0]);
+                    let channel = message.guild.channels.cache.find(ch => ch.name === resp.channels.reactions);
                     let msg = channel.messages.cache.get(resp.messageID);
                     let msgEmoji = message.guild.emojis.cache.find(e => e.name === game);
                     await msg.react(msgEmoji);

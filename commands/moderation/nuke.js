@@ -94,8 +94,8 @@ exports.run = async (client, message, args) => {
 exports.help = {
     enabled: true,
     name: 'nuke',
-    aliases: ['[channel/category name]'],
-    args: ['[channel name]'],
+    aliases: [],
+    args: ['[channel category/channel name]'],
     permission: 'OWNER',
     description: 'Nukes the channel',
 };

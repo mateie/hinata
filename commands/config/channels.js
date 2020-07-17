@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
             return message.channel.send({ embed });
         }
 
-        if(typeof (settings.channels[channelDB])) {
+        if(typeof (settings.channels[channelDB]) !== 'undefined') {
             return message.channel.send(`\`\`\`${channelDB} doesn't exist\`\`\``);
         }
 
@@ -46,7 +46,7 @@ exports.run = async (client, message, args) => {
             return message.channel.send(`\`\`\`${channelDB} Channel Name is ${settings.channels[channelDB]}\`\`\``);
         }
 
-        message.channel.send(`\`\`\`${channelDB} channel value was set to ${channelGuild}\`\`\``)
+        message.channel.send(`\`\`\`${channelDB} channel value was set to ${channelGuild}\`\`\``);
         settings.roles[channelDB] = channelGuild;
 
         settings.save();

@@ -1,85 +1,102 @@
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, title: 'Settings'}) %>
+<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Settings`}) %>
 
-<body>
-    <div class="container-scroller">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
         <%- include('../partials/_navbar') %>
-        <div class="container-fluid page-body-wrapper">
-            <%- include('../partials/_sidebar') %>
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="page-header">
-                        <h3 class="page-title">Settings for <%= guild.name %></h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Prefix</h4>
-                                    <form class="form-inline" method="POST">
-                                        <div class="form-group row">
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control mb-2 mr-sm-2" name="prefix"
-                                                    placeholder="Prefix" value="<%= settings.prefix %>">
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary mb-2">Save</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Roles</h4>
-                                    <p class="card-description">Role Names are Case-Sensitive</p>
-                                    <form class="forms-sample" method="POST">
-                                        <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
-                                        <div class="form-group row">
-                                            <label for="role<%= i %>"
-                                                class="col-sm-3 col-form-label"><%= capL(Object.keys(settings.roles)[i]) %>
-                                                Role</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="role<%= i %>"
-                                                    placeholder="Role Name"
-                                                    value="<%= Object.values(settings.roles)[i] %>">
-                                            </div>
-                                        </div>
-                                        <% } %>
-                                        <button type="submit" class="btn btn-primary mb-2">Save</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Channels</h4>
-                                    <p class="card-description">Channel Names are Case-Sensitive</p>
-                                    <form class="forms-sample" method="POST">
-                                        <% for (let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
-                                        <div class="form-group row">
-                                            <label for="channel<%= j %>"
-                                                class="col-sm-3 col-form-label"><%= capL(Object.keys(settings.channels)[j]) %>
-                                                Channel</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" name="channel<%= j %>"
-                                                    placeholder="Channel Name"
-                                                    value="<%= Object.values(settings.channels)[j] %>">
-                                            </div>
-                                        </div>
-                                        <% } %>
-                                        <button type="submit" class="btn btn-primary mb-2">Save</button>
-                                    </form>
-                                </div>
-                            </div>
+        <%- include('../partials/_sidebar') %>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1><%= guild.name %> Settings</h1>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Prefix</h3>
+                                </div>
+
+                                <form role="form" method="POST">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="prefix"
+                                                placeholder="Current prefix is '<%= settings.prefix %>'">
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary success">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Roles</h3>
+                                </div>
+
+                                <form role="form" method="POST">
+                                    <div class="card-body">
+                                        <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
+                                        <div class="form-group">
+                                            <label for="role<%= i %>"><%= capL(Object.keys(settings.roles)[i]) %>
+                                                Role</label>
+                                            <input type="text" class="form-control" name="role<%= i %>"
+                                                placeholder="Current value is '<%= Object.values(settings.roles)[i] %>'">
+                                        </div>
+                                        <% } %>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary success">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Channels</h3>
+                                </div>
+
+                                <form role="form" method="POST">
+                                    <div class="card-body">
+                                        <% for (let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
+                                        <div class="form-group">
+                                            <label for="channel<%= j %>"><%= capL(Object.keys(settings.channels)[j]) %>
+                                                Channel</label>
+                                            <input type="text" class="form-control" name="channel<%= j %>"
+                                                placeholder="Current value is '<%= Object.values(settings.channels)[j] %>'">
+                                        </div>
+                                        <% } %>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary success">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <% if(alertMessage) {
+                            req.toastr.success(alertMessage);
+                        } %>
+            </section>
         </div>
+        <%- include('../partials/_footer') %>
     </div>
-    </div>
+    <%- include('../partials/_scripts') %>
+    <%- req.toastr.render() %>
 </body>
 
 </html>

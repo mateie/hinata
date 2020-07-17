@@ -6,10 +6,10 @@ exports.run = (client, message) => {
 
     Settings.findOne({
         guildID: message.guild.id,
-    }, (err, settings) => {
+    }, (err/* , settings*/) => {
         if(err) console.error(err);
 
-        const prefix = settings.prefix;
+        // const prefix = settings.prefix;
 
         message.delete();
         const embed = new Discord.MessageEmbed()

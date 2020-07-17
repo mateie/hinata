@@ -13,7 +13,7 @@ exports.run = async (client, message, args, perms) => {
 
     Servers.findOne({
         serverID: message.guild.id,
-    }, (err, settings) => {
+    }, (err/* , settings*/) => {
         if (err) console.error(err);
 
         let roles = perms;

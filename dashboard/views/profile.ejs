@@ -1,31 +1,23 @@
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, title: 'Profile' }) %>
+<%- include('../partials/_head', { bot, user, path, title: `${user.username}'s Profile` }) %>
 
-<body>
-    <div class="container-scroller">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
         <%- include('../partials/_navbar') %>
+        <%- include('../partials/_sidebar') %>
 
-        <div class="container-fluid page-body-wrapper">
-            <%- include('../partials/_sidebar') %>
-
-            <div class="main-panel">
-
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-md-4 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title"><%= user.username %>'s Profile</h3>
-                                </div>
-                            </div>
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark"><%= user.username %>'s Profile</h1>
                         </div>
                     </div>
                 </div>
-
-                <%- include('../partials/_footer') %>
             </div>
         </div>
-
+        <%- include('../partials/_footer') %>
     </div>
 
     <%- include('../partials/_scripts') %>

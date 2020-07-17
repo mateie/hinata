@@ -93,38 +93,36 @@ client.on('ready', async () => {
                 let customGuild = guild;
                 client.emit('guildCreate', customGuild);
                 console.info(`Adding new guild to the database... (Guild ID: ${guild.id})`);
-                /* } else {
-                    if (res.channels.reactions.length < 0) {
-                        console.info('This guild doesn\'t have reaction channel set in the database');
+            } else {
+                if (res.channels.reactions.length < 0) {
+                    console.info('This guild doesn\'t have reaction channel set in the database');
+                } else {
+                    const channel = client.channels.cache.find(ch => ch.name === res.channels.reactions);
+                    if (!channel) {
+                        console.info(`This server doesn't have reactions channel`);
                     } else {
-                        const channel = client.channels.cache.find(ch => ch.name === res.channels.reactions);
-                        if (!channel) {
-                            console.info(`This server doesn't have ${res.channels.reaction} channel`);
-                        } else {
-                            if (channel.guild.id === res.serverID) {
-    
-                                try {
-                                    channel.messages.fetch();
-                                } catch (err) {
-                                    console.error('Error fetching messages', err);
-                                    return;
-                                }
-    
-                                const messages = channel.messages;
-    
-                                console.log(messages);
-    
-                                if (!messages) {
-                                    console.info('There is no message in the channel');
-                                } else {
-                                    res.messageID = channel.messages.cache.first().id;
-                                    res.save();
-    
-                                    console.log(`Watching message '${res.messageID}' in ${res.servername} for reactions...`);
-                                }
+                        if (channel.guild.id === res.serverID) {
+
+                            try {
+                                await channel.messages.fetch();
+                            } catch (err) {
+                                console.error('Error fetching messages');
+                                console.error(err);
+                                return;
+                            }
+
+                            const messages = channel.messages;
+                            if (!messages) {
+                                console.info('There is no messages in the channel');
+                            } else {
+                                res.messageID = channel.messages.cache.first().id;
+                                res.save();
+
+                                console.log(`Watching message '${res.messageID}' in ${res.serverName} for reactions...`);
                             }
                         }
-                    }*/
+                    }
+                }
             }
 
         });

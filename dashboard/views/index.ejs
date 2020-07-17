@@ -1,72 +1,80 @@
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, title: 'Home' }) %>
+<%- include('../partials/_head', { bot, user, path, title: `${bot.user.username} Home` }) %>
 
-<body>
-    <div class="container-scroller">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
 
         <%- include('../partials/_navbar') %>
 
-        <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/_sidebar') %>
 
-            <%- include('../partials/_sidebar') %>
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Bot Information</h1>
+                        </div>
+                    </div>
+            </section>
 
-            <div class="main-panel">
-
-                <div class="content-wrapper">
+            <section class="content">
+                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="d-sm-flex aligh-items-baseline report-summary-header">
-                                                <h5 class="font-weight-semibold">Bot information</h5>
-                                            </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <% if(bot.presence.status === 'online') { %>
+                            <div class="info-box bg-gradient-green">
+                                <% } else if(bot.presence.status === 'idle') { %>
+                                <div class="info-box bg-gradient-yellow">
+                                    <% } else if(bot.presence.status === 'dnd') { %>
+                                    <div class="info-box bg-gradient-danger">
+                                        <% } %>
+
+                                        <span class="info-box-icon"><i class="fas fa-terminal"></i></span>
+
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Bot Status</span>
+                                            <% if(bot.presence.status === 'dnd') { %>
+                                            <span class="info-box-number"><%= capA(bot.presence.status) %></span>
+                                            <% } else { %>
+                                            <span class="info-box-number"><%= capL(bot.presence.status) %></span>
+                                            <% } %>
                                         </div>
                                     </div>
-                                    <div class="row report-inner-cards-wrapper">
-                                        <div class="col-md-6 col-xl report-inner-card">
-                                            <div class="inner-card-text">
-                                                <span class="report-title">Bot Status</span>
-                                                <% if(bot.presence.status === 'dnd') { %>
-                                                <h4><%= capA(bot.presence.status) %></h4>
-                                                <% } else { %>
-                                                <h4><%= capL(bot.presence.status) %></h4>
-                                                <% } %>
-                                            </div>
-                                            <div class="inner-card-icon bg-success">
-                                                <i class="icon-feed"></i>
-                                            </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6 col-md-3">
+                                    <div class="info-box bg-gradient-info">
+                                        <span class="info-box-icon"><i class="fas fa-list-ul"></i></span>
+
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Server Count</span>
+                                            <span class="info-box-number"><%= bot.guilds.cache.size %> Servers</span>
                                         </div>
-                                        <div class="col-md-6 col-xl report-inner-card">
-                                            <div class="inner-card-text">
-                                                <span class="report-title">Servers Count</span>
-                                                <h4><%= bot.guilds.cache.size %></h4>
-                                            </div>
-                                            <div class="inner-card-icon bg-success">
-                                                <i class="icon-list"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-xl report-inner-card">
-                                            <div class="inner-card-text">
-                                                <span class="report-title">Users Count</span>
-                                                <h4><%= bot.users.cache.size %></h4>
-                                            </div>
-                                            <div class="inner-card-icon bg-success">
-                                                <i class="icon-user"></i>
-                                            </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix hidden-md-up"></div>
+
+                                <div class="col-12 col-sm-6 col-md-3">
+                                    <div class="info-box bg-gradient-success">
+                                        <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">User Count</span>
+                                            <span
+                                                class="info-box-number"><%= bot.users.cache.filter(u => !u.bot).size %>
+                                                Users</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <%- include('../partials/_footer') %>
-
-            </div>
+            </section>
         </div>
+    </div>
+
+    <%- include('../partials/_footer') %>
     </div>
 
     <%- include('../partials/_scripts') %>

@@ -1,0 +1,87 @@
+<% 
+let category = query.cat;
+let categoryNames = query.cat;
+
+if(categoryNames === 'nsfw') {
+    categoryNames = capA(categoryNames);
+} else if(categoryNames.includes('_')) {
+    categoryNames = categoryNames.split('_');
+    for(let i = 0; i < categoryNames.length; i++) { categoryNames[i] = capL(categoryNames[i]) }
+    categoryNames = categoryNames.join(' ');
+} else {
+    categoryNames = capL(categoryNames);
+}
+
+let categoryExists = false;
+
+for(let i = 0; i < bot.categories.length; i++) {
+    if(bot.categories[i] === category) {
+        categoryExists = true;
+    }
+}
+
+if(!categoryExists) {
+    res.redirect(404);
+}
+
+%>
+
+<html lang="en">
+<%- include('../partials/_head', { bot, user, path, query, title: 'Commands' }) %>
+
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+        <%- include('../partials/_navbar') %>
+        <%- include('../partials/_sidebar') %>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Commands for <%= categoryNames %></h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <% bot.commands.forEach(command => { %>
+                        <% if(command.help.category === category) { %>
+                        <div class="col-md-3">
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title"><%= command.help.name %></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                                class="fas fa-times"></i></button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-minus"></i></button>
+                                    </div>
+                                    <!-- /.card-tools -->
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <p>Aliases: <%= command.help.aliases.join(', ') ? command.help.aliases.join(', ') : 'None' %></p>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <% } %>
+                        <% }) %>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+            </section>
+        </div>
+        <%- include('../partials/_footer') %>
+    </div>
+    <%- include('../partials/_scripts') %>
+</body>
+
+</html>
