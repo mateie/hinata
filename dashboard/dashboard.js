@@ -26,9 +26,9 @@ module.exports = async (client) => {
         callbackURL: `${process.env.DOMAIN}${process.env.PORT === 8080 ? '' : `:${process.env.PORT}`}/callback`,
         scope: ['identify', 'guilds'],
     },
-    (accessToken, refreshToken, profile, done) => {
-        process.nextTick(() => done(null, profile));
-    }));
+        (accessToken, refreshToken, profile, done) => {
+            process.nextTick(() => done(null, profile));
+        }));
 
     app.use(session({
         store: new MemoryStore({ checkPeriod: 86400000 }),
@@ -62,19 +62,19 @@ module.exports = async (client) => {
     };
 
     const checkAuth = (req, res, next) => {
-        if(req.isAuthenticated()) return next();
+        if (req.isAuthenticated()) return next();
 
         req.session.backURL = req.url;
         res.redirect('/login');
     };
 
     app.get('/login', (req, res, next) => {
-        if(req.session.backURL) {
+        if (req.session.backURL) {
             // eslint-disable-next-line no-self-assign
             req.session.backURL = req.session.backURL;
-        } else if(req.headers.referer) {
+        } else if (req.headers.referer) {
             const parsed = url.parse(req.headers.referer);
-            if(parsed.hostname === app.locals.domain) {
+            if (parsed.hostname === app.locals.domain) {
                 req.session.backURL = parsed.path;
             }
         } else {
@@ -83,10 +83,10 @@ module.exports = async (client) => {
 
         next();
     },
-    passport.authenticate('discord'));
+        passport.authenticate('discord'));
 
     app.get('/callback', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
-        if(req.session.backURL) {
+        if (req.session.backURL) {
             const url = req.session.backURL;
             req.session.backURL = null;
             res.redirect(url);
@@ -117,10 +117,10 @@ module.exports = async (client) => {
 
     app.get('/dashboard/:guildID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if(!guild) return res.redirect('/dashboard');
+        if (!guild) return res.redirect('/dashboard');
         const member = guild.members.cache.get(req.user.id);
-        if(!member) return res.redirect('/dashboard');
-        if(!member.permissions.has('MANAGE_GUILD')) return res.redirect('/dashboard');
+        if (!member) return res.redirect('/dashboard');
+        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/dashboard');
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
@@ -129,28 +129,32 @@ module.exports = async (client) => {
 
     app.post('/dashboard/:guildID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if(!guild) return res.redirect('/dashboard');
+        if (!guild) return res.redirect('/dashboard');
         const member = guild.members.cache.get(req.user.id);
-        if(!member) return res.redirect('/dashboard');
-        if(!member.permissions.has('MANAGE_GUILD')) return res.redirect('/dashboard');
+        if (!member) return res.redirect('/dashboard');
+        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/dashboard');
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-        storedSettings.prefix = req.body.prefix;
-
-        console.log(req);
-
-        for(let i = 1; i < Object.keys(storedSettings.roles).length; i++) {
-            storedSettings.roles[Object.keys(storedSettings.roles)[i]] = req.body[`role${i}`];
+        if (typeof (req.body.prefix) !== 'undefined') {
+            storedSettings.prefix = req.body.prefix;
         }
 
-        for(let j = 1; j < Object.keys(storedSettings.channels).length; j++) {
-            storedSettings.channels[Object.keys(storedSettings.channels)[j]] = req.body[`channel${j}`];
+        for (let i = 1; i < Object.keys(storedSettings.roles).length; i++) {
+            if (typeof (req.body[`role${i}`]) !== 'undefined') {
+                storedSettings.roles[Object.keys(storedSettings.roles)[i]] = req.body[`role${i}`];
+            }
+        }
+
+        for (let j = 1; j < Object.keys(storedSettings.channels).length; j++) {
+            if (typeof (req.body[`channel${j}`]) !== 'undefined') {
+                storedSettings.channels[Object.keys(storedSettings.channels)[j]] = req.body[`channel${j}`];
+            }
         }
 
         storedSettings.save();
 
-        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: 'Your Settings have been saved', perms: Discord.Permissions });
+        renderTemplate(res, req, 'settings.ejs', { guild, settings: storedSettings, alert: 'Your Settings have been saved', perms: Discord.Permissions, capL: capFirstLetter });
     });
 
     app.listen(process.env.PORT, null, null, () => {

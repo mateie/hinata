@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
             return message.channel.send(`\`\`\`Current Prefix is ${settings.prefix}\`\`\``);
         }
 
-        message.channel.send(`\`\`\`Prefix set from "${settings.prefix}" to "${args[0]}"\`\`\``)
+        message.channel.send(`\`\`\`Prefix set from "${settings.prefix}" to "${prefix}"\`\`\``);
         settings.prefix = prefix;
         
         settings.save()
