@@ -1,1 +1,2 @@
-worder: node .
+worker: node .
+web: node dashboard/
