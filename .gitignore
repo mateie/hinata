@@ -5,6 +5,7 @@
 *.exe
 
 ### Assets ###
+data/shitposts
 
 ### Node ###
 # Logs
