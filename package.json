@@ -68,6 +68,7 @@
     "unirest": "^0.6.0",
     "urban": "^0.3.2",
     "user-instagram": "^2.0.8",
+    "warframe.js": "^1.3.2",
     "youtube-search": "^1.1.4",
     "ytdl-core": "^2.1.7"
   }
