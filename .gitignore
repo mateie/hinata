@@ -5,8 +5,6 @@
 *.exe
 
 ### Assets ###
-dashboard/public
-data/
 
 ### Node ###
 # Logs

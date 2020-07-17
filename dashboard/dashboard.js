@@ -173,8 +173,8 @@ module.exports = async (client) => {
         next();
     });
 
-    app.listen(8080, null, null, () => {
-        console.log(`Dashboard is running on port 8080`);
+    app.listen(process.env.PORT, null, null, () => {
+        console.log(`Dashboard is running on port ${process.env.PORT}`);
     });
 };
 
