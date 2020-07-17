@@ -27,7 +27,7 @@ module.exports = async (client) => {
     passport.use(new Strategy({
         clientID: process.env.BOT_ID,
         clientSecret: process.env.BOT_SECRET,
-        callbackURL: `${process.env.DOMAIN}${process.env.PORT === 80 ? '' : `:${process.env.PORT}`}/callback`,
+        callbackURL: `${process.env.DOMAIN}/callback`,
         scope: ['identify', 'guilds'],
     },
         (accessToken, refreshToken, profile, done) => {
