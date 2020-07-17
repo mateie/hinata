@@ -173,7 +173,7 @@ module.exports = async (client) => {
         next();
     });
 
-    app.listen(process.env.PORT, null, null, () => {
+    app.listen(process.env.PORT, () => {
         console.log(`Dashboard is running on port ${process.env.PORT}`);
     });
 };
