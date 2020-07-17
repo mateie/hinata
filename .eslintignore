@@ -1,0 +1,3 @@
+# Ignore Dashboard files
+dashboard/*
+!dashboard/dashboard.js
