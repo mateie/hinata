@@ -65,7 +65,7 @@ if(!categoryExists) {
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <p><%= command.help.description %></p>
+                                    <h3><%= command.help.description %></h3>
                                     <p>Aliases: <%= command.help.aliases.join(', ') ? command.help.aliases.join(', ') : 'None' %></p>
                                     <p>Arguments: <%= command.help.args.join(', ') ? command.help.aliases.join(', ') : 'None' %></p>
                                 </div>
