@@ -1,7 +1,10 @@
 const Discord = require('discord.js');
 const GitHub = require('octonode');
 
-const Client = GitHub.client(process.env.GITHUB_API_TOKEN);
+const Client = GitHub.client({
+    username: process.env.GITHUB_USERNAME,
+    password: process.env.GITHUB_PASSWORD,
+});
 
 exports.run = async (client, message) => {
     let repo = Client.repo('mateie/hinata');
