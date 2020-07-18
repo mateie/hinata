@@ -8,4 +8,5 @@ exports.help = {
     aliases: [],
     args: [],
     permission: 'USER',
+    description: 'Pings Discord for API response',
 };

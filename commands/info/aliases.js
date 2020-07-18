@@ -25,7 +25,7 @@ exports.help = {
     enabled: true,
     name: 'aliases',
     aliases: ['more', 'moar'],
-    args: ['[command]'],
+    args: ['<command>'],
     permission: 'USER',
-    description: 'Shows all aliases of [command]',
+    description: 'Shows all aliases',
 };
