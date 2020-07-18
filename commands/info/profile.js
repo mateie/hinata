@@ -28,11 +28,11 @@ exports.run = async (client, message) => {
         ctx.strokeStyle = '#74037b';
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-        ctx.font = this.applyText(canvas, settings.userName);
+        ctx.font = this.applyText(canvas, settings.userName, 'name');
         ctx.fillStyle = '#ffffff';
         ctx.fillText(`${settings.userName}`, canvas.width / 2, canvas.height / 4);
 
-        ctx.font = '28px sans-serif';
+        ctx.font = this.applyText(canvas, settings.xp);
         ctx.fillStyle = '#ffffff';
         ctx.fillText(`Level: ${settings.level}`, canvas.width / 2.8, canvas.height / 2);
         ctx.fillText(`XP: ${Math.round(settings.xp)}`, canvas.width / 1.3, canvas.height / 2);
@@ -63,9 +63,12 @@ exports.help = {
     description: 'Shows User\'s Profile',
 };
 
-exports.applyText = (canvas, text) => {
+exports.applyText = (canvas, text, type) => {
     const ctx = canvas.getContext('2d');
-    let fontSize = 50;
+    let fontSize = 28;
+    if(type === 'name') {
+        fontSize = 50;
+    }
 
     do {
         ctx.font = `${fontSize -= 10}px sans-serif`;
