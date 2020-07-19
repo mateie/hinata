@@ -119,9 +119,77 @@ module.exports = async (client) => {
     });
 
     app.get('/profile', checkAuth, async (req, res) => {
+
         let user = req.user;
+
+        let premiumType;
+        switch (user.premium_type) {
+            case 0:
+                premiumType = 'None';
+                break;
+            case 1:
+                premiumType = 'Nitro Classic';
+                break;
+            case 2:
+                premiumType = 'Nitro';
+                break;
+            default:
+                premiumType = 'None';
+                break;
+        }
+
+        let userType;
+
+        switch (user.public_flags) {
+            case calculateBitwise(0, 0):
+                userType = 'None';
+                break;
+            case calculateBitwise(1, 0):
+                userType = 'Discord Employee';
+                break;
+            case calculateBitwise(1, 1):
+                userType = 'Discord Partner';
+                break;
+            case calculateBitwise(1, 2):
+                userType = 'HypeSquad Events';
+                break;
+            case calculateBitwise(1, 3):
+                userType = 'Bug Hunter Level 1';
+                break;
+            case calculateBitwise(1, 6):
+                userType = 'House Bravery';
+                break;
+            case calculateBitwise(1, 7):
+                userType = 'House Brilliance';
+                break;
+            case calculateBitwise(1, 8):
+                userType = 'House Balance';
+                break;
+            case calculateBitwise(1, 9):
+                userType = 'Early Supporter';
+                break;
+            case calculateBitwise(1, 10):
+                userType = 'Team User';
+                break;
+            case calculateBitwise(1, 12):
+                userType = 'System';
+                break;
+            case calculateBitwise(1, 14):
+                userType = 'Bug Hunter Level 2';
+                break;
+            case calculateBitwise(1, 16):
+                userType = 'Verified Bot';
+                break;
+            case calculateBitwise(1, 17):
+                userType = 'Verified Bot Devleoper';
+                break;
+            default:
+                userType = 'None';
+                break;
+        }
+
         let bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`);
-        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, bitwise: calculateBitwise, color: bgColor });
+        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, premium: premiumType, title: userType, color: bgColor });
     });
 
     app.get('/commands', (req, res) => {
