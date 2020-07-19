@@ -5,8 +5,6 @@
 
 let premiumType;
 
-console.log(user.premium_type);
-
 switch(user.premium_type) {
     case 0:
         premiumType = 'None';
@@ -16,6 +14,9 @@ switch(user.premium_type) {
         break;
     case 2:
         premiumType = 'Nitro';
+        break;
+    default: 
+        premiumType = 'None';
         break;
 }
 
