@@ -28,6 +28,7 @@ client.on('guildCreate', guild => {
             spam: 'spam',
             notifications: 'welcome',
             reactions: 'roles',
+            dashboard: 'updates',
         },
     });
 

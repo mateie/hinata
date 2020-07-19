@@ -217,20 +217,53 @@ module.exports = async (client) => {
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-        if (typeof (req.body.prefix) !== 'undefined') {
-            storedSettings.prefix = req.body.prefix;
+        let inputKeys = Object.keys(req.body);
+        let inputValues = Object.values(req.body);
+
+        let embed = new Discord.MessageEmbed()
+        .setTitle('Server Settings')
+        .setDescription('Settings was changed from dashboard');
+
+        for (let x = 0; x < inputKeys.length; x++) {
+            let inputKey = inputKeys[x];
+            let inputValue = inputValues[x];
+
+            let inputType = inputKey.split('-')[0];
+
+
+            if (inputValues.length > 1) {
+                inputType += 's';
+            }
+
+
+            if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValues.length > 1) {
+                storedSettings[inputType][Object.keys(storedSettings[inputType])[x + 1]] = inputValue;
+            } else if(typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValue.length === 1) {
+                storedSettings[inputType] = inputValue;
+            }
+
+            let inputs = inputKey;
+            let names = [];
+
+            inputs = inputs.split('-');
+            for(let z = 0; z < inputs.length; z++) {
+                let input = inputs[z];
+                input = capFirstLetter(input);
+                names[z] = input;
+            }
+
+            names = names.join(' ');
+
+            embed.addField('\u200b', `${names} was updated to ${inputValue}`);
+
         }
 
-        for (let i = 1; i < Object.keys(storedSettings.roles).length; i++) {
-            if (typeof (req.body[`role${i}`]) !== 'undefined') {
-                storedSettings.roles[Object.keys(storedSettings.roles)[i]] = req.body[`role${i}`];
-            }
-        }
+        let channel = guild.channels.cache.find(ch => ch.name === storedSettings.channels.dashboard);
 
-        for (let j = 1; j < Object.keys(storedSettings.channels).length; j++) {
-            if (typeof (req.body[`channel${j}`]) !== 'undefined') {
-                storedSettings.channels[Object.keys(storedSettings.channels)[j]] = req.body[`channel${j}`];
-            }
+        if(!channel) {
+            console.warn('Dashboard channel not found');
+        } else {
+            channel.send({ embed });
         }
 
         storedSettings.save();

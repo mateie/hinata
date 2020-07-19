@@ -51,9 +51,9 @@
                                         <h5 class="card-description">Role names are case-sensitive</h5>
                                         <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
                                         <div class="form-group">
-                                            <label for="role<%= i %>"><%= capL(Object.keys(settings.roles)[i]) %>
+                                            <label for="role-<%= Object.keys(settings.roles)[i] %>"><%= capL(Object.keys(settings.roles)[i]) %>
                                                 Role</label>
-                                            <input type="text" class="form-control" name="role<%= i %>"
+                                            <input type="text" class="form-control" name="role-<%= Object.keys(settings.roles)[i] %>"
                                                 placeholder="Current value is '<%= Object.values(settings.roles)[i] %>'">
                                         </div>
                                         <% } %>
@@ -76,9 +76,9 @@
                                         <h5 class="card-description">Channel names are case-sensitive</h5>
                                         <% for (let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
                                         <div class="form-group">
-                                            <label for="channel<%= j %>"><%= capL(Object.keys(settings.channels)[j]) %>
+                                            <label for="channel-<%= Object.keys(settings.channels)[j] %>"><%= capL(Object.keys(settings.channels)[j]) %>
                                                 Channel</label>
-                                            <input type="text" class="form-control" name="channel<%= j %>"
+                                            <input type="text" class="form-control" name="channel-<%= Object.keys(settings.channels)[j] %>"
                                                 placeholder="Current value is '<%= Object.values(settings.channels)[j] %>'">
                                         </div>
                                         <% } %>

@@ -18,6 +18,7 @@ const serversSchema = mongoose.Schema({
         spam: String,
         notifications: String,
         reactions: String,
+        dashboard: String,
     },
 });
 
