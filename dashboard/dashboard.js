@@ -9,6 +9,7 @@ const ejs = require('ejs');
 const parser = require('body-parser');
 const Discord = require('discord.js');
 const Servers = require(`${process.cwd()}/models/servers`);
+const Canvas = require('canvas');
 
 const flash = require('connect-flash');
 const toastr = require('express-toastr');
@@ -48,8 +49,8 @@ module.exports = async (client) => {
 
     app.locals.domain = process.env.DOMAIN.split('//')[1];
 
-    app.engine('html', ejs.renderFile);
-    app.set('view engine', 'html');
+    app.engine('ejs', ejs.renderFile);
+    app.set('view engine', 'ejs');
     app.use(express.static(path.join(__dirname + '/public')));
 
     app.use(parser.json());
@@ -117,8 +118,10 @@ module.exports = async (client) => {
         renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.get('/profile', checkAuth, (req, res) => {
-        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+    app.get('/profile', checkAuth, async (req, res) => {
+        let user = req.user;
+        let bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`);
+        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, bitwise: calculateBitwise, color: bgColor });
     });
 
     app.get('/commands', (req, res) => {
@@ -184,4 +187,59 @@ const capFirstLetter = string => {
 
 const capAllLetters = string => {
     return string.toUpperCase();
+};
+
+const calculateBitwise = (from, to) => {
+    return from << to;
+};
+
+const colorHex = async (imgURL) => {
+    let blockSize = 5,
+        defaultRGB = { r: 0, g: 0, b: 0 },
+        canvas = Canvas.createCanvas(128, 128),
+        context = canvas.getContext('2d'),
+        data, width, height,
+        i = -4,
+        length,
+        rgb = { r: 0, g: 0, b: 0 },
+        count = 0;
+
+    if (!context) {
+        return "#" + componentToHex(defaultRGB.r) + componentToHex(defaultRGB.g) + componentToHex(defaultRGB.b);
+    }
+
+    let image = await Canvas.loadImage(imgURL);
+
+    height = canvas.height = image.naturalHeight || image.offsetHeight || image.height;
+    width = canvas.width = image.naturalWidth || image.offsetWidth || image.width;
+
+    context.drawImage(image, 0, 0);
+
+    try {
+        data = context.getImageData(0, 0, width, height);
+    } catch (e) {
+        console.error(e);
+        return "#" + componentToHex(defaultRGB.r) + componentToHex(defaultRGB.g) + componentToHex(defaultRGB.b);
+    }
+    length = data.data.length;
+
+    while ((i += blockSize * 4) < length) {
+        ++count;
+        rgb.r += data.data[i];
+        rgb.g += data.data[i + 1];
+        rgb.b += data.data[i + 2];
+    }
+
+    rgb.r = ~~(rgb.r / count);
+    rgb.g = ~~(rgb.g / count);
+    rgb.b = ~~(rgb.b / count);
+
+    let hex = "#" + componentToHex(rgb.r) + componentToHex(rgb.g) + componentToHex(rgb.b);
+
+    return hex;
+};
+
+const componentToHex = (c) => {
+    let hex = c.toString(16);
+    return hex.length == 1 ? '0' + hex : hex;
 };
