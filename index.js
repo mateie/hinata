@@ -9,7 +9,6 @@ const client = new Discord.Client({
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
-client.prefix = '!';
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.queue = new Map();
