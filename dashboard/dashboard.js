@@ -122,8 +122,6 @@ module.exports = async (client) => {
 
         let user = req.user;
 
-        console.log(client);
-
         let premiumType;
         switch (user.premium_type) {
             case 0:
