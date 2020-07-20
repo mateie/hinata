@@ -27,6 +27,7 @@
                                     Roles:
                                 <ul>
                                     <% channel.permissionOverwrites.filter(p => p.id !== everyone.id).forEach(perm => { %>
+                                    <%= console.log(perm) %>
                                     <% let role = guild.roles.cache.get(perm.id) %>
                                     <li><%= role.name %></li>
                                     <% }) %>
