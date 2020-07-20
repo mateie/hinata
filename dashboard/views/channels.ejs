@@ -18,11 +18,11 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <!-- Conversations are loaded here -->
-                                <div class="direct-chat-messages">
+                                <div class="direct-chat-messages pre-scrollable">
                                     <!-- Message. Default to the left -->
                                     <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp) %>
                                     <% messages.forEach(message => { %>
-                                    <% if(!message.author.bot || message.author.name === bot.user.username) { %>
+                                    <% if(!message.author.bot || message.author.username === bot.user.username) { %>
                                     <% if (message.author.id === user.id) { %>
                                     <div class="direct-chat-msg right">
                                         <div class="direct-chat-infos clearfix">
