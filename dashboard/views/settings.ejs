@@ -131,11 +131,11 @@
                                 <div class="card-body">
                                     <ul>
                                         <% guild.channels.cache.filter(ch => ch.parentID === null).filter(ch => ch.type !== 'category').forEach(cha => { %>
-                                        <% if(channel.type === 'voice') { %>
-                                        <li><%= channel.name %> (<%= channel.type %>)</li>
+                                        <% if(cha.type === 'voice') { %>
+                                        <li><%= cha.name %> (<%= cha.type %>)</li>
                                         <% } else { %>
-                                        <li><a href="/channels/<%= guild.id %>/<%= channel.id %>"><%= channel.name %>
-                                                (<%= channel.type %>)</a></li>
+                                        <li><a href="/channels/<%= guild.id %>/<%= cha.id %>"><%= cha.name %>
+                                                (<%= cha.type %>)</a></li>
                                         <% } %>
                                         <% }) %>
                                         <% guild.channels.cache.filter(ch => ch.type === 'category').forEach(category => { %>
