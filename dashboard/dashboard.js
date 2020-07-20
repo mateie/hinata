@@ -351,7 +351,7 @@ module.exports = async (client) => {
         renderTemplate(res, req, 'settings.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.get('/channel/:guildID/:channelID', checkAuth, async (req, res) => {
+    app.get('/channels/:guildID/:channelID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
         if (!guild) return res.redirect('/');
         const channel = guild.channels.cache.get(req.params.channelID);
@@ -372,7 +372,7 @@ module.exports = async (client) => {
         renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, time: getTime });
     });
 
-    app.post('/channel/:guildID/:channelID', checkAuth, async (req, res) => {
+    app.post('/channels/:guildID/:channelID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
         if (!guild) return res.redirect('/');
         const channel = guild.channels.cache.get(req.params.channelID);
