@@ -22,54 +22,55 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-3">
-                            <% if(bot.presence.status === 'online') { %>
-                            <div class="info-box bg-gradient-green">
-                                <% } else if(bot.presence.status === 'idle') { %>
-                                <div class="info-box bg-gradient-yellow">
-                                    <% } else if(bot.presence.status === 'dnd') { %>
-                                    <div class="info-box bg-gradient-danger">
-                                        <% } %>
+                            <div class="info-box bg-<%= bg %>">
 
-                                        <span class="info-box-icon"><i class="fas fa-terminal"></i></span>
+                                <span class="info-box-icon"><i class="fas fa-terminal"></i></span>
 
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Bot Status</span>
-                                            <% if(bot.presence.status === 'dnd') { %>
-                                            <span class="info-box-number"><%= capA(bot.presence.status) %></span>
-                                            <% } else { %>
-                                            <span class="info-box-number"><%= capL(bot.presence.status) %></span>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-sm-6 col-md-3">
-                                    <div class="info-box bg-gradient-info">
-                                        <span class="info-box-icon"><i class="fas fa-list-ul"></i></span>
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Server Count</span>
-                                            <span class="info-box-number"><%= bot.guilds.cache.size %> Servers</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix hidden-md-up"></div>
-
-                                <div class="col-12 col-sm-6 col-md-3">
-                                    <div class="info-box bg-gradient-success">
-                                        <span class="info-box-icon"><i class="fas fa-users"></i></span>
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">User Count</span>
-                                            <span
-                                                class="info-box-number"><%= bot.users.cache.filter(u => !u.bot).size %>
-                                                Users</span>
-                                        </div>
-                                    </div>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Status</span>
+                                    <span class="info-box-number"><%= status %></span>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box bg-primary">
+
+                                <span class="info-box-icon"><i class="fas fa-user"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Activity</span>
+                                    <span class="info-box-number"><%= activity.type %> <%= activity.name %></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box bg-gradient-info">
+                                <span class="info-box-icon"><i class="fas fa-list-ul"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Server Count</span>
+                                    <span class="info-box-number"><%= bot.guilds.cache.size %> Servers</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix hidden-md-up"></div>
+
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box bg-gradient-success">
+                                <span class="info-box-icon"><i class="fas fa-users"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">User Count</span>
+                                    <span class="info-box-number"><%= bot.users.cache.filter(u => !u.bot).size %>
+                                        Users</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
     </div>

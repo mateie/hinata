@@ -23,15 +23,35 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="row">
-                                        <div class="col-sm-3 border-right">
+                                        <div class="col-sm-4 border-right">
                                             <div class="description-block">
                                                 <h5 class="description-header">ID</h5>
                                                 <span class="description-text"><%= user.id %></span>
                                             </div>
                                             <!-- /.description-block -->
                                         </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Activity</h5>
+                                                <span class="description-text"><%= activity.type %>
+                                                    <%= activity.name %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Status</h5>
+                                                <span class="description-text"><%= status %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Two-Factor Autehntication</h5>
+                                                <span class="description-text"><span
+                                                        class="description-text"><%= user.mfa_enabled ? 'Enabled' : 'Disabled' %></span></span>
+                                            </div>
+                                        </div>
                                         <!-- /.col -->
-                                        <div class="col-sm-3 border-right">
+                                        <div class="col-sm-4 border-right">
                                             <div class="description-block">
                                                 <h5 class="description-header">Discord Title</h5>
                                                 <span class="description-text"><%= title %></span>
@@ -39,72 +59,16 @@
                                             <!-- /.description-block -->
                                         </div>
                                         <!-- /.col -->
-                                        <div class="col-sm-3 border-right">
+                                        <div class="col-sm-4">
                                             <div class="description-block">
                                                 <h5 class="description-header">Subscription</h5>
                                                 <span class="description-text"><%= premium %></span>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <div class="description-block">
-                                                <h5 class="description-header">Two-Factor Autehntication</h5>
-                                                <span class="description-text"><span
-                                                        class="description-text"><%= user.mfa_enabled ? 'Enabled' : 'Disabled' %></span></span>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <% user.guilds.forEach(guild => { %>
-                        <div class="col-md-3">
-                            <div class="card card-primary collapsed-card">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        <% if(guild.icon != undefined || guild.icon != null) { %>
-
-                                        <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>"
-                                            class="img-circle img-size-32 elevation-4" />
-                                        <% } else { %>
-                                        <img src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
-                                            class="img-circle img-size-32 elevation-4" alt="Default Icon" />
-                                        <% } %>
-                                        <%= guild.name %></h3>
-
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-plus" aria-hidden="false"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="card-body">
-                                    <p>ID: <%= guild.id %></p>
-                                    <% if(guild.features.length > 0) { 
-                                        let features = [];
-                                        for(let j = 0; j < guild.features.length; j++) {
-                                            let feature = guild.features[j];
-                                            feature = feature.toLowerCase();
-                                            feature = feature.split('_');
-                                            for(let i = 0; i < feature.length; i++) {
-                                                feature[i] = capL(feature[i]);
-                                            }
-                                            feature = feature.join(', ');
-                                            features[j] = feature;
-                                        }
-                                    %>
-                                    <p>
-                                        Features:
-                                        <% features.forEach(f => { %>
-                                            <%= f %>
-                                        <% }) %>
-                                    </p>
-                                    <% } %>
-                                    <p>Owner: <%= guild.owner ? 'Yes' : 'No' %></p>
-                                </div>
-                            </div>
-                        </div>
-                        <% }) %>
                     </div>
                 </div>
             </div>

@@ -55,11 +55,8 @@ client.on('ready', async () => {
                         client.user.setPresence(presence[index]);
                     } else {
                         if (ownerActivityObj[0].type === 'LISTENING') {
-                            if (ownerActivityObj[0].state.includes(';')) {
-                                ownerActivityObj[0].state = ownerActivityObj[0].state.replace(';', ',');
-                            }
                             ownerActivity = {
-                                name: `${ownerActivityObj[0].details} by ${ownerActivityObj[0].state}`,
+                                name: `${ownerActivityObj[0].details}`,
                                 type: 'LISTENING',
                             };
                         } else if (ownerActivityObj[0].type === 'PLAYING') {
@@ -79,7 +76,7 @@ client.on('ready', async () => {
                 }
             });
         });
-    }, 10000);
+    }, 2000);
 
     let ownerActivityObj, ownerActivity, ownerStatus;
 

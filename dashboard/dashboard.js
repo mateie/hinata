@@ -115,12 +115,101 @@ module.exports = async (client) => {
     });
 
     app.get('/', (req, res) => {
-        renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+        let botStatus = client.presence.status;
+        let botActivity = client.presence.activities[0];
+
+        let bgColor = 'gradient-';
+
+        switch (botStatus) {
+            case 'dnd':
+                bgColor += 'danger';
+                botStatus = capAllLetters(botStatus);
+                break;
+            case 'idle':
+                bgColor += 'warning';
+                botStatus = capFirstLetter(botStatus);
+                break;
+            case 'online':
+                bgColor += 'success';
+                botStatus = capFirstLetter(botStatus);
+                break;
+            default:
+                bgColor += 'black';
+                botStatus = capFirstLetter(botStatus);
+                break;
+        }
+
+        if (!botActivity) {
+            return res.redirect('/');
+        }
+
+        let activity = {
+            name: botActivity.name,
+            type: botActivity.type,
+        };
+
+        activity.type = activity.type.toLowerCase();
+        activity.type = capFirstLetter(activity.type);
+
+        switch (activity.type) {
+            case 'Listening':
+                activity.type += ' to';
+                break;
+        }
+
+        renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, status: botStatus, activity: activity, bg: bgColor, capL: capFirstLetter, capA: capAllLetters });
     });
 
     app.get('/profile', checkAuth, async (req, res) => {
 
         let user = req.user;
+
+        let guild = client.guilds.cache.random();
+
+        let member = guild.members.cache.get(user.id);
+
+        let memberStatus = member.presence.status;
+
+        switch (memberStatus) {
+            case 'dnd':
+                memberStatus = capAllLetters(memberStatus);
+                break;
+            default:
+                memberStatus = capFirstLetter(memberStatus);
+                break;
+        }
+
+        let memberActivity = member.presence.activities[0];
+
+        let activity;
+
+        if (!memberActivity || memberActivity.length < 1) {
+            activity = {
+                name: 'Nothing',
+                type: 'Doing',
+            };
+        } else {
+            activity = {
+                name: memberActivity.name,
+                type: memberActivity.type,
+            };
+        }
+
+        activity.type = activity.type.toLowerCase();
+        activity.type = capFirstLetter(activity.type);
+
+        switch (activity.type) {
+            case 'Listening':
+                activity.type += ' to';
+                activity.name = memberActivity.details;
+                break;
+        }
+
+        if (typeof (memberActivity) !== 'undefined') {
+            if (typeof (memberActivity.details) !== 'undefined' && memberActivity.details !== null) {
+                activity.name += ` On ${memberActivity.name}`;
+            }
+        }
 
         let premiumType;
         switch (user.premium_type) {
@@ -189,7 +278,7 @@ module.exports = async (client) => {
         }
 
         let bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`);
-        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, premium: premiumType, title: userType, color: bgColor });
+        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, status: memberStatus, activity: activity, premium: premiumType, title: userType, color: bgColor });
     });
 
     app.get('/commands', (req, res) => {
@@ -210,10 +299,10 @@ module.exports = async (client) => {
 
     app.post('/dashboard/:guildID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) return res.redirect('/dashboard');
+        if (!guild) return res.redirect('/');
         const member = guild.members.cache.get(req.user.id);
-        if (!member) return res.redirect('/dashboard');
-        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/dashboard');
+        if (!member) return res.redirect('/');
+        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
@@ -221,8 +310,8 @@ module.exports = async (client) => {
         let inputValues = Object.values(req.body);
 
         let embed = new Discord.MessageEmbed()
-        .setTitle('Server Settings')
-        .setDescription('Settings was changed from dashboard');
+            .setTitle('Server Settings')
+            .setDescription('Settings was changed from dashboard');
 
         for (let x = 0; x < inputKeys.length; x++) {
             let inputKey = inputKeys[x];
@@ -238,7 +327,7 @@ module.exports = async (client) => {
 
             if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValues.length > 1) {
                 storedSettings[inputType][Object.keys(storedSettings[inputType])[x + 1]] = inputValue;
-            } else if(typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValue.length === 1) {
+            } else if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValue.length === 1) {
                 storedSettings[inputType] = inputValue;
             }
 
@@ -246,7 +335,7 @@ module.exports = async (client) => {
             let names = [];
 
             inputs = inputs.split('-');
-            for(let z = 0; z < inputs.length; z++) {
+            for (let z = 0; z < inputs.length; z++) {
                 let input = inputs[z];
                 input = capFirstLetter(input);
                 names[z] = input;
@@ -258,13 +347,7 @@ module.exports = async (client) => {
 
         }
 
-        let channel = guild.channels.cache.find(ch => ch.name === storedSettings.channels.dashboard);
-
-        if(!channel) {
-            console.warn('Dashboard channel not found');
-        } else {
-            channel.send({ embed });
-        }
+        member.send({ embed });
 
         storedSettings.save();
 

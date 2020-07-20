@@ -16,5 +16,6 @@ exports.help = {
     name: 'copypasta',
     aliases: ['cp'],
     args: [],
+    permission: 'USER',
     description: 'Sends a random copypasta',
 };

@@ -71,6 +71,9 @@ if(!categoryExists) {
                                     <p>Arguments:
                                         <%= command.help.args.join(', ') ? command.help.args.join(', ') : 'None' %>
                                     </p>
+                                    <p>Permission:
+                                        <%= command.help.permission %>
+                                    </p>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
