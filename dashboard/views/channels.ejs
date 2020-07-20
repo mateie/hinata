@@ -24,8 +24,8 @@
                                 <p>
                                     Allowed Roles:
                                 <ul>
-                                    <% channel.permissionOverwrites.filter(p => p.name !== '@everyone').forEach(perm => { %>
-                                    <% let role = guild.roles.cache.get(perm.id) %>
+                                    <% channel.permissionOverwrites.forEach(perm => { %>
+                                    <% let role = guild.roles.cache.get(perm.id).filter(p => p.name !== '@everyone') %>
                                     <li><%= role.name %></li>
                                     <% }) %>
                                 </ul>
