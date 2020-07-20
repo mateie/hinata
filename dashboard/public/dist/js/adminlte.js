@@ -1893,4 +1893,7 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
+
+var div = $(".direct-chat-messages");
+div.scrollTop(div.prop('scrollHeight'));
 //# sourceMappingURL=adminlte.js.map
