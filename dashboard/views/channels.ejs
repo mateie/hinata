@@ -9,7 +9,20 @@
         <div class="content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6 col-sm-1 col-lg-12">
+                    <div class="col-md-5">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><%= capL(channel.name) %> Channel</h3>
+                            </div>
+
+                            <div class="card-body">
+                                <p>Original Name: <%= channel.name %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
                         <!-- DIRECT CHAT PRIMARY -->
                         <div class="card card-primary carduotline direct-chat direct-chat-primary">
                             <div class="card-header">
@@ -18,11 +31,10 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <!-- Conversations are loaded here -->
-                                <div class="direct-chat-messages full-height">
+                                <div class="direct-chat-messages">
                                     <!-- Message. Default to the left -->
-                                    <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp) %>
-                                    <% messages.forEach(message => { %>
-                                    <% if(!message.author.bot || message.author.username === bot.user.username) { %>
+                                    <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
+                                    <% if(!message.author.bot || message.author.id === bot.user.id) { %>
                                     <% if (message.author.id === user.id) { %>
                                     <div class="direct-chat-msg right">
                                         <div class="direct-chat-infos clearfix">
