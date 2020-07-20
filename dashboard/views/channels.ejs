@@ -22,7 +22,7 @@
                                 <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
                                 <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
                                 <p>Category: <%= parent ? parent.name : 'None' %></p>
-                                <% if(channel.permissionOverwrites !== null || typeof (channel.permissionOverwrites) !== 'undefined' || !channel.permissionOverwrites.isEmpty()) { %>
+                                <% if(channel.permissionOverwrites !== null || typeof (channel.permissionOverwrites) !== 'undefined' || channel.permissionOverwrites.size < 1) { %>
                                 <p>
                                     Roles:
                                 <ul>
