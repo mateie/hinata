@@ -16,11 +16,12 @@
                             </div>
 
                             <div class="card-body">
+                                <% let parent = guild.channels.cache.get(channel.parentID) %>
                                 <% console.log(channel) %>
                                 <p>Name: <%= channel.name %></p>
                                 <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
                                 <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
-                                <p>Category: <%= guild.channels.cache.get(channel.parentID).name ? guild.channels.cache.get(channel.parentID).name : 'None' %></p>
+                                <p>Category: <%= parent ? parent.name ? 'None' %></p>
                             </div>
                         </div>
                     </div>
