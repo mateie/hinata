@@ -393,7 +393,7 @@ module.exports = async (client) => {
         let messageSent = req.body.message;
 
         if (messageSent) {
-            channel.send(`\`\`\`From: Dashboard\nSender: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`);
+            channel.send(`\`\`\`From: Dashboard\nSent by: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`);
         }
 
         renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, time: getTime });
