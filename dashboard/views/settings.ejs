@@ -130,7 +130,7 @@
 
                                 <div class="card-body">
                                     <ul>
-                                        <% guild.channels.cache.filter(ch => ch.parentID === null).filter(ch => ch.type !== 'category').forEach(cha => { %>
+                                        <% guild.channels.cache.filter(ch => ch.parentID === null).filter(ch => ch.type !== 'category').sort((a, b) => a.rawPosition - b.rawPosition).forEach(cha => { %>
                                         <% if(cha.type === 'voice') { %>
                                         <li><%= cha.name %> (<%= cha.type %>)</li>
                                         <% } else { %>
@@ -138,10 +138,10 @@
                                                 (<%= cha.type %>)</a></li>
                                         <% } %>
                                         <% }) %>
-                                        <% guild.channels.cache.filter(ch => ch.type === 'category').forEach(category => { %>
+                                        <% guild.channels.cache.filter(ch => ch.type === 'category').sort((a, b) => a.rawPosition - b.rawPosition).forEach(category => { %>
                                         <li><%= category.name %></li>
                                         <ol>
-                                            <% guild.channels.cache.filter(ch => ch.type !== 'category').forEach(channel => { %>
+                                            <% guild.channels.cache.filter(ch => ch.type !== 'category').sort((a, b) => a.rawPosition - b.rawPosition).forEach(channel => { %>
                                             <% if (channel.parentID === category.id) { %>
                                             <% if(channel.type === 'voice') { %>
                                             <li><%= channel.name %> (<%= channel.type %>)</li>
