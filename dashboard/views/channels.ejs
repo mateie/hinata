@@ -18,7 +18,7 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <!-- Conversations are loaded here -->
-                                <div class="direct-chat-messages pre-scrollable">
+                                <div class="direct-chat-messages">
                                     <!-- Message. Default to the left -->
                                     <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp) %>
                                     <% messages.forEach(message => { %>
@@ -92,6 +92,10 @@
         <%- include('../partials/_footer') %>
     </div>
     <%- include('../partials/_scripts') %>
+
+    <script>
+        $('.direct-chat-messages').scrollTop();
+    </script>
 </body>
 
 </html>
