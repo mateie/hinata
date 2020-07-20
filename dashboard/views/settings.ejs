@@ -129,9 +129,9 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <ol>
+                                    <ul>
                                         <% guild.channels.cache.filter(ch => ch.parentID === null).filter(ch => ch.type !== 'category').forEach(cha => { %>
-                                            <li><%= cha.name %></li>
+                                        <li><%= cha.name %></li>
                                         <% }) %>
                                         <% guild.channels.cache.filter(ch => ch.type === 'category').forEach(category => { %>
                                         <li><%= category.name %></li>
@@ -148,7 +148,7 @@
                                             <% }) %>
                                         </ol>
                                         <% }) %>
-                                    </ol>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
