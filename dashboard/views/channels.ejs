@@ -22,8 +22,7 @@
                                 <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
                                 <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
                                 <p>Category: <%= parent ? parent.name : 'None' %></p>
-                                <% if(channel.permissionOverwrites.size < 1) { %>
-                                    <%= channel.permissionOverwrites.size %>
+                                <% if(channel.permissionOverwrites.size > 0) { %>
                                 <p>
                                     Roles:
                                 <ul>
