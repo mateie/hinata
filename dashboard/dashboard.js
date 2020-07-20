@@ -163,11 +163,8 @@ module.exports = async (client) => {
     app.get('/profile', checkAuth, async (req, res) => {
 
         let user = req.user;
-
         let guild = client.guilds.cache.random();
-
         let member = guild.members.cache.get(user.id);
-
         let memberStatus = member.presence.status;
 
         switch (memberStatus) {
@@ -287,10 +284,10 @@ module.exports = async (client) => {
 
     app.get('/dashboard/:guildID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) return res.redirect('/dashboard');
+        if (!guild) return res.redirect('/');
         const member = guild.members.cache.get(req.user.id);
-        if (!member) return res.redirect('/dashboard');
-        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/dashboard');
+        if (!member) return res.redirect('/');
+        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
@@ -352,6 +349,55 @@ module.exports = async (client) => {
         storedSettings.save();
 
         renderTemplate(res, req, 'settings.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+    });
+
+    app.get('/channel/:guildID/:channelID', checkAuth, async (req, res) => {
+        const guild = client.guilds.cache.get(req.params.guildID);
+        if (!guild) return res.redirect('/');
+        const channel = guild.channels.cache.get(req.params.channelID);
+        if (!channel) return res.redirect('/');
+        const member = guild.members.cache.get(req.user.id);
+        if (!member) return res.redirect('/');
+
+        try {
+            await channel.messages.fetch();
+        } catch (err) {
+            console.error('Error fetching messages');
+            console.error(err);
+            return;
+        }
+
+        let messages = channel.messages.cache;
+
+        renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, time: getTime });
+    });
+
+    app.post('/channel/:guildID/:channelID', checkAuth, async (req, res) => {
+        const guild = client.guilds.cache.get(req.params.guildID);
+        if (!guild) return res.redirect('/');
+        const channel = guild.channels.cache.get(req.params.channelID);
+        if (!channel) return res.redirect('/');
+        const member = guild.members.cache.get(req.user.id);
+        if (!member) return res.redirect('/');
+
+        try {
+            await channel.messages.fetch();
+        } catch (err) {
+            console.error('Error fetching messages');
+            console.error(err);
+            return;
+        }
+
+        let messages = channel.messages.cache;
+
+        let messageSent = req.body.message;
+
+        if (messageSent) {
+            channel.send(`\`\`\`From Dashboard - Sender: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`);
+        }
+
+        renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, time: getTime });
+
     });
 
     app.use((req, res, next) => {
@@ -426,4 +472,20 @@ const colorHex = async (imgURL) => {
 const componentToHex = (c) => {
     let hex = c.toString(16);
     return hex.length == 1 ? '0' + hex : hex;
+};
+
+const getTime = (timestamp) => {
+    const d = new Date(timestamp);
+
+    let time = d.toLocaleTimeString();
+
+    let date = d.toDateString();
+
+    date = date.split(' ');
+
+    date = `${date[1]} ${date[2]}`;
+
+    let newDate = `${date} ${time}`;
+
+    return newDate;
 };

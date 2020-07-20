@@ -1,0 +1,97 @@
+<html lang="en">
+<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Channel`}) %>
+
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+        <%- include('../partials/_navbar') %>
+        <%- include('../partials/_sidebar') %>
+
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 col-sm-1 col-lg-12">
+                        <!-- DIRECT CHAT PRIMARY -->
+                        <div class="card card-primary carduotline direct-chat direct-chat-primary">
+                            <div class="card-header">
+                                <h3 class="card-title"><%= channel.name %> Channel Messages</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <!-- Conversations are loaded here -->
+                                <div class="direct-chat-messages">
+                                    <!-- Message. Default to the left -->
+                                    <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp) %>
+                                    <% messages.forEach(message => { %>
+                                    <% if(!message.author.bot || message.author.name === bot.user.username) { %>
+                                    <% if (message.author.id === user.id) { %>
+                                    <div class="direct-chat-msg right">
+                                        <div class="direct-chat-infos clearfix">
+                                            <span
+                                                class="direct-chat-name float-right"><%= message.author.username %>#<%= message.author.discriminator %></span>
+                                            <span
+                                                class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
+                                        </div>
+                                        <!-- /.direct-chat-infos -->
+                                        <img class="direct-chat-img"
+                                            src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
+                                            alt="Message User Image">
+                                        <!-- /.direct-chat-img -->
+                                        <div class="direct-chat-text">
+                                            <%= message.content %>
+                                        </div>
+                                        <!-- /.direct-chat-text -->
+                                    </div>
+                                    <% } else { %>
+                                    <div class="direct-chat-msg">
+                                        <div class="direct-chat-infos clearfix">
+                                            <span
+                                                class="direct-chat-name float-left"><%= message.author.username %>#<%= message.author.discriminator %></span>
+                                            <span
+                                                class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
+                                        </div>
+                                        <!-- /.direct-chat-infos -->
+                                        <img class="direct-chat-img"
+                                            src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
+                                            alt="Message User Image">
+                                        <!-- /.direct-chat-img -->
+                                        <div class="direct-chat-text">
+                                            <%= message.content %>
+                                        </div>
+                                        <!-- /.direct-chat-text -->
+                                    </div>
+                                    <% } %>
+                                    <% } %>
+                                    <% }) %>
+                                    <!-- /.direct-chat-msg -->
+
+                                    <!-- /.direct-chat-msg -->
+                                </div>
+                                <!--/.direct-chat-messages-->
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <form method="POST">
+                                    <div class="input-group">
+                                        <input type="text" name="message" placeholder="Type Message..."
+                                            class="form-control">
+                                        <span class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card-footer-->
+                        </div>
+                        <!--/.direct-chat -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../partials/_footer') %>
+    </div>
+    <%- include('../partials/_scripts') %>
+</body>
+
+</html>

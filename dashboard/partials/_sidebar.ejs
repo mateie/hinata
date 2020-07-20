@@ -52,7 +52,7 @@
                                 <p><i class="right fas fa-arrow-right nav-icon"></i></p>
                             </a>
                             <% } else { %>
-                            <a href="<%= `https://discord.com/api/oauth2/authorize?client_id=${bot.user.id}&guild_id=${guild.id}&scope=bot&response_type=code&redirect_uri=${encodeURIComponent(`${process.env.DOMAIN}${process.env.PORT == 8080 ? "" : `:${process.env.PORT}`}/callback`)}` %>"
+                            <a href="https://discord.com/api/oauth2/authorize?client_id=<%= bot.user.id %>&guild_id=<%= guild.id %>&permissions=2146954487&redirect_uri=<%= encodeURIComponent(`${process.env.DOMAIN}`) %>/callback&scope=bot"
                                 class="nav-link">
                                 <% if(guild.icon != undefined || guild.icon != null) { %>
                                 <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=32"

@@ -26,7 +26,6 @@ client.on('message', async message => {
         }
 
         client.prefix = res.prefix;
-        client.spamChannel = res.channels.spam;
     });
 
     let messageArray = message.content.split(' ');
