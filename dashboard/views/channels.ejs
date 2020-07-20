@@ -20,7 +20,7 @@
                                 <p>Name: <%= channel.name %></p>
                                 <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
                                 <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
-                                <p>Parent Channel: <%= guild.channels.cache.get(channel.parentID).name %></p>
+                                <p>Category: <%= guild.channels.cache.get(channel.parentID).name ? guild.channels.cache.get(channel.parentID).name : 'None' %></p>
                             </div>
                         </div>
                     </div>
