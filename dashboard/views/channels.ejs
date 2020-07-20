@@ -22,8 +22,9 @@
                                 <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
                                 <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
                                 <p>Category: <%= parent ? parent.name : 'None' %></p>
+                                <% if(channel.permissionOverwrites !== null || typeof (channel.permissionOverwrites) !== 'undefined') { %>
                                 <p>
-                                    Allowed Roles:
+                                    Roles:
                                 <ul>
                                     <% channel.permissionOverwrites.filter(p => p.id !== everyone.id).forEach(perm => { %>
                                     <% let role = guild.roles.cache.get(perm.id) %>
@@ -31,6 +32,7 @@
                                     <% }) %>
                                 </ul>
                                 </p>
+                            <% } %>
                             </div>
                         </div>
                     </div>
