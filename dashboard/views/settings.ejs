@@ -138,7 +138,7 @@
                                         <ol>
                                             <% guild.channels.cache.filter(ch => ch.type !== 'category').forEach(channel => { %>
                                             <% if (channel.parentID === category.id) { %>
-                                            <% if(channel.type) { %>
+                                            <% if(channel.type === 'voice') { %>
                                             <li><%= channel.name %> (<%= channel.type %>)</li>
                                             <% } else { %>
                                             <li><a href="/channels/<%= guild.id %>/<%= channel.id %>"><%= channel.name %>
