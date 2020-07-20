@@ -25,7 +25,9 @@
                                     Permissions:
                                     <ul>
                                         <% channel.permissionOverwrites.forEach(perm => { %>
-                                            <%= console.log(guild.permissions) %>
+                                            <% const permsOnChannel = new perms(perm.id);
+                                                console.log(permsOnChannel);
+                                            %>
                                         <% }) %>
                                     </ul>
                                 </p>
