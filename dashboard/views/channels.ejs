@@ -23,10 +23,12 @@
                                 <p>Category: <%= parent ? parent.name : 'None' %></p>
                                 <p>
                                     Allowed Roles:
-                                    <% channel.permissionOverwrites.forEach(perm => { 
-                                        let role = guild.roles.cache.get(perm.id) %>
-                                    (<%= role.name %>)
+                                <ul>
+                                    <% channel.permissionOverwrites.forEach(perm => { %>
+                                    <% let role = guild.roles.cache.get(perm.id) %>
+                                    <li><%= role.name %></li>
                                     <% }) %>
+                                </ul>
                                 </p>
                             </div>
                         </div>
