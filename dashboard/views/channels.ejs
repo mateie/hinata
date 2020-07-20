@@ -22,15 +22,11 @@
                                 <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
                                 <p>Category: <%= parent ? parent.name : 'None' %></p>
                                 <p>
-                                    Permissions:
-                                    <ul>
-                                        <% channel.permissionOverwrites.forEach(perm => { %>
-                                            <%
-                                                let role = guild.roles.cache.get(perm.id);
-                                                console.log(role);
-                                            %>
-                                        <% }) %>
-                                    </ul>
+                                    Allowed Roles:
+                                    <% channel.permissionOverwrites.forEach(perm => { 
+                                        let role = guild.roles.cache.get(perm.id) %>
+                                    <%= role.name %>
+                                    <% }) %>
                                 </p>
                             </div>
                         </div>
