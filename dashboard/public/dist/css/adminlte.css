@@ -19589,6 +19589,10 @@ html.maximized-card {
   padding: 10px;
 }
 
+.direct-chat.messages .full-width-chart {
+  height: 100%;
+}
+
 .direct-chat-msg,
 .direct-chat-text {
   display: block;
