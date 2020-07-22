@@ -1,19 +1,19 @@
-const Discord = require('discord.js');
-const mongoose = require('mongoose');
+const { MessageEmbed } = require('discord.js');
+const { connect } = require('mongoose');
 
-const Servers = require('../../models/servers');
+const Servers = require(`${process.cwd()}/models/servers`);
 
-mongoose.connect(process.env.DATABASE, {
+connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 
 exports.run = async (client, message, args, perms) => {
-    let help = new Discord.MessageEmbed();
+    let help = new MessageEmbed();
 
     Servers.findOne({
         serverID: message.guild.id,
-    }, (err/* , settings*/) => {
+    }, err => {
         if (err) console.error(err);
 
         let roles = perms;

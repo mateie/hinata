@@ -1,7 +1,6 @@
 exports.run = (client, message) => {
     if(!message.guild.member(client.user).hasPermission('MANAGE_ROLES')) return message.reply(':x: **Error:** I don\'t the **Manage Roles** Permission');
-    if(message.mentions.users.size === 0) return message.reply(':x: Please mention a user to give the role to. \n Example: addrole @user');
-    let member = message.guild.memeber(message.mentions.users.first());
+    let member = message.guild.member(message.mentions.users.first());
     if(!member) return message.reply(':x: **Error:** That user doesn\'t exist');
     let rname = message.content.split(' ').splice(2).join(' ');
     let role = message.guild.roles.cache.find(val => val.name === rname);

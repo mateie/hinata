@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message) => {
 
@@ -6,7 +6,7 @@ exports.run = async (client, message) => {
     let serverQueue = queue.get(message.guild.id);
 
     if(serverQueue) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
         .setTitle('Music queue');
 
         serverQueue.songs.forEach((song, index) => {

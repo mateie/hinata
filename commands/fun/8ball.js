@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message, args) => {
     if(!args[0]) return message.reply('Please ask a question mate');
@@ -35,7 +35,7 @@ exports.run = async (client, message, args) => {
     let result = Math.floor((Math.random() * replies.length));
     let question = args.slice(0).join(' ');
 
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
     .setTitle('8 Ball')
     .setColor('#AA9900')
     .setTitle(question)

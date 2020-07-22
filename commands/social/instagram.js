@@ -1,5 +1,5 @@
 /* eslint-disable no-lonely-if */
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const userInstagram = require('user-instagram');
 
 exports.run = async (client, message, args) => {
@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
 
             console.log(post);
 
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
             .setTitle(`${user.username}'s Random Post`)
             .setURL(post.url)
             .setDescription(`Caption: ${post.caption}`)
@@ -42,7 +42,7 @@ exports.run = async (client, message, args) => {
             return message.channel.send({ embed });
 
         } else {
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
             .setTitle(`${user.username}'s Profile`)
             .setURL(user.link)
             .setDescription(`${user.biography}`)

@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = (client, message, args) => {
     let reason = args.slice(1).join(' ');
@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
 
     if(!message.guild.member(user).kickable) return message.reply('I can\'t kick that member');
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setColor(0x0000FF)
     .setTimestamp()
     .addField('Action', 'Kick')

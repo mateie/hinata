@@ -5,7 +5,7 @@ exports.run = (client, message) => {
 exports.help = {
     enabled: true,
     name: 'roll',
-    aliases: [],
+    aliases: ['dice'],
     args: [],
     permission: 'USER',
     description: 'Rolls a dice',

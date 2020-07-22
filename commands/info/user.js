@@ -1,5 +1,5 @@
 const moment = require('moment');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message, args) => {
     let user = message.mentions.users.first();
@@ -42,7 +42,7 @@ exports.run = async (client, message, args) => {
         isBot = 'No';
     }
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
         .addField('Username', `${user.username}#${user.discriminator}`, true)
         .addField('ID', `${user.id}`, true)
         .setColor(3447003)

@@ -1,8 +1,8 @@
-const Canvas = require('canvas');
-const Discord = require('discord.js');
+const { createCanvas, loadImage } = require('canvas');
+const { MessageAttachment } = require('discord.js');
 
-const Users = require('../../models/users');
-const { getXp } = require('../../util/experience');
+const Users = require(`${process.cwd()}/models/users`);
+const { getXp } = require(`${process.cwd()}/util/experience`);
 
 exports.run = async (client, message) => {
 
@@ -17,12 +17,12 @@ exports.run = async (client, message) => {
         let width = 700,
             height = 250;
 
-        const canvas = Canvas.createCanvas(width, height);
+        const canvas = createCanvas(width, height);
         const ctx = canvas.getContext('2d');
 
         const avatarImg = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-        const bg = await Canvas.loadImage('https://s3-us-west-2.amazonaws.com/wsffimages/wp-content/uploads/2020/06/02085933/BlackSquare.jpg');
+        const bg = await loadImage('https://s3-us-west-2.amazonaws.com/wsffimages/wp-content/uploads/2020/06/02085933/BlackSquare.jpg');
         ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
         ctx.strokeStyle = '#74037b';
@@ -43,10 +43,10 @@ exports.run = async (client, message) => {
         ctx.closePath();
         ctx.clip();
 
-        const avatar = await Canvas.loadImage(avatarImg);
+        const avatar = await loadImage(avatarImg);
         ctx.drawImage(avatar, 25, 25, 200, 200);
 
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `${member.username}-profile.png`);
+        const attachment = new MessageAttachment(canvas.toBuffer(), `${member.username}-profile.png`);
 
         message.channel.send(attachment);
 

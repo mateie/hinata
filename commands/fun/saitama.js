@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
-const axios = require('axios');
+const { MessageEmbed } = require('discord.js');
+const { get } = require('axios');
 
 exports.run = async (client, message) => {
     let url;
@@ -9,7 +9,7 @@ exports.run = async (client, message) => {
         url = `https://api.tenor.com/v1/random?key=${process.env.TENOR_API_KEYI}&q=saitama&locale=en_US&contentfilter=off&media_filter=minimal&ar_range=all&limit=50`;
     }
 
-    axios.get(url)
+    get(url)
     .then(res => {
         let data = res.data.results;
         let randomGIF = Math.floor(Math.random() * data.length);
@@ -17,7 +17,7 @@ exports.run = async (client, message) => {
         let gifName = data[randomGIF].title;
         let gifPic = data[randomGIF].media[0].gif.url;
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
         .setColor('#ff0000');
         if(gifName !== undefined) {
             embed.setTitle(gifName);

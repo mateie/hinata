@@ -1,16 +1,14 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const superagent = require('superagent');
 
 exports.run = async (client, message) => {
-    if(!message.mentions.users.first()) return message.reply('Mention a user to slap them');
-    if(message.mentions.users.first().id === '401269337924829186') return message.reply('You can\'t slap the dev dumbass');
-    if(message.mentions.users.first().id == client.user.id && message.author.id === '401269337924829186') {
+    if(message.mentions.users.first().id === client.user.id) {
         const { body } = await superagent
         .get('https://nekos.life/api/v2/img/slap');
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
         .setColor('#ff9900')
-        .setTitle(`Uno Reverse card *slaps* ${message.mentions.users.first().username}`)
+        .setTitle(`Uno Reverse card *slaps* ${message.author.username}`)
         .setImage(body.url);
 
         return message.channel.send({ embed });
@@ -21,7 +19,7 @@ exports.run = async (client, message) => {
     const { body } = await superagent
     .get('https://nekos.life/api/v2/img/slap');
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setColor('#ff9900')
     .setTitle(`OwO ${message.mentions.users.first().username} You got slapped by ${message.author.username}`)
     .setImage(body.url);

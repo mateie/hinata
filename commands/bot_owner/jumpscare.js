@@ -3,7 +3,7 @@ exports.run = async (client, message) => {
 
     let connection = await voiceChannel.join();
 
-    let soundFiles = [`${process.cwd()}/data/sounds/fnaf/fnaf.mp3`, `${process.cwd()}/sounds/fnaf/fnaf2.mp3`, `${process.cwd()}/sounds/fnaf/fnaf3.mp3`];
+    let soundFiles = [`${process.cwd()}/data/sounds/fnaf/fnaf.mp3`, `${process.cwd()}/data/sounds/fnaf/fnaf2.mp3`, `${process.cwd()}/data/sounds/fnaf/fnaf3.mp3`];
 
     let soundFile = soundFiles[Math.floor(Math.random() * soundFiles.length)];
 

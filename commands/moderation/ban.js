@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message, args) => {
     let reason = args.slice(1).join(' ');
@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
         message.channel.send(`:negative_square_cross_mark: I cannot ban that member. My role might not be high enough or It's an internal error`);
         return;
     } else {
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
         .setColor(0xFF0000)
         .setTimestamp()
         .addField('Action:', 'Ban')

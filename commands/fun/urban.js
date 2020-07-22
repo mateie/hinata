@@ -1,5 +1,5 @@
 const urban = require('urban');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message, args) => {
     if(args.length < 1) {
@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
 
         let newStr = json.definition.match(/(.|[\r\n]){1,2040}/g);
         if(newStr.length >= 2) {
-            const def = new Discord.MessageEmbed()
+            const def = new MessageEmbed()
             .setTitle(json.word)
             .setDescription(newStr[0] + '...')
             .addField('Upvotes', json.thumbs_up, true)
@@ -25,7 +25,7 @@ exports.run = async (client, message, args) => {
 
             message.channel.send(def);
         } else {
-            const def = new Discord.MessageEmbed()
+            const def = new MessageEmbed()
             .setTitle(json.word)
             .setDescription(json.definition)
             .addField('Upvotes', json.thumbs_up, true)

@@ -1,5 +1,4 @@
 exports.run = async (client, message) => {
-
     let voiceChannel = message.member.voice.channel;
 
     let soundFile = `${process.cwd()}/data/sounds/bruh.mp3`;

@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message, args) => {
     let reason = args.slice(1).join(' ');
@@ -37,7 +37,7 @@ exports.run = async (client, message, args) => {
     if (message.guild.member(user).roles.cache.has(muteRole.id)) {
         if (message.content.includes('!mute')) return message.reply('That user is already muted');
         message.guild.member(user).roles.remove(muteRole).then(() => {
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
                 .setColor(0x00FFFF)
                 .setTimestamp()
                 .addField('Actio:', 'Unmute')
@@ -62,7 +62,7 @@ exports.run = async (client, message, args) => {
     } else {
         if (message.content.includes('!unmute')) return message.reply('That user is not muted');
         message.guild.member(user).roles.add(muteRole).then(() => {
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
                 .setColor(0x00FFFF)
                 .setTimestamp()
                 .addField('Action', 'Mute')

@@ -1,19 +1,15 @@
-const fs = require('fs');
-const Discord = require('discord.js');
+const { readdirSync, readFileSync } = require('fs');
+const { MessageAttachment } = require('discord.js');
 
 exports.run = (client, message) => {
-    fs.readdir(`${process.cwd()}/shitposts/`, (err, files) => {
-        if (err) console.error(err);
+    let files = readdirSync(`${process.cwd()}/data/shitposts/`);
 
-        const randomShitpost = files[Math.floor(Math.random() * files.length)];
+    const random = files[Math.floor(Math.random() * files.length)];
 
-        fs.readFile(`${process.cwd()}/data/shitposts/${randomShitpost}`, (err, shitpost) => {
-            if (err) console.error(err);
+    let file = readFileSync(`${process.cwd()}/data/shitposts/${random}`);
 
-            const shitpostAttachment = new Discord.MessageAttachment(shitpost, randomShitpost);
-            message.channel.send(shitpostAttachment);
-        });
-    });
+    const shitpostAttachment = new MessageAttachment(file, random);
+    message.channel.send(shitpostAttachment);
 };
 
 exports.help = {

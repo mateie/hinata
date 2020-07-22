@@ -1,9 +1,9 @@
-const Discord = require('discord.js');
-const mongoose = require('mongoose');
+const { MessageEmbed } = require('discord.js');
+const { connect } = require('mongoose');
 
 const Warns = require('../../models/warns');
 
-mongoose.connect(process.env.DATABASE, {
+connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -12,7 +12,7 @@ exports.run = async (client, message) => {
     let user = message.mentions.members.first();
 
     if(user) {
-        let warnsEmbed = new Discord.MessageEmbed()
+        let warnsEmbed = new MessageEmbed()
         .setTitle(`Warns: ${user.displayName}`)
         .setDescription(`List of ${user.displayName} warnings`);
 

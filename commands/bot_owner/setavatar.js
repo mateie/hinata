@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 exports.run = async (client, message) => {
     let avatarCurrent = client.user.displayAvatarURL({ format: 'png', dynamic: true, size: 128 });
@@ -14,7 +14,7 @@ exports.run = async (client, message) => {
         return message.channel.send('Can\'t change avatars too fast');
     });
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle('Bot\'s Avatar Changed from :arrow_right:')
     .setThumbnail(avatarCurrent)
     .addField('To', ':arrow_down:', true)

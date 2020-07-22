@@ -1,4 +1,4 @@
-let https = require('https');
+let { get } = require('https');
 
 exports.run = (client, message, args) => {
     function convertCurrency(amount, fromCurrency, toCurrency, cb) {
@@ -6,9 +6,9 @@ exports.run = (client, message, args) => {
         toCurrency = encodeURIComponent(toCurrency);
         let query = `${fromCurrency}_${toCurrency}`;
 
-        let url = `http://free.currconv.com/api/v7/convert?q=${query}&compact=ultra&apiKey=${process.env.CURRENY_API_KEY}`;
+        let url = `https://free.currconv.com/api/v7/convert?q=${query}&compact=ultra&apiKey=${process.env.CURRENY_API_KEY}`;
 
-        https.get(url, function(res) {
+        get(url, function(res) {
             let body = '';
 
             res.on('data', function(chunk) {
@@ -40,6 +40,7 @@ exports.run = (client, message, args) => {
             cb(e);
         });
     }
+
     if(isNaN(args[0])) return message.reply(' please enter a valid number for amount');
     let a = parseInt(args[0]);
 
@@ -62,7 +63,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
-    enabled: true,
+    enabled: false,
     name: 'currency',
     aliases: [],
     args: ['<amount>', '<Base Currency>', '<Target Currency>'],

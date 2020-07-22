@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { Permissions } = require('discord.js');
 
 exports.run = (client, message) => {
     if(!client.lockit) client.lockit = [];
@@ -19,8 +19,8 @@ exports.run = (client, message) => {
 };
 
 exports.getPermName = (bitfield) => {
-    for (let key in Discord.Permissions.FLAGS) {
-        if(Discord.Permissions.FLAGS[key] == bitfield) return key;
+    for (let key in Permissions.FLAGS) {
+        if(Permissions.FLAGS[key] == bitfield) return key;
     }
 
     return null;

@@ -8,7 +8,7 @@ exports.run = (client, message) => {
     minutes = (minutes < 10) ? '0' + minutes : minutes;
     seconds = (seconds < 10) ? '0' + seconds : seconds;
 
-    message.channel.send(`:chart_with_upwards_tend: I've been running for **${hours}** Hours, **${minutes}** Minutes and **${seconds}**.${milliseconds} Seconds`);
+    message.channel.send(`:chart_with_upwards_trend: I've been running for **${hours}** Hours, **${minutes}** Minutes and **${seconds}**.${milliseconds} Seconds`);
 };
 
 exports.help = {

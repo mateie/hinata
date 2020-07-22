@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('js');
 
 const mcData = require('minecraft-data')('1.16');
 const mcLib = require('minecraft-lib');
@@ -63,7 +63,7 @@ exports.run = async (client, message, args) => {
                 breakSpeed = 'Unbreakable';
             }
 
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
                 .setTitle(`Random Block ${block.name}`)
                 .setDescription(`Block ID: ${block.id}`)
                 .addField('Hardness', block.hardness, true);
@@ -121,7 +121,7 @@ exports.run = async (client, message, args) => {
                 breakSpeed = 'Unbreakable';
             }
 
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
                 .setTitle(`${block.name} Block`)
                 .setDescription(`Block ID: ${block.id}`)
                 .addField('Hardness', block.hardness, true);
@@ -181,7 +181,7 @@ exports.run = async (client, message, args) => {
                 category: randomEntity.category,
             };
 
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
                 .setTitle(`Random Entity ${entity.name}`)
                 .setDescription(`Entity ID: ${entity.id}`)
                 .addField('Width', entity.width, true)
@@ -208,7 +208,7 @@ exports.run = async (client, message, args) => {
                     category: mcEntity.category,
                 };
 
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                     .setTitle(`${entity.name} Entity`)
                     .setDescription(`Entity ID: ${entity.id}`)
                     .addField('Width', entity.width, true)
@@ -272,7 +272,7 @@ exports.run = async (client, message, args) => {
                     }
                 }
 
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                     .setTitle('Server Info')
                     .setDescription(serverInfo.description)
                     /* .attachFiles([`${icon}`])
@@ -312,7 +312,7 @@ exports.run = async (client, message, args) => {
 
                 player.name_history = player.name_history.join(', ');
 
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                 .setTitle(`${player.name}'s Minecraft Profile`)
                 .setThumbnail(player.skin.url)
                 .addField(`UUID`, player.id);

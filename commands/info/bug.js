@@ -3,7 +3,6 @@ const axios = require('axios');
 exports.run = (client, message, args) => {
     let bug = args.slice(0).join(' ');
 
-
     axios({
         'method': 'POST',
         'url': 'https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send',
@@ -38,7 +37,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
-    enabled: true,
+    enabled: false,
     name: 'bug',
     aliases: [],
     args: ['<bug explanation>'],

@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
+const { connect } = require('mongoose');
+const Servers = require(`${process.cwd()}/models/servers`);
 
-const Servers = require('../../models/servers');
-
-mongoose.connect(process.env.DATABASE, {
+connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

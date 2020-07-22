@@ -1,9 +1,9 @@
-const Discord = require('discord.js');
-const mongoose = require('mongoose');
+const { MessageEmbed } = require('discord.js');
+const { connect } = require('mongoose');
 
 const Servers = require('../../models/servers');
 
-mongoose.connect(process.env.DATABASE, {
+connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
         }
 
         if(!roleDB) {
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
             .setTitle(`${message.guild.name}'s Roles`)
             .setDescription('Values are case-sensitive');
             for(let i = 1; i < Object.keys(settings.roles).length; i++) {

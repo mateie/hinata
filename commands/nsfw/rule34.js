@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
-const axios = require('axios');
+const { MessageEmbed } = require('discord.js');
+const { get } = require('axios');
 
 exports.run = async (client, message, args) => {
     if(!message.channel.nsfw) {
@@ -13,7 +13,7 @@ exports.run = async (client, message, args) => {
     let rule34Search = `https://rule34.xxx/index.php?page=dapi&json=1&s=post&q=index&limit=30&tags=${args[0]}`;
     let rule34CDN = `https://img.rule34.xxx/images/`;
 
-    axios.get(rule34Search)
+    get(rule34Search)
     .then(res => {
         let data = res.data;
         let randomImage = data[Math.floor(Math.random() * data.length)];
@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
         rule34CDN = `${rule34CDN}${randomImageDict}/${randomImageName}`;
         console.log(rule34CDN);
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
         .setImage(rule34CDN);
 
         return message.channel.send({ embed });

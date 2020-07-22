@@ -1,9 +1,9 @@
-const Discord = require('discord.js');
-const mongoose = require('mongoose');
+const { MessageEmbed } = require('discord.js');
+const { connect } = require('mongoose');
 
 const Warns = require('../../models/warns');
 
-mongoose.connect(process.env.DATABASE, {
+connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -17,13 +17,13 @@ exports.run = async (client, message, args) => {
             return message.channel.send('The person can\'t be warned');
         }
 
-        let warnEmbed = new Discord.MessageEmbed()
+        let warnEmbed = new MessageEmbed()
         .setTitle(`You have been warned on ${message.guild.name}`)
         .setThumbnail(message.guild.iconURL)
         .addField(`Warned by`, message.author.username)
         .addField(`Reason`, reason);
 
-        let infoWarn = new Discord.MessageEmbed()
+        let infoWarn = new MessageEmbed()
         .setTitle(`${user.displayName} has been warned`)
         .setThumbnail(message.guild.iconURL)
         .addField(`Warned by`, message.author.username)

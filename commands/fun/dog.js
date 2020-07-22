@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const superagent = require('superagent');
 
 exports.run = async (client, message) => {
@@ -7,7 +7,7 @@ exports.run = async (client, message) => {
 
     let link = body.url;
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setColor('#ff9900')
     .setTitle('Here\'s yo dog')
     .setImage(link);
@@ -18,7 +18,7 @@ exports.run = async (client, message) => {
 exports.help = {
     enabled: true,
     name: 'dog',
-    aliases: [],
+    aliases: ['doggo'],
     args: [],
     permission: 'USER',
     description: 'Sends a random doggy',

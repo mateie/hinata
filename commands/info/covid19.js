@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
-const Discord = require('discord.js');
-const Request = require('request');
+const { MessageEmbed } = require('discord.js');
+const request = require('request');
 
 exports.run = async (client, message, args) => {
     let country = new String();
@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
     if(country == 'all') {
         options.url += 'statistics';
         options.qs = { country: country };
-        Request(options, async (err, res, body) => {
+        request(options, async (err, res, body) => {
             if(err) return console.error(err);
             body = JSON.parse(body);
 
@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
         options.url += 'countries';
         options.qs = { search: country };
 
-        Request(options, async (err, res, body) => {
+        request(options, async (err, res, body) => {
             if(err) return console.error(err);
             body = JSON.parse(body);
 
@@ -42,7 +42,7 @@ exports.run = async (client, message, args) => {
             options.url = 'https://covid-193.p.rapidapi.com/statistics';
             options.qs = { country: existingCountry };
 
-            Request(options, async (err, res, body) => {
+            request(options, async (err, res, body) => {
                 if(err) return console.error(err);
                 body = JSON.parse(body);
 
@@ -55,7 +55,7 @@ exports.run = async (client, message, args) => {
 exports.createEmbed = (client, body, header) => {
     let time = new Date(Date.parse(body.response[0].time));
 
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
     .setTitle(`COVID-19 ${header} Statistics`)
     .addField('Total cases', new Intl.NumberFormat('en-US', { useGrouping: true }).format(body.response[0].cases.total))
     .addField('Total deaths', new Intl.NumberFormat('en-US', { useGrouping: true }).format(body.response[0].deaths.total))

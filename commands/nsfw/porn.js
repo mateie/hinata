@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const Pornsearch = require('pornsearch');
 
 exports.run = (client, message, args) => {
@@ -24,7 +24,7 @@ exports.run = (client, message, args) => {
             let GIFName = randomGIF.title;
             let GIFImage = randomGIF.url;
 
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
             .setTitle(GIFName)
             .setImage(GIFImage);
 
@@ -44,7 +44,7 @@ exports.run = (client, message, args) => {
             let videoDuration = randomVideo.duration;
             let videoThumbnail = randomVideo.thumb;
 
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
             .setTitle(videoTitle)
             .setDescription('Click the title to check the video out');
             if(videoDuration) {
