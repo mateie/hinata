@@ -1,5 +1,3 @@
-/* eslint-disable no-lonely-if */
-/* eslint-disable no-shadow */
 const { client } = require('../index');
 const Dashboard = require(`${process.cwd()}/dashboard/dashboard`);
 
@@ -13,7 +11,7 @@ const Servers = require('../models/servers');
 const Users = require('../models/users');
 
 client.on('ready', async () => {
-    let presence = [
+    let presences = [
         {
             status: 'online',
             activity: {
@@ -51,8 +49,8 @@ client.on('ready', async () => {
                     ownerStatus = member.presence.status;
                     ownerActivityObj = member.presence.activities;
                     if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
-                        let index = Math.floor(Math.random() * presence.length);
-                        client.user.setPresence(presence[index]);
+                        let index = Math.floor(Math.random() * presences.length);
+                        client.user.setPresence(presences[index]);
                     } else {
                         if (ownerActivityObj[0].type === 'LISTENING') {
                             ownerActivity = {
@@ -90,34 +88,30 @@ client.on('ready', async () => {
                 let customGuild = guild;
                 client.emit('guildCreate', customGuild);
                 console.info(`Adding new guild to the database... (Guild ID: ${guild.id})`);
+            } else if (res.channels.reactions.length < 0) {
+                console.info('This guild doesn\'t have reaction channel set in the database');
             } else {
-                if (res.channels.reactions.length < 0) {
-                    console.info('This guild doesn\'t have reaction channel set in the database');
-                } else {
-                    const channel = client.channels.cache.find(ch => ch.name === res.channels.reactions);
-                    if (!channel) {
-                        console.info(`This server doesn't have reactions channel`);
+                const channel = client.channels.cache.find(ch => ch.name === res.channels.reactions);
+                if (!channel) {
+                    console.info(`This server doesn't have reactions channel`);
+                } else if (channel.guild.id === res.serverID) {
+
+                    try {
+                        await channel.messages.fetch();
+                    } catch (err) {
+                        console.error('Error fetching messages');
+                        console.error(err);
+                        return;
+                    }
+
+                    const messages = channel.messages;
+                    if (!messages) {
+                        console.info('There is no messages in the channel');
                     } else {
-                        if (channel.guild.id === res.serverID) {
+                        res.messageID = channel.messages.cache.first().id;
+                        res.save();
 
-                            try {
-                                await channel.messages.fetch();
-                            } catch (err) {
-                                console.error('Error fetching messages');
-                                console.error(err);
-                                return;
-                            }
-
-                            const messages = channel.messages;
-                            if (!messages) {
-                                console.info('There is no messages in the channel');
-                            } else {
-                                res.messageID = channel.messages.cache.first().id;
-                                res.save();
-
-                                console.log(`Watching message '${res.messageID}' in ${res.serverName} for reactions...`);
-                            }
-                        }
+                        console.log(`Watching message '${res.messageID}' in ${res.serverName} for reactions...`);
                     }
                 }
             }
