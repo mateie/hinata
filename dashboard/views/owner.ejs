@@ -1,0 +1,43 @@
+<html lang="en">
+<%- include('../partials/_head', { bot, user, path, title: `Owner Page` }) %>
+
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+        <%- include('../partials/_navbar') %>
+        <%- include('../partials/_sidebar') %>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-widget widget-user">
+                                <div class="widget-user-header bg-gradient-red">
+                                    <h3 class="widget-user-username"><%= user.username %></h3>
+                                    <h5 class="widget-user-desc"><%= user.discriminator %></h5>
+                                </div>
+                                <div class="widget-user-image">
+                                    <img class="img-circle elevation-2"
+                                        src="https://cdn.discordapp.com/avatars/<%= owner.id %>/<%= owner.avatar %>.png?size=128"
+                                        alt="Owner Avatar" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+
+                    </div>
+                </div>
+            </section>
+        </div>
+        <%- include('../partials/_footer') %>
+    </div>
+    <%- include('../partials/_scripts') %>
+</body>
+
+</html>

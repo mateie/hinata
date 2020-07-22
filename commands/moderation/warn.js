@@ -43,8 +43,6 @@ exports.run = async (client, message, args) => {
 
         newWarn.save().catch(err => console.error(err));
 
-        message.delete();
-
         await user.send(warnEmbed);
         message.channel.send(infoWarn);
     } else {

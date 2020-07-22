@@ -7,112 +7,114 @@
         <%- include('../partials/_sidebar') %>
 
         <div class="content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title"><%= capL(channel.name) %> Channel</h3>
-                            </div>
-
-                            <div class="card-body">
-                                <% let parent = guild.channels.cache.get(channel.parentID) %>
-                                <% let everyone = guild.roles.cache.find(e => e.name === '@everyone') %>
-                                <p>Name: <%= channel.name %></p>
-                                <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
-                                <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
-                                <p>Category: <%= parent ? parent.name : 'None' %></p>
-                                <% if(channel.permissionOverwrites.size > 0) { %>
-                                <p>
-                                    Roles:
-                                <ul>
-                                    <% channel.permissionOverwrites.filter(p => p.id !== everyone.id).forEach(perm => { %>
-                                    <% let role = guild.roles.cache.get(perm.id) %>
-                                    <li><%= role.name %></li>
-                                    <% }) %>
-                                </ul>
-                                </p>
-                                <% } %>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <!-- DIRECT CHAT PRIMARY -->
-                        <div class="card card-primary carduotline direct-chat direct-chat-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Channel Messages</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- Conversations are loaded here -->
-                                <div class="direct-chat-messages">
-                                    <!-- Message. Default to the left -->
-                                    <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
-                                    <% if(!message.author.bot || message.author.id === bot.user.id) { %>
-                                    <% if (message.author.id === user.id) { %>
-                                    <div class="direct-chat-msg right">
-                                        <div class="direct-chat-infos clearfix">
-                                            <span
-                                                class="direct-chat-name float-right"><%= message.author.username %>#<%= message.author.discriminator %></span>
-                                            <span
-                                                class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
-                                        </div>
-                                        <!-- /.direct-chat-infos -->
-                                        <img class="direct-chat-img"
-                                            src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
-                                            alt="Message User Image">
-                                        <!-- /.direct-chat-img -->
-                                        <div class="direct-chat-text">
-                                            <%= message.content %>
-                                        </div>
-                                        <!-- /.direct-chat-text -->
-                                    </div>
-                                    <% } else { %>
-                                    <div class="direct-chat-msg">
-                                        <div class="direct-chat-infos clearfix">
-                                            <span
-                                                class="direct-chat-name float-left"><%= message.author.username %>#<%= message.author.discriminator %></span>
-                                            <span
-                                                class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
-                                        </div>
-                                        <!-- /.direct-chat-infos -->
-                                        <img class="direct-chat-img"
-                                            src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
-                                            alt="Message User Image">
-                                        <!-- /.direct-chat-img -->
-                                        <div class="direct-chat-text">
-                                            <%= message.content %>
-                                        </div>
-                                        <!-- /.direct-chat-text -->
-                                    </div>
-                                    <% } %>
-                                    <% } %>
-                                    <% }) %>
-                                    <!-- /.direct-chat-msg -->
-
-                                    <!-- /.direct-chat-msg -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title"><%= capL(channel.name) %> Channel</h3>
                                 </div>
-                                <!--/.direct-chat-messages-->
 
+                                <div class="card-body">
+                                    <% let parent = guild.channels.cache.get(channel.parentID) %>
+                                    <% let everyone = guild.roles.cache.find(e => e.name === '@everyone') %>
+                                    <p>Name: <%= channel.name %></p>
+                                    <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
+                                    <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
+                                    <p>Category: <%= parent ? parent.name : 'None' %></p>
+                                    <% if(channel.permissionOverwrites.size > 0) { %>
+                                    <p>
+                                        Roles:
+                                    <ul>
+                                        <% channel.permissionOverwrites.filter(p => p.id !== everyone.id).forEach(perm => { %>
+                                        <% let role = guild.roles.cache.get(perm.id) %>
+                                        <li><%= role.name %></li>
+                                        <% }) %>
+                                    </ul>
+                                    </p>
+                                    <% } %>
+                                </div>
                             </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <form method="POST">
-                                    <div class="input-group">
-                                        <input type="text" name="message" placeholder="Type Message..."
-                                            class="form-control">
-                                        <span class="input-group-append">
-                                            <button type="submit" class="btn btn-primary">Send</button>
-                                        </span>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.card-footer-->
                         </div>
-                        <!--/.direct-chat -->
+                        <div class="col-md-6">
+                            <!-- DIRECT CHAT PRIMARY -->
+                            <div class="card card-primary carduotline direct-chat direct-chat-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Channel Messages</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <!-- Conversations are loaded here -->
+                                    <div class="direct-chat-messages">
+                                        <!-- Message. Default to the left -->
+                                        <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
+                                        <% if(!message.author.bot || message.author.id === bot.user.id) { %>
+                                        <% if (message.author.id === user.id) { %>
+                                        <div class="direct-chat-msg right">
+                                            <div class="direct-chat-infos clearfix">
+                                                <span
+                                                    class="direct-chat-name float-right"><%= message.author.username %>#<%= message.author.discriminator %></span>
+                                                <span
+                                                    class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
+                                            </div>
+                                            <!-- /.direct-chat-infos -->
+                                            <img class="direct-chat-img"
+                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
+                                                alt="Message User Image">
+                                            <!-- /.direct-chat-img -->
+                                            <div class="direct-chat-text">
+                                                <%= message.content %>
+                                            </div>
+                                            <!-- /.direct-chat-text -->
+                                        </div>
+                                        <% } else { %>
+                                        <div class="direct-chat-msg">
+                                            <div class="direct-chat-infos clearfix">
+                                                <span
+                                                    class="direct-chat-name float-left"><%= message.author.username %>#<%= message.author.discriminator %></span>
+                                                <span
+                                                    class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
+                                            </div>
+                                            <!-- /.direct-chat-infos -->
+                                            <img class="direct-chat-img"
+                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
+                                                alt="Message User Image">
+                                            <!-- /.direct-chat-img -->
+                                            <div class="direct-chat-text">
+                                                <%= message.content %>
+                                            </div>
+                                            <!-- /.direct-chat-text -->
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+                                        <% }) %>
+                                        <!-- /.direct-chat-msg -->
+
+                                        <!-- /.direct-chat-msg -->
+                                    </div>
+                                    <!--/.direct-chat-messages-->
+
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <form method="POST">
+                                        <div class="input-group">
+                                            <input type="text" name="message" placeholder="Type Message..."
+                                                class="form-control">
+                                            <span class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.card-footer-->
+                            </div>
+                            <!--/.direct-chat -->
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
         <%- include('../partials/_footer') %>

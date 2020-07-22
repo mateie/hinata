@@ -400,6 +400,21 @@ module.exports = async (client) => {
 
     });
 
+    app.get('/owner', checkAuth, async (req, res) => {
+        const owner = req.user;
+        if(owner.id !== process.env.OWNER_ID) {
+            res.redirect('/');
+        }
+
+        let allUsers = client.users.cache;
+        let allGuilds = client.guilds.cache;
+        let allChannels = client.channels.cache;
+        let allCommands = client.commands.cache;
+        let allCategories = client.categories;
+
+        renderTemplate(res, req, 'owner.ejs', { owner, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, allUsers, allGuilds, allChannels, allCommands, allCategories })
+    })
+
     app.use((req, res, next) => {
         res.status(404);
         renderTemplate(res, req, '404.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });

@@ -17,15 +17,19 @@ exports.run = async (client, message) => {
         .setDescription(`List of ${user.displayName} warnings`);
 
         Warns.find({
-            severID: message.guild.id,
-            userID: user.id,
+            serverID: message.guild.id,
+            userID: user.user.id,
         }, (err, res) => {
+
+            if(err) console.error(err);
+
             if(!res) {
                 return message.channel.send('Unknown error occured');
             }
 
             res.forEach(element => {
-                warnsEmbed.addField(`Reason: ${element.reason}`, `Warned by: <@${element.warnedBy}>\n${element.timestamp}`);
+                warnsEmbed.addField(`Reason: ${element.reason}`, `Warned by: <@${element.warnedBy}>`)
+                .setFooter(`${element.timestamp}`);
             });
 
             if(res.length < 1) {

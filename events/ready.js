@@ -123,6 +123,7 @@ client.on('ready', async () => {
             }
 
         });
+
         guild.members.cache.forEach(member => {
             Users.findOne({
                 serverID: guild.id,
