@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('js');
+const { MessageEmbed } = require('discord.js');
 
 const mcData = require('minecraft-data')('1.16');
 const mcLib = require('minecraft-lib');
