@@ -13,14 +13,14 @@ client.on('guildCreate', guild => {
     const newServer = new Servers({
         serverID: guild.id,
         serverName: guild.name,
-        prefix: '!',
+        prefix: 'h!',
         messageID: '',
         roles: {
-            owner: "",
-            admin: "",
-            dj: "",
-            user: "",
-            mute: "",
+            owner: "Owner",
+            admin: "Admin",
+            dj: "DJ",
+            member: "Member",
+            mute: "Muted",
         },
         channels: {
             commands: 'bot-commands',

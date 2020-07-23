@@ -9,7 +9,7 @@ const serversSchema = mongoose.Schema({
         owner: String,
         admin: String,
         dj: String,
-        user: String,
+        member: String,
         mute: String,
     },
     channels: {
