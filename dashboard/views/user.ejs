@@ -56,9 +56,33 @@
                                             </div>
                                             <!-- /.description-block -->
                                         </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Nickname</h5>
+                                                <%= console.log(member) %>
+                                                <span class="description-text"><%= member.nickname ? member.nickname : 'None' %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Highest Role</h5>
+                                                <span class="description-text"><%= member.roles.highest.name %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Member Since</h5>
+                                                <span class="description-text"><%= new Date(member.joinedTimestamp).toDateString() %></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
                         </div>
                     </div>
                 </div>
