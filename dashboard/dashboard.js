@@ -139,14 +139,19 @@ module.exports = async (client) => {
                 break;
         }
 
-        if (!botActivity) {
-            return res.redirect('/');
-        }
+        let activity;
 
-        let activity = {
-            name: botActivity.name,
-            type: botActivity.type,
-        };
+        if (!botActivity) {
+            activity = {
+                name: 'Nothing',
+                type: 'Doing',
+            };
+        } else {
+            activity = {
+                name: botActivity.name,
+                type: botActivity.type,
+            };
+        }
 
         activity.type = activity.type.toLowerCase();
         activity.type = capFirstLetter(activity.type);
@@ -160,7 +165,7 @@ module.exports = async (client) => {
         renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, status: botStatus, activity: activity, bg: bgColor, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.get('/profile', checkAuth, async (req, res) => {
+    app.get('/user/me', checkAuth, async (req, res) => {
 
         let user = req.user;
         let guild = client.guilds.cache.random();
@@ -275,30 +280,42 @@ module.exports = async (client) => {
         }
 
         let bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`);
-        renderTemplate(res, req, 'profile.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, status: memberStatus, activity: activity, premium: premiumType, title: userType, color: bgColor });
+        renderTemplate(res, req, 'me.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, status: memberStatus, activity: activity, premium: premiumType, title: userType, color: bgColor });
     });
 
     app.get('/commands', (req, res) => {
         renderTemplate(res, req, 'commands.ejs', { res, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.get('/dashboard/:guildID', checkAuth, async (req, res) => {
+    app.get('/guild/:guildID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) return res.redirect('/');
+        if (!guild) {
+            console.error('Couldn\'t find a guild');
+            return res.redirect('/');
+        }
         const member = guild.members.cache.get(req.user.id);
-        if (!member) return res.redirect('/');
+        if (!member) {
+            console.error('Couldn\'t find a member');
+            return res.redirect('/');
+        }
         if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-        renderTemplate(res, req, 'settings.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+        renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.post('/dashboard/:guildID', checkAuth, async (req, res) => {
+    app.post('/guild/:guildID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) return res.redirect('/');
+        if (!guild) {
+            console.error('Couldn\'t find a guild');
+            return res.redirect('/');
+        }
         const member = guild.members.cache.get(req.user.id);
-        if (!member) return res.redirect('/');
+        if (!member) {
+            console.error('Couldn\'t find a member');
+            return res.redirect('/');
+        }
         if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
         let storedSettings = await Servers.findOne({ serverID: guild.id });
@@ -320,7 +337,6 @@ module.exports = async (client) => {
             if (inputValues.length > 1) {
                 inputType += 's';
             }
-
 
             if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValues.length > 1) {
                 storedSettings[inputType][Object.keys(storedSettings[inputType])[x + 1]] = inputValue;
@@ -348,16 +364,25 @@ module.exports = async (client) => {
 
         storedSettings.save();
 
-        renderTemplate(res, req, 'settings.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+        renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
     });
 
-    app.get('/channels/:guildID/:channelID', checkAuth, async (req, res) => {
+    app.get('/guild/:guildID/channel/:channelID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) return res.redirect('/');
+        if (!guild) {
+            console.error('Couldn\'t find the guild');
+            return res.redirect('/');
+        }
         const channel = guild.channels.cache.get(req.params.channelID);
-        if (!channel) return res.redirect('/');
+        if (!channel) {
+            console.error('Couldn\'t find the channel');
+            return res.redirect('/');
+        }
         const member = guild.members.cache.get(req.user.id);
-        if (!member) return res.redirect('/');
+        if (!member) {
+            console.error('Couldn\'t find the member');
+            return res.redirect('/');
+        }
 
         try {
             await channel.messages.fetch();
@@ -372,13 +397,22 @@ module.exports = async (client) => {
         renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, time: getTime });
     });
 
-    app.post('/channels/:guildID/:channelID', checkAuth, async (req, res) => {
+    app.post('/guild/:guildID/channel/:channelID', checkAuth, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) return res.redirect('/');
+        if (!guild) {
+            console.error('Couldn\'t find the guild');
+            return res.redirect('/');
+        }
         const channel = guild.channels.cache.get(req.params.channelID);
-        if (!channel) return res.redirect('/');
+        if (!channel) {
+            console.error('Couldn\'t find the channel');
+            return res.redirect('/');
+        }
         const member = guild.members.cache.get(req.user.id);
-        if (!member) return res.redirect('/');
+        if (!member) {
+            console.error('Couldn\'t find the member');
+            return res.redirect('/');
+        }
 
         try {
             await channel.messages.fetch();
@@ -400,9 +434,77 @@ module.exports = async (client) => {
 
     });
 
+    app.get('/guild/:guildID/user/:userID', checkAuth, async (req, res) => {
+        const guild = client.guilds.cache.get(req.params.guildID);
+        if (!guild) {
+            console.error('Coulnd\'t find the guild');
+            return res.redirect(404);
+        }
+        const member = guild.members.cache.get(req.params.userID);
+        if (!member) {
+            console.error('Couldn\'t find the member');
+            return res.redirect(404);
+        }
+        let memberStatus = member.presence.status;
+
+        switch (memberStatus) {
+            case 'dnd':
+                memberStatus = capAllLetters(memberStatus);
+                break;
+            default:
+                memberStatus = capFirstLetter(memberStatus);
+                break;
+        }
+
+        let memberActivity = member.presence.activities[0];
+        let activity;
+
+        if (!memberActivity || memberActivity.length < 1) {
+            activity = {
+                name: 'Nothing',
+                type: 'Doing',
+            };
+        } else if (memberActivity.type === 'CUSTOM_STATUS') {
+            activity = {
+                name: '',
+                type: memberActivity.state,
+            };
+        } else {
+            activity = {
+                name: memberActivity.name,
+                type: memberActivity.type,
+            };
+        }
+
+        activity.type = activity.type.toLowerCase();
+        activity.type = capFirstLetter(activity.type);
+
+        switch (activity.type) {
+            case 'Listening':
+                activity.type += ' to';
+                activity.name = memberActivity.details;
+                break;
+        }
+
+        if (typeof (memberActivity) !== 'undefined') {
+            if (typeof (memberActivity.details) !== 'undefined' && memberActivity.details !== null) {
+                activity.name += ` On ${memberActivity.name}`;
+            }
+        }
+
+        let bgColor;
+
+        if (member.user.avatar) {
+            bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png?size=128`);
+        } else {
+            bgColor = '#007bff';
+        }
+        renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity });
+    });
+
     app.get('/owner', checkAuth, async (req, res) => {
         const owner = req.user;
-        if(owner.id !== process.env.OWNER_ID) {
+        if (owner.id !== process.env.OWNER_ID) {
             res.redirect('/');
         }
 
@@ -412,8 +514,8 @@ module.exports = async (client) => {
         let allCommands = client.commands.cache;
         let allCategories = client.categories;
 
-        renderTemplate(res, req, 'owner.ejs', { owner, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, allUsers, allGuilds, allChannels, allCommands, allCategories })
-    })
+        renderTemplate(res, req, 'owner.ejs', { owner, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, allUsers, allGuilds, allChannels, allCommands, allCategories });
+    });
 
     app.use((req, res, next) => {
         res.status(404);

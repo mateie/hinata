@@ -1,7 +1,4 @@
-/* eslint-disable no-shadow */
 const Discord = require('discord.js');
-// eslint-disable-next-line no-unused-vars
-const Logging = require('./util/logging');
 const Loader = require('./util/loader');
 require('dotenv').config();
 

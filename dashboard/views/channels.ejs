@@ -29,7 +29,11 @@
                                     <ul>
                                         <% channel.permissionOverwrites.filter(p => p.id !== everyone.id).forEach(perm => { %>
                                         <% let role = guild.roles.cache.get(perm.id) %>
+                                        <% if(role) { %>
                                         <li><%= role.name %></li>
+                                        <% } else { %>
+                                        <li>None</li>
+                                        <% } %>
                                         <% }) %>
                                     </ul>
                                     </p>
@@ -38,16 +42,12 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <!-- DIRECT CHAT PRIMARY -->
                             <div class="card card-primary carduotline direct-chat direct-chat-primary">
                                 <div class="card-header">
                                     <h3 class="card-title">Channel Messages</h3>
                                 </div>
-                                <!-- /.card-header -->
                                 <div class="card-body">
-                                    <!-- Conversations are loaded here -->
                                     <div class="direct-chat-messages">
-                                        <!-- Message. Default to the left -->
                                         <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
                                         <% if(!message.author.bot || message.author.id === bot.user.id) { %>
                                         <% if (message.author.id === user.id) { %>

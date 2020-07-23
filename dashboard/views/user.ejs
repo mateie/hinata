@@ -1,0 +1,66 @@
+<html lang="en">
+<%- include('../partials/_head', { bot, user, path, title: `${user.username}'s Profile` }) %>
+
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+        <%- include('../partials/_navbar') %>
+        <%- include('../partials/_sidebar') %>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-widget widget-user">
+                                <div class="widget-user-header" style="background-color: <%= color %>">
+                                    <h3 class="widget-user-username text-light"><%= member.user.username %></h3>
+                                    <h5 class="widget-user-desc text-light"><%= member.user.discriminator %></h5>
+                                </div>
+                                <div class="widget-user-image">
+                                    <% if(member.user.avatar !== undefined && member.user.avatar !== null) { %>
+                                    <img class="img-circle elevation-2"
+                                        src="https://cdn.discordapp.com/avatars/<%= member.user.id %>/<%= member.user.avatar %>.png?size=128"
+                                        alt="Member Avatar" />
+                                    <% } else { %>
+                                    <img class="img-circle elevation-2"
+                                        src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
+                                        alt="Member Avatar" />
+                                    <% } %>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Status</h5>
+                                                <span class="description-text"><%= status %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">Activity</h5>
+                                                <span class="description-text"><%= activity.type %>
+                                                    <%= activity.name %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="description-block">
+                                                <h5 class="description-header">ID</h5>
+                                                <span class="description-text"><%= member.user.id %></span>
+                                            </div>
+                                            <!-- /.description-block -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <%- include('../partials/_footer') %>
+    </div>
+
+    <%- include('../partials/_scripts') %>
+</body>
+
+</html>

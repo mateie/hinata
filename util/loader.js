@@ -51,11 +51,9 @@ exports.commands = client => {
 
             if(typeof (props.help.enabled) === 'undefined') {
                 console.error(`${command} is missing enabled option`);
-            } else if(props.help.enabled === false) {
-                console.info(`${category}/${command} is disabled`);
             } else {
+                console.info(`${category}/${command} loaded`);
                 client.commands.set(props.help.name, props);
-                console.info(`${category}/${command} is enabled`);
             }
         });
     });

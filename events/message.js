@@ -114,6 +114,10 @@ client.on('message', async message => {
                 }
             });
 
+            if(commandFile.help.enabled === false) {
+                return message.channel.send(`${commandFile.help.name} command is **Disabled**`);
+            }
+
             if (ok) {
                 let requiredArgs = 0, optionalArgs = 0;
                 commandFile.help.args.forEach(value => {

@@ -13,7 +13,7 @@
                         <div class="card card-widget widget-user-2">
                             <div class="widget-user-header bg-primary">
                                 <div class="widget-user-image">
-                                    <% if(guild.icon != undefined || guild.icon != null) { %>
+                                    <% if(guild.icon != undefined && guild.icon != null) { %>
                                     <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=32"
                                         class="img-circle elevation-4" alt="User Image">
                                     <% } else { %>
@@ -37,7 +37,7 @@
                                 <span class="info-box-icon"><i class="fas fa-user"></i></span>
 
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Total Users</span>
+                                    <span class="info-box-text">Total Members</span>
                                     <span
                                         class="info-box-number"><%= guild.members.cache.filter(m => !m.user.bot).size %></span>
                                 </div>
@@ -80,7 +80,7 @@
                         <div class="col-md-3">
                             <div class="card card-primary collapsed-card">
                                 <div class="card-header">
-                                    <h3 class="card-title">All Users</h3>
+                                    <h3 class="card-title">All Members</h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
@@ -91,7 +91,7 @@
                                 <div class="card-body">
                                     <ul>
                                         <% guild.members.cache.filter(m => !m.user.bot).forEach(member => { %>
-                                        <li><%= member.user.username %>#<%= member.user.discriminator %></li>
+                                        <li><a href="/guild/<%= guild.id %>/user/<%= member.user.id %>"><%= member.user.username %></a>#<%= member.user.discriminator %></li>
                                         <% }) %>
                                     </ul>
                                 </div>
@@ -134,7 +134,7 @@
                                         <% if(cha.type === 'voice') { %>
                                         <li><%= cha.name %> (<%= cha.type %>)</li>
                                         <% } else { %>
-                                        <li><a href="/channels/<%= guild.id %>/<%= cha.id %>"><%= cha.name %>
+                                        <li><a href="/guild/<%= guild.id%>/channel/<%= cha.id %>"><%= cha.name %>
                                                 (<%= cha.type %>)</a></li>
                                         <% } %>
                                         <% }) %>
@@ -146,7 +146,7 @@
                                             <% if(channel.type === 'voice') { %>
                                             <li><%= channel.name %> (<%= channel.type %>)</li>
                                             <% } else { %>
-                                            <li><a href="/channels/<%= guild.id %>/<%= channel.id %>"><%= channel.name %>
+                                            <li><a href="/guild/<%= guild.id %>/channel/<%= channel.id %>"><%= channel.name %>
                                                     (<%= channel.type %>)</a></li>
                                             <% } %>
                                             <% } %>
