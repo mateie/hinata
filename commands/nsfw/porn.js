@@ -60,7 +60,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
-    enabled: true,
+    enabled: false,
     name: 'porn',
     aliases: [],
     args: ['<tag>', '<type>'],
