@@ -14,6 +14,7 @@ exports.run = (client, message, args) => {
         return message.channel.send('Specify a tag');
     }
 
+    // eslint-disable-next-line no-undef
     const Searcher = new Pornsearch(name);
 
     if(type === 'gif') {
