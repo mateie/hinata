@@ -12,6 +12,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card card-widget widget-user">
+                                <% if(member.user.id === member.guild.ownerID) { %>
+                                <div class="ribbon-wrapper ribbon-lg">
+                                    <div class="ribbon bg-danger text-lg">
+                                        Owner
+                                    </div>
+                                </div>
+                                <% } %>
                                 <div class="widget-user-header" style="background-color: <%= color %>">
                                     <h3 class="widget-user-username text-light"><%= member.user.username %></h3>
                                     <h5 class="widget-user-desc text-light"><%= member.user.discriminator %></h5>
