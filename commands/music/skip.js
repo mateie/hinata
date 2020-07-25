@@ -3,10 +3,10 @@ exports.run = async (client, message) => {
     let serverQueue = queue.get(message.guild.id);
 
     if(serverQueue) {
-        message.channel.send('Song skipped');
+        message.channel.send(':arrow_right: Song skipped');
         serverQueue.connection.dispatcher.end();
     } else {
-        return message.channel.send('Music not playing');
+        return message.channel.send(':no_entry_sign: Music not playing');
     }
 };
 

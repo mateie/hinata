@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
         serverQueue.connection.dispatcher.setVolumeLogarithmic(newVolume / 100);
         message.channel.send(`Successfully set the volume to ${newVolume}`);
     } else {
-        return message.channel.send('Music not playing');
+        return message.channel.send(':no_entry_sign: Music not playing');
     }
 };
 

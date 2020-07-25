@@ -5,9 +5,9 @@ exports.run = async (client, message) => {
     if(serverQueue && serverQueue.playing) {
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end();
-        message.channel.send('Music stopped');
+        message.channel.send(':stop_button: Music stopped');
     } else {
-        return message.channel.send('Music not playing');
+        return message.channel.send(':no_entry_sign: Music not playing');
     }
 };
 

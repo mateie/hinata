@@ -6,14 +6,14 @@ exports.run = async (client, message) => {
         if(serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
-            message.channel.send('Music paused');
+            message.channel.send(':pause_button: Music paused');
         } else {
             serverQueue.playing = true;
             serverQueue.connection.dispatcher.resume();
-            message.channel.send('Music resumed');
+            message.channel.send(':arrow_forward: Music resumed');
         }
     } else {
-        return message.channel.send('Music is not playing');
+        return message.channel.send(':no_entry_sign: Music is not playing');
     }
 };
 

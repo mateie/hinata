@@ -5,13 +5,13 @@ exports.run = async (client, message) => {
     if(serverQueue && serverQueue.playing) {
         if(serverQueue.loop) {
             serverQueue.loop = false;
-            message.channel.send('Loop turned off');
+            message.channel.send(':arrow_right: Loop turned off');
         } else {
             serverQueue.loop = true;
-            message.channel.send('Loop turned on');
+            message.channel.send(':arrows_counterclockwise: Loop turned on');
         }
     } else {
-        return message.channel.send(`Music not playing`);
+        return message.channel.send(':no_entry_sign: Music not playing');
     }
 };
 

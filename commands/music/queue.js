@@ -7,19 +7,26 @@ exports.run = async (client, message) => {
 
     if(serverQueue) {
         let embed = new Discord.MessageEmbed()
-        .setTitle('Music queue');
+        .setTitle(`${message.guild.name} Music Queue`);
 
         serverQueue.songs.forEach((song, index) => {
             let progress = '';
-            if(index == 0) progress = `${secondsToDuration(Math.floor(serverQueue.connection.dispatcher.time / 100))}/`;
 
-            embed.addField(`[${index}] ${song.title} (${progress}${secondsToDuration(song.duration)})`, song.url);
+            if(index == 0) {
+                progress = serverQueue.connection.dispatcher.streamTime / 1000;
+                progress = Math.floor(progress);
+                progress = secondsToDuration(progress);
+                embed.addField(`[Currently Playing] ${song.title}`, `Song Duration: [${progress}/${secondsToDuration(song.duration)}]`);
+            } else {
+                embed.addField(`[${index + 1}] ${song.title}`, `Song Duration: ${secondsToDuration(song.duration)}`);
+            }
         });
 
-        embed.addField(`Loop: ${serverQueue.loop}`, `Queue size: ${serverQueue.songs.length}`);
+        embed.addField(`Loop: ${serverQueue.loop ? 'On' : 'Off'}`, '\u200B', true);
+        embed.addField(`Queue size: ${serverQueue.songs.length}`, '\u200B', true);
         message.channel.send(embed);
     } else {
-        return message.channel.send('Music not playing');
+        return message.channel.send(':no_entry_sign: Music is not playing');
     }
 };
 

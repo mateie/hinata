@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
         message.channel.send(`Track ${args[0]} removed from the queue`);
         serverQueue.songs.splice(args[0], 1);
     } else {
-        return message.channel.send('Music not playing');
+        return message.channel.send(':no_entry_sign: Music not playing');
     }
 };
 
