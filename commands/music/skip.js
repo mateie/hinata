@@ -11,10 +11,10 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'skip',
     aliases: ['s'],
     args: [],
     permission: 'DJ',
     description: 'Skip the current song',
-    usage: 'skip',
 };

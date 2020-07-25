@@ -3,11 +3,15 @@ exports.run = async (client, message, args) => {
     let serverQueue = queue.get(message.guild.id);
 
     let newVolume = parseInt(args[0]) || undefined;
-    if(!newVolume || newVolume < 1 || newVolume > 200) {
+    if (!newVolume) {
+        return message.channel.send(`Current Volume is ${serverQueue.volume}`);
+    }
+
+    if (newVolume < 1 || newVolume > 200) {
         return message.channel.send(`Please, enter an integer from 1 to 200 Volume: ${serverQueue.volume}`);
     }
 
-    if(serverQueue && serverQueue.playing) {
+    if (serverQueue && serverQueue.playing) {
         serverQueue.last_volume = serverQueue.volume;
         serverQueue.volume = newVolume;
         serverQueue.connection.dispatcher.setVolumeLogarithmic(newVolume / 100);
@@ -18,9 +22,10 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'volume',
     aliases: ['vol'],
     args: ['[0-200]'],
-    permission: 'USER',
+    permission: 'DJ',
     description: 'Set a volume to an integer',
 };

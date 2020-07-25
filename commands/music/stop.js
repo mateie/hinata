@@ -12,10 +12,10 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'stop',
     aliases: [],
     args: [],
     permission: 'DJ',
     description: 'Stop the music',
-    usage: 'stop',
 };

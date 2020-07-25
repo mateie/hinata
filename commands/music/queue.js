@@ -24,12 +24,12 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'queue',
     aliases: ['q'],
     args: [],
     permission: 'DJ',
     description: 'Shows the current queue',
-    usage: 'queue',
 };
 
 function secondsToDuration(sec) {

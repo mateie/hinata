@@ -46,6 +46,7 @@ exports.run = (client, message, args) => {
 };
 
 exports.help = {
+    enabled: false,
     name: 'lyrics',
     aliases: [],
     args: ['[song name]'],

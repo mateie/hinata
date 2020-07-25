@@ -16,10 +16,10 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'loop',
     aliases: [],
     args: [],
     permission: 'DJ',
     description: 'Loop the current song',
-    usage: 'loop',
 };

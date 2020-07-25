@@ -18,10 +18,10 @@ exports.run = async (client, message) => {
 };
 
 exports.help = {
+    enabled: true,
     name: 'pause',
     aliases: [],
     args: [],
     permission: 'DJ',
     description: 'Pauses the current queue',
-    usage: 'pause',
 };
