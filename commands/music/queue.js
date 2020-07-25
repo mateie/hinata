@@ -28,7 +28,7 @@ exports.help = {
     name: 'queue',
     aliases: ['q'],
     args: [],
-    permission: 'DJ',
+    permission: 'USER',
     description: 'Shows the current queue',
 };
 
