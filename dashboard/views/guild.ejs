@@ -26,6 +26,23 @@
                             </div>
                         </div>
                     </div>
+                    <% if(musicQueue) { %>
+                    <div class="col-md-4">
+                        <div class="info-box bg-primary">
+                            <span class="info-box-icon">
+                                <img src="<%= musicQueue.songs[0].author.avatar %>" class="img-circle elevation-2" />
+                            </span>
+                            <div class="info-box-content">
+                                <span
+                                    class="info-box-text"><%= musicQueue.playing ? 'Currently Playing' : 'Paused' %></span>
+                                <span class="info-box-number"><%= musicQueue.songs[0].title %></span>
+                            </div>
+                            <div class="card-tools">
+                                <a href="/guild/<%= guild.id %>/queue" class="text-light">Queue</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
                 </div>
             </section>
 
@@ -91,7 +108,9 @@
                                 <div class="card-body">
                                     <ul>
                                         <% guild.members.cache.filter(m => !m.user.bot).forEach(member => { %>
-                                        <li><a href="/guild/<%= guild.id %>/user/<%= member.user.id %>"><%= member.user.username %></a>#<%= member.user.discriminator %></li>
+                                        <li><a
+                                                href="/guild/<%= guild.id %>/user/<%= member.user.id %>"><%= member.user.username %></a>#<%= member.user.discriminator %>
+                                        </li>
                                         <% }) %>
                                     </ul>
                                 </div>

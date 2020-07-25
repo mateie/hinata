@@ -300,9 +300,13 @@ module.exports = async (client) => {
         }
         if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
+        const queue = client.queue.get(guild.id);
+
+        console.log(queue);
+
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-        renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+        renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, musicQueue: queue });
     });
 
     app.post('/guild/:guildID', checkAuth, async (req, res) => {
@@ -500,6 +504,10 @@ module.exports = async (client) => {
             bgColor = '#007bff';
         }
         renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity });
+    });
+
+    app.get('/guild/:guildID/queue', checkAuth, async (req, res) => {
+        
     });
 
     app.get('/owner', checkAuth, async (req, res) => {

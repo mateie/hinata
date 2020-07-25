@@ -66,7 +66,7 @@ exports.run = async (client, message, args) => {
 
                 // eslint-disable-next-line no-shadow
                 let serverQueue = client.queue.get(message.guild.id);
-                if (serverQueue.connection.dispatcher) {
+                if (!serverQueue.connection.dispatcher) {
                     serverQueue.songs = [];
                     serverQueue.connection.dispatcher.end();
                     message.channel.send(':stop_button: Music stopped');
