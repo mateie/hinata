@@ -8,13 +8,7 @@ const client = new Discord.Client({
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
-client.music = {
-    queue: [],
-    isPlaying: false,
-    nowPlaying: null,
-    songDispatcher: null,
-    volume: 1,
-};
+client.queue = new Map();
 client.categories = [];
 
 module.exports = { client: client };
