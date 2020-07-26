@@ -521,7 +521,7 @@ module.exports = async (client) => {
 
         const queue = client.queue.get(guild.id);
 
-        console.log(queue);
+        // console.log(queue);
 
         let notification;
 
@@ -542,10 +542,9 @@ module.exports = async (client) => {
         if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
         const queue = client.queue.get(guild.id);
+        console.log(queue);
 
         let songLink = req.body['song-link'];
-
-        console.log(songLink);
 
         let notification;
 
@@ -593,6 +592,14 @@ module.exports = async (client) => {
                     }
                 }
             }
+        }
+
+        if(Object.keys(req.body).length < 1) {
+            queue.songs.forEach((song, index) => {
+                if(index !== 0) {
+                    delete queue.songs[index];
+                }
+            });
         }
 
         renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, alertMessage: notification, toasts: res.locals.toasts, member: member, queue: queue, guild: guild, convert: secondsToDuration });

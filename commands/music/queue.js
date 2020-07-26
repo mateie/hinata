@@ -18,7 +18,7 @@ exports.run = async (client, message) => {
                 progress = secondsToDuration(progress);
                 embed.addField(`[Currently Playing] ${song.title}`, `Song Duration: [${progress}/${secondsToDuration(song.duration)}]`);
             } else {
-                embed.addField(`[${index + 1}] ${song.title}`, `Song Duration: ${secondsToDuration(song.duration)}`);
+                embed.addField(`[${index}] ${song.title}`, `Song Duration: ${secondsToDuration(song.duration)}`);
             }
         });
 
