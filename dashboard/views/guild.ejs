@@ -38,7 +38,9 @@
                                 <span class="info-box-number"><%= musicQueue.songs[0].title %></span>
                             </div>
                             <div class="card-tools">
-                                <a href="/guild/<%= guild.id %>/queue" class="text-light">Queue</a>
+                                <button type="button" class="btn btn-tool">
+                                    <a href="/guild/<%= guild.id %>/queue" class="text-light">Queue</a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -272,9 +274,9 @@
                                 </form>
                             </div>
                         </div>
-                        <% if(alertMessage) {
-                            req.toastr.success(alertMessage);
-                        } %>
+                        <% if(alertMessage) { %>
+                        <% req.toastr.success(alertMessage); %>
+                        <% } %>
             </section>
         </div>
         <%- include('../partials/_footer') %>

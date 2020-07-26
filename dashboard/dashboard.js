@@ -10,10 +10,12 @@ const parser = require('body-parser');
 const Discord = require('discord.js');
 const Servers = require(`${process.cwd()}/models/servers`);
 const Canvas = require('canvas');
+const YTDL = require('ytdl-core');
+const cookieParser = require('cookie-parser');
 
 const flash = require('connect-flash');
 const toastr = require('express-toastr');
-const cookieParser = require('cookie-parser');
+const Search = require('youtube-search');
 
 const app = express();
 const MemoryStore = require('memorystore')(session);
@@ -302,8 +304,6 @@ module.exports = async (client) => {
 
         const queue = client.queue.get(guild.id);
 
-        console.log(queue);
-
         let storedSettings = await Servers.findOne({ serverID: guild.id });
 
         renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, musicQueue: queue });
@@ -507,7 +507,95 @@ module.exports = async (client) => {
     });
 
     app.get('/guild/:guildID/queue', checkAuth, async (req, res) => {
-        
+        const guild = client.guilds.cache.get(req.params.guildID);
+        if (!guild) {
+            console.error('Couldn\'t find a guild');
+            return res.redirect('/');
+        }
+        const member = guild.members.cache.get(req.user.id);
+        if (!member) {
+            console.error('Couldn\'t find a member');
+            return res.redirect('/');
+        }
+        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
+
+        const queue = client.queue.get(guild.id);
+
+        console.log(queue);
+
+        let notification;
+
+        renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, alertMessage: notification, member: member, queue: queue, guild: guild, convert: secondsToDuration });
+    });
+
+    app.post('/guild/:guildID/queue', checkAuth, async (req, res) => {
+        const guild = client.guilds.cache.get(req.params.guildID);
+        if (!guild) {
+            console.error('Couldn\'t find a guild');
+            return res.redirect('/');
+        }
+        const member = guild.members.cache.get(req.user.id);
+        if (!member) {
+            console.error('Couldn\'t find a member');
+            return res.redirect('/');
+        }
+        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
+
+        const queue = client.queue.get(guild.id);
+
+        let songLink = req.body['song-link'];
+
+        console.log(songLink);
+
+        let notification;
+
+        if (songLink) {
+            let validate = YTDL.validateURL(songLink);
+            if (!validate) {
+                let searchOptions = {
+                    maxResults: 10,
+                    key: process.env.GOOGLE_API_KEY,
+                };
+
+                let searchResults = await Search(songLink, searchOptions);
+                if (searchResults.results.length > 0) {
+                    songLink = searchResults.results.find(val => val.kind == 'youtube#video').link;
+                    if (!YTDL.validateURL(songLink)) {
+                        notification = 'Video not found';
+                    }
+                } else {
+                    notification = 'Video not found';
+                }
+            }
+
+            let songInfo = await YTDL.getInfo(songLink);
+            if (songInfo) {
+                let song = {
+                    author: {
+                        name: songInfo.videoDetails.author.name,
+                        channel: songInfo.videoDetails.author.channel_url,
+                        avatar: songInfo.videoDetails.author.avatar,
+                    },
+                    title: songInfo.videoDetails.title,
+                    url: songInfo.videoDetails.video_url,
+                    duration: songInfo.videoDetails.lengthSeconds,
+                    likes: songInfo.videoDetails.likes,
+                    dislikes: songInfo.videoDetails.dislikes,
+                    thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url,
+                };
+
+                if (queue) {
+                    if (queue.songs.length >= 20) {
+                        notification = 'Max Queue Length is 20';
+                    } else {
+                        queue.songs.push(song);
+                        notification = 'Song Successfully added to the queue';
+                    }
+                }
+            }
+        }
+
+        renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, alertMessage: notification, toasts: res.locals.toasts, member: member, queue: queue, guild: guild, convert: secondsToDuration });
     });
 
     app.get('/owner', checkAuth, async (req, res) => {
@@ -613,4 +701,17 @@ const getTime = (timestamp) => {
     let newDate = `${date} ${time}`;
 
     return newDate;
+};
+
+const secondsToDuration = sec => {
+    let hours = Math.floor(sec / 3600);
+    let minutes = Math.floor((sec - (hours * 3600)) / 60);
+    let seconds = sec - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) hours = `0${hours}`;
+    if (minutes < 10) minutes = `0${minutes}`;
+    if (seconds < 10) seconds = `0${seconds}`;
+
+    if (hours > 0) return `${hours}:${minutes}:${seconds}`;
+    else return `${minutes}:${seconds}`;
 };
