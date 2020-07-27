@@ -4,7 +4,7 @@ const { Permissions } = require('discord.js');
 
 const handleErrors = (err, req, res, next) => {
     if (err instanceof GeneralError) {
-        renderTemplate(req, res, 'error.ejs', { perms: Permissions, capL: capFirstLetter, capA: capAllLetters, error: err });
+        // renderTemplate(req, res, 'error.ejs', { perms: Permissions, capL: capFirstLetter, capA: capAllLetters, error: err });
         return res.status(err.getCode()).json({
             status: 'error',
             code: err.getCode(),
@@ -12,7 +12,7 @@ const handleErrors = (err, req, res, next) => {
         });
     }
 
-    renderTemplate(req, res, 'error.ejs', { perms: Permissions, capL: capFirstLetter, capA: capAllLetters, error: err });
+    // renderTemplate(req, res, 'error.ejs', { perms: Permissions, capL: capFirstLetter, capA: capAllLetters, error: err });
     return res.status(500).json({
         status: 'error',
         code: err.getCode(),
