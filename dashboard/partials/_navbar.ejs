@@ -6,13 +6,6 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/" class="nav-link">Home</a>
         </li>
-        <% if(user) { %>
-        <% if(user.id === process.env.OWNER_ID) { %>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="/owner" class="nav-link">Owner Panel</a>
-        </li>
-        <% } %>
-        <% } %>
     </ul>
 
     <ul class="navbar-nav ml-auto">

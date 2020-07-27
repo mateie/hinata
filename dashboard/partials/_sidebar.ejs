@@ -39,6 +39,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <% if(user.guilds) { %>
                         <% user.guilds.forEach(guild => {
                             const permsOnGuild = new perms(guild.permissions);
                             if(!permsOnGuild.has('MANAGE_GUILD')) return;
@@ -73,6 +74,7 @@
                         </li>
                         <% }) %>
                     </ul>
+                    <% } %>
                 </li>
                 <% } %>
                 <li class="nav-item has-treeview">

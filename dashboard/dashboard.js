@@ -12,10 +12,12 @@ const Servers = require(`${process.cwd()}/models/servers`);
 const Canvas = require('canvas');
 const YTDL = require('ytdl-core');
 const cookieParser = require('cookie-parser');
+const { BadRequest, NotFound } = require('./util/errors');
 
 const flash = require('connect-flash');
 const toastr = require('express-toastr');
 const Search = require('youtube-search');
+const handleErrors = require('./middleware/handleErrors');
 
 const app = express();
 const MemoryStore = require('memorystore')(session);
@@ -63,7 +65,7 @@ module.exports = async (client) => {
     app.use(flash());
     app.use(toastr());
 
-    const renderTemplate = (res, req, template, data = {}) => {
+    exports.renderTemplate = (res, req, template, data = {}) => {
         const baseData = {
             bot: client,
             path: req.path,
@@ -116,55 +118,60 @@ module.exports = async (client) => {
         });
     });
 
-    app.get('/', (req, res) => {
-        let botStatus = client.presence.status;
-        let botActivity = client.presence.activities[0];
+    app.get('/', (req, res, next) => {
 
-        let bgColor = 'gradient-';
+        try {
+            let botStatus = client.presence.status;
+            let botActivity = client.presence.activities[0];
 
-        switch (botStatus) {
-            case 'dnd':
-                bgColor += 'danger';
-                botStatus = capAllLetters(botStatus);
-                break;
-            case 'idle':
-                bgColor += 'warning';
-                botStatus = capFirstLetter(botStatus);
-                break;
-            case 'online':
-                bgColor += 'success';
-                botStatus = capFirstLetter(botStatus);
-                break;
-            default:
-                bgColor += 'black';
-                botStatus = capFirstLetter(botStatus);
-                break;
+            let bgColor = 'gradient-';
+
+            switch (botStatus) {
+                case 'dnd':
+                    bgColor += 'danger';
+                    botStatus = this.capAllLetters(botStatus);
+                    break;
+                case 'idle':
+                    bgColor += 'warning';
+                    botStatus = this.capFirstLetter(botStatus);
+                    break;
+                case 'online':
+                    bgColor += 'success';
+                    botStatus = this.capFirstLetter(botStatus);
+                    break;
+                default:
+                    bgColor += 'black';
+                    botStatus = this.capFirstLetter(botStatus);
+                    break;
+            }
+
+            let activity;
+
+            if (!botActivity) {
+                activity = {
+                    name: 'Nothing',
+                    type: 'Doing',
+                };
+            } else {
+                activity = {
+                    name: botActivity.name,
+                    type: botActivity.type,
+                };
+            }
+
+            activity.type = activity.type.toLowerCase();
+            activity.type = this.capFirstLetter(activity.type);
+
+            switch (activity.type) {
+                case 'Listening':
+                    activity.type += ' to';
+                    break;
+            }
+
+            this.renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, status: botStatus, activity: activity, bg: bgColor, capL: this.capFirstLetter, capA: this.capAllLetters });
+        } catch (err) {
+            next(err);
         }
-
-        let activity;
-
-        if (!botActivity) {
-            activity = {
-                name: 'Nothing',
-                type: 'Doing',
-            };
-        } else {
-            activity = {
-                name: botActivity.name,
-                type: botActivity.type,
-            };
-        }
-
-        activity.type = activity.type.toLowerCase();
-        activity.type = capFirstLetter(activity.type);
-
-        switch (activity.type) {
-            case 'Listening':
-                activity.type += ' to';
-                break;
-        }
-
-        renderTemplate(res, req, 'index.ejs', { perms: Discord.Permissions, status: botStatus, activity: activity, bg: bgColor, capL: capFirstLetter, capA: capAllLetters });
     });
 
     app.get('/user/me', checkAuth, async (req, res) => {
@@ -176,10 +183,10 @@ module.exports = async (client) => {
 
         switch (memberStatus) {
             case 'dnd':
-                memberStatus = capAllLetters(memberStatus);
+                memberStatus = this.capAllLetters(memberStatus);
                 break;
             default:
-                memberStatus = capFirstLetter(memberStatus);
+                memberStatus = this.capFirstLetter(memberStatus);
                 break;
         }
 
@@ -200,7 +207,7 @@ module.exports = async (client) => {
         }
 
         activity.type = activity.type.toLowerCase();
-        activity.type = capFirstLetter(activity.type);
+        activity.type = this.capFirstLetter(activity.type);
 
         switch (activity.type) {
             case 'Listening':
@@ -282,360 +289,380 @@ module.exports = async (client) => {
         }
 
         let bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`);
-        renderTemplate(res, req, 'me.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, status: memberStatus, activity: activity, premium: premiumType, title: userType, color: bgColor });
+        this.renderTemplate(res, req, 'me.ejs', { perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, status: memberStatus, activity: activity, premium: premiumType, title: userType, color: bgColor });
     });
 
     app.get('/commands', (req, res) => {
-        renderTemplate(res, req, 'commands.ejs', { res, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
+        this.renderTemplate(res, req, 'commands.ejs', { res, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters });
     });
 
-    app.get('/guild/:guildID', checkAuth, async (req, res) => {
-        const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) {
-            console.error('Couldn\'t find a guild');
-            return res.redirect('/');
-        }
-        const member = guild.members.cache.get(req.user.id);
-        if (!member) {
-            console.error('Couldn\'t find a member');
-            return res.redirect('/');
-        }
-        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
-
-        const queue = client.queue.get(guild.id);
-
-        let storedSettings = await Servers.findOne({ serverID: guild.id });
-
-        renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, musicQueue: queue });
-    });
-
-    app.post('/guild/:guildID', checkAuth, async (req, res) => {
-        const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) {
-            console.error('Couldn\'t find a guild');
-            return res.redirect('/');
-        }
-        const member = guild.members.cache.get(req.user.id);
-        if (!member) {
-            console.error('Couldn\'t find a member');
-            return res.redirect('/');
-        }
-        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
-
-        let storedSettings = await Servers.findOne({ serverID: guild.id });
-
-        let inputKeys = Object.keys(req.body);
-        let inputValues = Object.values(req.body);
-
-        let embed = new Discord.MessageEmbed()
-            .setTitle('Server Settings')
-            .setDescription('Settings was changed from dashboard');
-
-        for (let x = 0; x < inputKeys.length; x++) {
-            let inputKey = inputKeys[x];
-            let inputValue = inputValues[x];
-
-            let inputType = inputKey.split('-')[0];
-
-
-            if (inputValues.length > 1) {
-                inputType += 's';
-            }
-
-            if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValues.length > 1) {
-                storedSettings[inputType][Object.keys(storedSettings[inputType])[x + 1]] = inputValue;
-            } else if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValue.length === 1) {
-                storedSettings[inputType] = inputValue;
-            }
-
-            let inputs = inputKey;
-            let names = [];
-
-            inputs = inputs.split('-');
-            for (let z = 0; z < inputs.length; z++) {
-                let input = inputs[z];
-                input = capFirstLetter(input);
-                names[z] = input;
-            }
-
-            names = names.join(' ');
-
-            embed.addField('\u200b', `${names} was updated to ${inputValue}`);
-
-        }
-
-        member.send({ embed });
-
-        storedSettings.save();
-
-        renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
-    });
-
-    app.get('/guild/:guildID/channel/:channelID', checkAuth, async (req, res) => {
-        const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) {
-            console.error('Couldn\'t find the guild');
-            return res.redirect('/');
-        }
-        const channel = guild.channels.cache.get(req.params.channelID);
-        if (!channel) {
-            console.error('Couldn\'t find the channel');
-            return res.redirect('/');
-        }
-        const member = guild.members.cache.get(req.user.id);
-        if (!member) {
-            console.error('Couldn\'t find the member');
-            return res.redirect('/');
-        }
-
+    app.get('/guild/:guildID', checkAuth, async (req, res, next) => {
         try {
-            await channel.messages.fetch();
-        } catch (err) {
-            console.error('Error fetching messages');
-            console.error(err);
-            return;
-        }
-
-        let messages = channel.messages.cache;
-
-        renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, time: getTime });
-    });
-
-    app.post('/guild/:guildID/channel/:channelID', checkAuth, async (req, res) => {
-        const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) {
-            console.error('Couldn\'t find the guild');
-            return res.redirect('/');
-        }
-        const channel = guild.channels.cache.get(req.params.channelID);
-        if (!channel) {
-            console.error('Couldn\'t find the channel');
-            return res.redirect('/');
-        }
-        const member = guild.members.cache.get(req.user.id);
-        if (!member) {
-            console.error('Couldn\'t find the member');
-            return res.redirect('/');
-        }
-
-        try {
-            await channel.messages.fetch();
-        } catch (err) {
-            console.error('Error fetching messages');
-            console.error(err);
-            return;
-        }
-
-        let messages = channel.messages.cache;
-
-        let messageSent = req.body.message;
-
-        if (messageSent) {
-            channel.send(`\`\`\`From: Dashboard\nSent by: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`);
-        }
-
-        renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, time: getTime });
-
-    });
-
-    app.get('/guild/:guildID/user/:userID', checkAuth, async (req, res) => {
-        const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) {
-            console.error('Coulnd\'t find the guild');
-            return res.redirect(404);
-        }
-        const member = guild.members.cache.get(req.params.userID);
-        if (!member) {
-            console.error('Couldn\'t find the member');
-            return res.redirect(404);
-        }
-        let memberStatus = member.presence.status;
-
-        switch (memberStatus) {
-            case 'dnd':
-                memberStatus = capAllLetters(memberStatus);
-                break;
-            default:
-                memberStatus = capFirstLetter(memberStatus);
-                break;
-        }
-
-        let memberActivity = member.presence.activities[0];
-        let activity;
-
-        if (!memberActivity || memberActivity.length < 1) {
-            activity = {
-                name: 'Nothing',
-                type: 'Doing',
-            };
-        } else if (memberActivity.type === 'CUSTOM_STATUS') {
-            activity = {
-                name: '',
-                type: memberActivity.state,
-            };
-        } else {
-            activity = {
-                name: memberActivity.name,
-                type: memberActivity.type,
-            };
-        }
-
-        activity.type = activity.type.toLowerCase();
-        activity.type = capFirstLetter(activity.type);
-
-        switch (activity.type) {
-            case 'Listening':
-                activity.type += ' to';
-                activity.name = memberActivity.details;
-                break;
-        }
-
-        if (typeof (memberActivity) !== 'undefined') {
-            if (typeof (memberActivity.details) !== 'undefined' && memberActivity.details !== null) {
-                activity.name += ` On ${memberActivity.name}`;
+            const guild = client.guilds.cache.get(req.params.guildID);
+            if (!guild) {
+                throw new NotFound(404, 'Guild not found');
             }
-        }
+            const member = guild.members.cache.get(req.user.id);
+            if (!member) {
+                throw new NotFound(404, 'Member not found');
 
-        let bgColor;
+            }
+            if (!member.permissions.has('MANAGE_GUILD')) {
+                return res.redirect('/');
+            }
 
-        if (member.user.avatar) {
-            bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png?size=128`);
-        } else {
-            bgColor = '#007bff';
+            const queue = client.queue.get(guild.id);
+
+            if (!queue) {
+                req.session.returnTo = req.path;
+            }
+
+            let storedSettings = await Servers.findOne({ serverID: guild.id });
+
+            this.renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, musicQueue: queue });
+        } catch (err) {
+            next(err);
         }
-        renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity });
     });
 
-    app.get('/guild/:guildID/queue', checkAuth, async (req, res) => {
-        const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) {
-            console.error('Couldn\'t find a guild');
-            return res.redirect('/');
+    app.post('/guild/:guildID', checkAuth, async (req, res, next) => {
+        try {
+            const guild = client.guilds.cache.get(req.params.guildID);
+            if (!guild) {
+                throw new NotFound(404, 'Guild not found');
+            }
+            const member = guild.members.cache.get(req.user.id);
+            if (!member) {
+                throw new NotFound(404, 'Member not found');
+            }
+            if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
+
+            let storedSettings = await Servers.findOne({ serverID: guild.id });
+
+            let inputKeys = Object.keys(req.body);
+            let inputValues = Object.values(req.body);
+
+            let embed = new Discord.MessageEmbed()
+                .setTitle('Server Settings')
+                .setDescription('Settings was changed from dashboard');
+
+            for (let x = 0; x < inputKeys.length; x++) {
+                let inputKey = inputKeys[x];
+                let inputValue = inputValues[x];
+
+                let inputType = inputKey.split('-')[0];
+
+
+                if (inputValues.length > 1) {
+                    inputType += 's';
+                }
+
+                if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValues.length > 1) {
+                    storedSettings[inputType][Object.keys(storedSettings[inputType])[x + 1]] = inputValue;
+                } else if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValue.length === 1) {
+                    storedSettings[inputType] = inputValue;
+                }
+
+                let inputs = inputKey;
+                let names = [];
+
+                inputs = inputs.split('-');
+                for (let z = 0; z < inputs.length; z++) {
+                    let input = inputs[z];
+                    input = this.capFirstLetter(input);
+                    names[z] = input;
+                }
+
+                names = names.join(' ');
+
+                embed.addField('\u200b', `${names} was updated to ${inputValue}`);
+
+            }
+
+            member.send({ embed });
+
+            storedSettings.save();
+
+            this.renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters });
+        } catch (err) {
+            next(err);
         }
-        const member = guild.members.cache.get(req.user.id);
-        if (!member) {
-            console.error('Couldn\'t find a member');
-            return res.redirect('/');
-        }
-        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
-
-        const queue = client.queue.get(guild.id);
-
-        // console.log(queue);
-
-        let notification;
-
-        renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, alertMessage: notification, member: member, queue: queue, guild: guild, convert: secondsToDuration });
     });
 
-    app.post('/guild/:guildID/queue', checkAuth, async (req, res) => {
-        const guild = client.guilds.cache.get(req.params.guildID);
-        if (!guild) {
-            console.error('Couldn\'t find a guild');
-            return res.redirect('/');
+    app.get('/guild/:guildID/channel/:channelID', checkAuth, async (req, res, next) => {
+        try {
+            const guild = client.guilds.cache.get(req.params.guildID);
+            if (!guild) {
+                throw new NotFound('Guild Not Found');
+            }
+            const channel = guild.channels.cache.get(req.params.channelID);
+            if (!channel) {
+                throw new NotFound('Channel Not Found');
+            }
+            const member = guild.members.cache.get(req.user.id);
+            if (!member) {
+                throw new NotFound('Member Not Found');
+            }
+
+            try {
+                await channel.messages.fetch();
+            } catch (err) {
+                console.error('Error fetching messages');
+                console.error(err);
+                return;
+            }
+
+            let messages = channel.messages.cache;
+
+            this.renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, time: getTime });
+        } catch (err) {
+            next(err);
         }
-        const member = guild.members.cache.get(req.user.id);
-        if (!member) {
-            console.error('Couldn\'t find a member');
-            return res.redirect('/');
+    });
+
+    app.post('/guild/:guildID/channel/:channelID', checkAuth, async (req, res, next) => {
+        try {
+            const guild = client.guilds.cache.get(req.params.guildID);
+            if (!guild) {
+                throw new NotFound('Guild Not Found');
+            }
+            const channel = guild.channels.cache.get(req.params.channelID);
+            if (!channel) {
+                throw new NotFound('Channel Not Found');
+            }
+            const member = guild.members.cache.get(req.user.id);
+            if (!member) {
+                throw new NotFound('Member Not Found');
+            }
+
+            try {
+                await channel.messages.fetch();
+            } catch (err) {
+                console.error('Error fetching messages');
+                console.error(err);
+                return;
+            }
+
+            let messages = channel.messages.cache;
+
+            let messageSent = req.body.message;
+
+            if (messageSent) {
+                channel.send(`\`\`\`From: Dashboard\nSent by: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`);
+            }
+
+            this.renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, time: getTime });
+        } catch (err) {
+            next(err);
         }
-        if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
+    });
 
-        const queue = client.queue.get(guild.id);
-        console.log(queue);
+    app.get('/guild/:guildID/user/:userID', checkAuth, async (req, res, next) => {
+        try {
+            const guild = client.guilds.cache.get(req.params.guildID);
+            if (!guild) {
+                throw NotFound('Guild not found');
+            }
+            const member = guild.members.cache.get(req.params.userID);
+            if (!member) {
+                throw NotFound('Member not found');
+            }
+            let memberStatus = member.presence.status;
 
-        let songLink = req.body['song-link'];
+            switch (memberStatus) {
+                case 'dnd':
+                    memberStatus = this.capAllLetters(memberStatus);
+                    break;
+                default:
+                    memberStatus = this.capFirstLetter(memberStatus);
+                    break;
+            }
 
-        let notification;
+            let memberActivity = member.presence.activities[0];
+            let activity;
 
-        if (songLink) {
-            let validate = YTDL.validateURL(songLink);
-            if (!validate) {
-                let searchOptions = {
-                    maxResults: 10,
-                    key: process.env.GOOGLE_API_KEY,
+            if (!memberActivity || memberActivity.length < 1) {
+                activity = {
+                    name: 'Nothing',
+                    type: 'Doing',
                 };
+            } else if (memberActivity.type === 'CUSTOM_STATUS') {
+                activity = {
+                    name: '',
+                    type: memberActivity.state,
+                };
+            } else {
+                activity = {
+                    name: memberActivity.name,
+                    type: memberActivity.type,
+                };
+            }
 
-                let searchResults = await Search(songLink, searchOptions);
-                if (searchResults.results.length > 0) {
-                    songLink = searchResults.results.find(val => val.kind == 'youtube#video').link;
-                    if (!YTDL.validateURL(songLink)) {
+            activity.type = activity.type.toLowerCase();
+            activity.type = this.capFirstLetter(activity.type);
+
+            switch (activity.type) {
+                case 'Listening':
+                    activity.type += ' to';
+                    activity.name = memberActivity.details;
+                    break;
+            }
+
+            if (typeof (memberActivity) !== 'undefined') {
+                if (typeof (memberActivity.details) !== 'undefined' && memberActivity.details !== null) {
+                    activity.name += ` On ${memberActivity.name}`;
+                }
+            }
+
+            let bgColor;
+
+            if (member.user.avatar) {
+                bgColor = await colorHex(`https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png?size=128`);
+            } else {
+                bgColor = '#007bff';
+            }
+
+            this.renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    app.get('/guild/:guildID/queue', checkAuth, async (req, res, next) => {
+        try {
+            const guild = client.guilds.cache.get(req.params.guildID);
+            if (!guild) {
+                throw NotFound('Guild not found');
+            }
+            const member = guild.members.cache.get(req.user.id);
+            if (!member) {
+                throw NotFound('Member not found');
+            }
+            if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
+
+            const queue = client.queue.get(guild.id);
+
+            // console.log(queue);
+
+            let notification;
+
+            this.renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, alertMessage: notification, member: member, queue: queue, guild: guild, convert: secondsToDuration });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    app.post('/guild/:guildID/queue', checkAuth, async (req, res, next) => {
+        try {
+            const guild = client.guilds.cache.get(req.params.guildID);
+            if (!guild) {
+                throw NotFound('Guild not found');
+            }
+            const member = guild.members.cache.get(req.user.id);
+            if (!member) {
+                throw NotFound('Member not found');
+            }
+            if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
+
+            const queue = client.queue.get(guild.id);
+            console.log(queue);
+
+            let songLink = req.body['song-link'];
+
+            let notification;
+
+            if (songLink) {
+                let validate = YTDL.validateURL(songLink);
+                if (!validate) {
+                    let searchOptions = {
+                        maxResults: 10,
+                        key: process.env.GOOGLE_API_KEY,
+                    };
+
+                    let searchResults = await Search(songLink, searchOptions);
+                    if (searchResults.results.length > 0) {
+                        songLink = searchResults.results.find(val => val.kind == 'youtube#video').link;
+                        if (!YTDL.validateURL(songLink)) {
+                            notification = 'Video not found';
+                        }
+                    } else {
                         notification = 'Video not found';
                     }
-                } else {
-                    notification = 'Video not found';
                 }
-            }
 
-            let songInfo = await YTDL.getInfo(songLink);
-            if (songInfo) {
-                let song = {
-                    author: {
-                        name: songInfo.videoDetails.author.name,
-                        channel: songInfo.videoDetails.author.channel_url,
-                        avatar: songInfo.videoDetails.author.avatar,
-                    },
-                    title: songInfo.videoDetails.title,
-                    url: songInfo.videoDetails.video_url,
-                    duration: songInfo.videoDetails.lengthSeconds,
-                    likes: songInfo.videoDetails.likes,
-                    dislikes: songInfo.videoDetails.dislikes,
-                    thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url,
-                };
+                let songInfo = await YTDL.getInfo(songLink);
+                if (songInfo) {
+                    let song = {
+                        author: {
+                            name: songInfo.videoDetails.author.name,
+                            channel: songInfo.videoDetails.author.channel_url,
+                            avatar: songInfo.videoDetails.author.avatar,
+                        },
+                        title: songInfo.videoDetails.title,
+                        url: songInfo.videoDetails.video_url,
+                        duration: songInfo.videoDetails.lengthSeconds,
+                        likes: songInfo.videoDetails.likes,
+                        dislikes: songInfo.videoDetails.dislikes,
+                        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url,
+                    };
 
-                if (queue) {
-                    if (queue.songs.length >= 20) {
-                        notification = 'Max Queue Length is 20';
-                    } else {
-                        queue.songs.push(song);
-                        notification = 'Song Successfully added to the queue';
+                    if (queue) {
+                        if (queue.songs.length >= 20) {
+                            notification = 'Max Queue Length is 20';
+                        } else {
+                            queue.songs.push(song);
+                            notification = 'Song Successfully added to the queue';
+                        }
                     }
                 }
             }
-        }
 
-        if(Object.keys(req.body).length < 1) {
-            queue.songs.forEach((song, index) => {
-                if(index !== 0) {
-                    delete queue.songs[index];
-                }
-            });
-        }
+            if (Object.keys(req.body).length < 1) {
+                queue.songs.forEach((song, index) => {
+                    if (index !== 0) {
+                        delete queue.songs[index];
+                    }
+                });
+            }
 
-        renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, alertMessage: notification, toasts: res.locals.toasts, member: member, queue: queue, guild: guild, convert: secondsToDuration });
+            this.renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, alertMessage: notification, toasts: res.locals.toasts, member: member, queue: queue, guild: guild, convert: secondsToDuration });
+        } catch (err) {
+            next(err);
+        }
     });
 
-    app.get('/owner', checkAuth, async (req, res) => {
+    app.get('/owner', checkAuth, async (req, res, next) => {
         const owner = req.user;
-        if (owner.id !== process.env.OWNER_ID) {
-            res.redirect('/');
+
+        try {
+            if (owner !== process.env.OWNER_ID) {
+                throw new BadRequest('Missing required Permissions to access the page');
+            }
+
+            let allUsers = client.users.cache;
+            let allGuilds = client.guilds.cache;
+            let allChannels = client.channels.cache;
+            let allCommands = client.commands.cache;
+            let allCategories = client.categories;
+
+            this.renderTemplate(res, req, 'owner.ejs', { owner, perms: Discord.Permissions, capL: this.capFirstLetter, capA: this.capAllLetters, allUsers, allGuilds, allChannels, allCommands, allCategories });
+        } catch (err) {
+            next(err);
         }
-
-        let allUsers = client.users.cache;
-        let allGuilds = client.guilds.cache;
-        let allChannels = client.channels.cache;
-        let allCommands = client.commands.cache;
-        let allCategories = client.categories;
-
-        renderTemplate(res, req, 'owner.ejs', { owner, perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters, allUsers, allGuilds, allChannels, allCommands, allCategories });
     });
 
-    app.use((req, res, next) => {
-        res.status(404);
-        renderTemplate(res, req, '404.ejs', { perms: Discord.Permissions, capL: capFirstLetter, capA: capAllLetters });
-        next();
-    });
+    app.use(handleErrors);
 
     app.listen(process.env.PORT, () => {
         console.log(`Dashboard is running on port ${process.env.PORT}`);
     });
 };
 
-const capFirstLetter = string => {
+exports.capFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const capAllLetters = string => {
+exports.capAllLetters = string => {
     return string.toUpperCase();
 };
 
