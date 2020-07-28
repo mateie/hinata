@@ -135,5 +135,5 @@ client.on('ready', async () => {
 
     Dashboard(client);
 
-    console.info('Running...');
+    console.info('Bot Engine is Running...');
 });

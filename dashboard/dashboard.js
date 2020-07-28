@@ -105,8 +105,6 @@ module.exports = async () => {
     app.use('/guild', this.checkAuth, guildRoute);
     app.use('/owner', this.checkAuth, ownerRoute);
 
-    // app.use(handleErrors);
-
     app.listen(process.env.PORT, () => {
         console.info('Dashboard is running');
     });

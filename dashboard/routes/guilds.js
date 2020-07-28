@@ -1,7 +1,6 @@
 const Main = require('../dashboard');
 const { client } = require('../../index');
 const Discord = require('discord.js');
-const { BadRequest, NotFound } = require('../util/errors');
 const Servers = require(`${process.cwd()}/models/servers`);
 
 // Routes
@@ -13,11 +12,11 @@ const queue = require('./queue');
 guilds.get('/:guildID', async (req, res) => {
     const guild = client.guilds.cache.get(req.params.guildID);
     if (!guild) {
-        throw new NotFound(404, 'Guild not found');
+        return res.redirect('/');
     }
     const member = guild.members.cache.get(req.user.id);
     if (!member) {
-        throw new NotFound(404, 'Member not found');
+        return res.redirect('/');
     }
     if (!member.permissions.has('MANAGE_GUILD')) {
         return res.redirect('/');

@@ -5,11 +5,11 @@ const Main = require('../dashboard');
 queue.get('/', async (req, res) => {
     const guild = client.guilds.cache.get(req.guildID);
     if (!guild) {
-        throw new NotFound('Guild not found');
+        return res.redirect('/');
     }
     const member = guild.members.cache.get(req.user.id);
     if (!member) {
-        throw new NotFound('Member not found');
+        return res.redirect('/');
     }
     if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
@@ -25,11 +25,11 @@ queue.get('/', async (req, res) => {
 queue.post('/', async (req, res) => {
     const guild = client.guilds.cache.get(req.guildID);
     if (!guild) {
-        throw new NotFound('Guild not found');
+        return res.redirect('/');
     }
     const member = guild.members.cache.get(req.user.id);
     if (!member) {
-        throw new NotFound('Member not found');
+        return res.redirect('/');
     }
     if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 

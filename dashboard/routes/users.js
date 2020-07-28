@@ -1,17 +1,16 @@
 const users = require('express').Router();
 const Main = require('../dashboard');
 const { client } = require('../../index');
-const { BadRequest, NotFound } = require('../util/errors');
 const Discord = require('discord.js');
 
 users.get('/:userID', async (req, res) => {
     const guild = client.guilds.cache.get(req.guildID);
     if (!guild) {
-        throw new NotFound('Guild not found');
+        return res.redirect('/');
     }
     const member = guild.members.cache.get(req.params.userID);
     if (!member) {
-        throw new NotFound('Member not found');
+        return res.redirect('/');
     }
     let memberStatus = member.presence.status;
 
