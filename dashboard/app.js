@@ -60,7 +60,6 @@ module.exports = async () => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // Default Domain
     app.locals.domain = process.env.DOMAIN.split('//')[1];
 
     // Initializes the app engine and it's static path
