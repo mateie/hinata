@@ -115,19 +115,11 @@
                         </div>
                     </form>
                 </div>
-                <% if(alertMessage) { %>
-                <% if(alertMessage.includes('Not') || alertMessage.includes('Max')) { %>
-                <% req.toastr.error(alertMessage) %>
-                <% } else { %>
-                <% req.toastr.success(alertMessage) %>
-                <% } %>
-                <% } %>
             </section>
         </div>
         <%- include('../partials/_footer') %>
     </div>
     <%- include('../partials/_scripts') %>
-    <%- req.toastr.render() %>
 </body>
 
 </html>

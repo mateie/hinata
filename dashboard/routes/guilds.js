@@ -2,6 +2,8 @@ const Main = require('../app');
 const { client } = require('../../index');
 const Discord = require('discord.js');
 const Servers = require(`${process.cwd()}/models/servers`);
+const jquery = require('jquery');
+const toastr = require('toastr');
 
 // Routes
 const guilds = require('express').Router();
@@ -26,22 +28,31 @@ guilds.get('/:guildID', async (req, res) => {
 
     let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-    Main.renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue });
+    let bgColor;
+    if(guild.icon) {
+        bgColor = await Main.colorHex(`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=128`);
+    } else {
+        bgColor = '#007bff'
+    }
+
+    Main.renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor });
 });
 
 guilds.post('/:guildID', async (req, res) => {
     const guild = client.guilds.cache.get(req.params.guildID);
     if (!guild) {
-        throw new NotFound(404, 'Guild not found');
+        return res.redirect('/');
     }
     const member = guild.members.cache.get(req.user.id);
     if (!member) {
-        throw new NotFound(404, 'Member not found');
+        return res.redirect('/');
     }
-    if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
+    if (!member.permissions.has('MANAGE_GUILD')) {
+        return res.redirect('/');
+    }
 
     let storedSettings = await Servers.findOne({ serverID: guild.id });
-
+    
     let inputKeys = Object.keys(req.body);
     let inputValues = Object.values(req.body);
 
@@ -54,7 +65,6 @@ guilds.post('/:guildID', async (req, res) => {
         let inputValue = inputValues[x];
 
         let inputType = inputKey.split('-')[0];
-
 
         if (inputValues.length > 1) {
             inputType += 's';
@@ -85,9 +95,7 @@ guilds.post('/:guildID', async (req, res) => {
 
     storedSettings.save();
 
-    const queue = client.queue.get(guild.id);
-
-    Main.renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: 'Your Settings have been saved', toasts: res.locals.toasts, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue });
+    res.redirect(req.originalUrl);
 });
 
 guilds.use('/:guildID/channel', (req, res, next) => {

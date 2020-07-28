@@ -15,8 +15,6 @@ queue.get('/', async (req, res) => {
 
     const queue = client.queue.get(guild.id);
 
-    // console.log(queue);
-
     let notification;
 
     Main.renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, alertMessage: notification, member: member, queue: queue, guild: guild, convert: secondsToDuration });
@@ -34,7 +32,6 @@ queue.post('/', async (req, res) => {
     if (!member.permissions.has('MANAGE_GUILD')) return res.redirect('/');
 
     const queue = client.queue.get(guild.id);
-    console.log(queue);
 
     let songLink = req.body['song-link'];
 
@@ -94,7 +91,7 @@ queue.post('/', async (req, res) => {
         });
     }
 
-    Main.renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, alertMessage: notification, toasts: res.locals.toasts, member: member, queue: queue, guild: guild, convert: secondsToDuration });
+    res.redirect(req.originalUrl);
 });
 
 module.exports = queue;

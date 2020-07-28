@@ -52,15 +52,13 @@ channels.post('/:channelID', async (req, res) => {
         return;
     }
 
-    let messages = channel.messages.cache;
-
     let messageSent = req.body.message;
 
     if (messageSent) {
         channel.send(`\`\`\`From: Dashboard\nSent by: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`);
     }
 
-    Main.renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, time: Main.getTime });
-})
+    res.redirect(req.originalUrl);
+});
 
 module.exports = channels;

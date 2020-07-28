@@ -54,13 +54,13 @@
                                                 <h5 class="description-header">ID</h5>
                                                 <span class="description-text"><%= member.user.id %></span>
                                             </div>
-                                            <!-- /.description-block -->
                                         </div>
                                         <div class="col-sm-4 border-right">
                                             <div class="description-block">
                                                 <h5 class="description-header">Nickname</h5>
                                                 <%= console.log(member) %>
-                                                <span class="description-text"><%= member.nickname ? member.nickname : 'None' %></span>
+                                                <span
+                                                    class="description-text"><%= member.nickname ? member.nickname : 'None' %></span>
                                             </div>
                                         </div>
                                         <div class="col-sm-4 border-right">
@@ -72,7 +72,8 @@
                                         <div class="col-sm-4">
                                             <div class="description-block">
                                                 <h5 class="description-header">Member Since</h5>
-                                                <span class="description-text"><%= new Date(member.joinedTimestamp).toDateString() %></span>
+                                                <span
+                                                    class="description-text"><%= new Date(member.joinedTimestamp).toDateString() %></span>
                                             </div>
                                         </div>
                                     </div>
@@ -81,8 +82,26 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="card card-primary">
+                                <div class="card-header" style="background-color: <%= color %>">
+                                    <h3 class="card-title">Member Settings</h3>
+                                </div>
 
+                                <form role="form" method="POST">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="nickname">Nickname</label>
+                                            <input type="text" class="form-control" name="member-nickname"
+                                                placeholder="<%= member.nickname ? member.nickname : 'None' %>">
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn text-light" style="background-color: <%= color %>">Submit</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -90,7 +109,6 @@
     </div>
     <%- include('../partials/_footer') %>
     </div>
-
     <%- include('../partials/_scripts') %>
 </body>
 

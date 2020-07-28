@@ -15,7 +15,6 @@
                                 <div class="card-header">
                                     <h3 class="card-title"><%= capL(channel.name) %> Channel</h3>
                                 </div>
-
                                 <div class="card-body">
                                     <% let parent = guild.channels.cache.get(channel.parentID) %>
                                     <% let everyone = guild.roles.cache.find(e => e.name === '@everyone') %>
@@ -58,15 +57,12 @@
                                                 <span
                                                     class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
                                             </div>
-                                            <!-- /.direct-chat-infos -->
                                             <img class="direct-chat-img"
                                                 src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
                                                 alt="Message User Image">
-                                            <!-- /.direct-chat-img -->
                                             <div class="direct-chat-text">
                                                 <%= message.content %>
                                             </div>
-                                            <!-- /.direct-chat-text -->
                                         </div>
                                         <% } else { %>
                                         <div class="direct-chat-msg">
@@ -76,27 +72,18 @@
                                                 <span
                                                     class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
                                             </div>
-                                            <!-- /.direct-chat-infos -->
                                             <img class="direct-chat-img"
                                                 src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
                                                 alt="Message User Image">
-                                            <!-- /.direct-chat-img -->
                                             <div class="direct-chat-text">
                                                 <%= message.content %>
                                             </div>
-                                            <!-- /.direct-chat-text -->
                                         </div>
                                         <% } %>
                                         <% } %>
                                         <% }) %>
-                                        <!-- /.direct-chat-msg -->
-
-                                        <!-- /.direct-chat-msg -->
                                     </div>
-                                    <!--/.direct-chat-messages-->
-
                                 </div>
-                                <!-- /.card-body -->
                                 <div class="card-footer">
                                     <form method="POST">
                                         <div class="input-group">
@@ -108,9 +95,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <!-- /.card-footer-->
                             </div>
-                            <!--/.direct-chat -->
                         </div>
                     </div>
                 </div>
