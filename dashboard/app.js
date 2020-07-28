@@ -1,3 +1,4 @@
+// Dependencies
 const url = require('url');
 const path = require('path');
 const express = require('express');
@@ -9,8 +10,10 @@ const parser = require('body-parser');
 const Canvas = require('canvas');
 const cookieParser = require('cookie-parser');
 
+// Main Client
 const { client } = require('../index');
 
+// Template Util
 const flash = require('connect-flash');
 const toastr = require('express-toastr');
 
@@ -26,13 +29,15 @@ const { commands } = require('../util/loader');
 const app = express();
 const MemoryStore = require('memorystore')(session);
 
+// Directory Setup
 const dataDir = path.resolve(`${process.cwd()}${path.sep}dashboard`);
 const templateDir = path.resolve(`${dataDir}${path.sep}views`);
 
 module.exports = async () => {
-    passport.serializeUser((user, done) => done(null, user));
-    passport.deserializeUser((obj, done) => done(null, obj));
+    passport.serializeUser((user, done) => done(null, user)); // Serialize User
+    passport.deserializeUser((obj, done) => done(null, obj)); // Deserialize User
 
+    // Creates a strategy for a OAuth2 Request
     passport.use(new Strategy({
         clientID: process.env.BOT_ID,
         clientSecret: process.env.BOT_SECRET,
@@ -42,23 +47,28 @@ module.exports = async () => {
         process.nextTick(() => done(null, profile));
     }));
 
+    // Parses cookies
     app.use(cookieParser('secret'));
-    app.use(session({
+    app.use(session({ // Set's up a session
         store: new MemoryStore({ checkPeriod: 86400000 }),
         secret: 'secret',
         resave: false,
         saveUninitialized: false,
     }));
 
+    // Initializes the session inside passport
     app.use(passport.initialize());
     app.use(passport.session());
 
+    // Default Domain
     app.locals.domain = process.env.DOMAIN.split('//')[1];
 
+    // Initializes the app engine and it's static path
     app.engine('ejs', ejs.renderFile);
     app.set('view engine', 'ejs');
     app.use(express.static(path.join(__dirname + '/public')));
 
+    // Initializes Parser
     app.use(parser.json());
     app.use(parser.urlencoded({
         extended: true,
@@ -67,6 +77,7 @@ module.exports = async () => {
     app.use(flash());
     app.use(toastr());
 
+    // Login Page Route
     app.get('/login', (req, res, next) => {
         if (req.session.backURL) {
             // eslint-disable-next-line no-self-assign
@@ -83,6 +94,7 @@ module.exports = async () => {
         next();
     }, passport.authenticate('discord'));
 
+    // Callback after login has been completed
     app.get('/callback', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
         if (req.session.backURL) {
             // eslint-disable-next-line no-shadow
@@ -94,6 +106,7 @@ module.exports = async () => {
         }
     });
 
+    // Destroys Session and Logs the user out
     app.get('/logout', (req, res) => {
         req.session.destroy(() => {
             req.logout();
@@ -102,17 +115,25 @@ module.exports = async () => {
         });
     });
 
+    // All Page routes
     app.use('/', indexRoute);
     app.use('/user/me', this.checkAuth, meRoute);
     app.use('/commands', commandsRoute);
     app.use('/guild', this.checkAuth, guildRoute);
     app.use('/owner', this.checkAuth, ownerRoute);
 
+    // Makes App Online
     app.listen(process.env.PORT, () => {
         console.info('Dashboard is running');
     });
 };
 
+/*  renderTemplate
+*   res: response from the express,
+*   req: request from the express,
+*   template: template name
+*   data: information to pass through the template
+*/
 exports.renderTemplate = (res, req, template, data = {}) => {
     const baseData = {
         bot: client,
@@ -124,6 +145,7 @@ exports.renderTemplate = (res, req, template, data = {}) => {
     res.render(path.resolve(`${templateDir}${path.sep}${template}`), Object.assign(baseData, data));
 };
 
+// Checks if User is logged in
 exports.checkAuth = (req, res, next) => {
     if (req.isAuthenticated()) return next();
 
@@ -131,18 +153,22 @@ exports.checkAuth = (req, res, next) => {
     res.redirect('/login');
 };
 
+// Capitalizes First Letter of a String
 exports.capFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+// Capitalizes All Letters of a String
 exports.capAllLetters = string => {
     return string.toUpperCase();
 };
 
+// Calculates Bitwise
 exports.calculateBitwise = (from, to) => {
     return from << to;
 };
 
+// Uses an Image URL to get it's Hex Colors
 exports.colorHex = async (imgURL) => {
     let blockSize = 5,
         defaultRGB = { r: 0, g: 0, b: 0 },
@@ -189,23 +215,20 @@ exports.colorHex = async (imgURL) => {
     return hex;
 };
 
+// Converts color to hex
 exports.componentToHex = (c) => {
     let hex = c.toString(16);
     return hex.length == 1 ? '0' + hex : hex;
 };
 
+// Get's Time in Date format when timestamp given
 exports.getTime = timestamp => {
     const d = new Date(timestamp);
-
     let time = d.toLocaleTimeString();
-
     let date = d.toDateString();
-
     date = date.split(' ');
-
     date = `${date[1]} ${date[2]}`;
 
     let newDate = `${date} ${time}`;
-
     return newDate;
 };
