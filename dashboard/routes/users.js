@@ -67,7 +67,26 @@ users.get('/:userID', async (req, res) => {
         bgColor = '#007bff';
     }
 
-    Main.renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity });
+    Main.renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity, brightness: Main.lightOrDark });
+});
+
+users.post('/:userID', async (req, res) => {
+    const guild = client.guilds.cache.get(req.guildID);
+    if(!guild) {
+        return res.redirect('/');
+    }
+    const member = guild.members.cache.get(req.params.userID);
+    if(!member) {
+        return res.redirect('/');
+    }
+
+    let nickname = req.body['member-nickname'];
+
+    if(nickname) {
+        member.setNickname(nickname);
+    }
+
+    res.redirect(req.originalUrl);
 });
 
 module.exports = users;

@@ -21,14 +21,14 @@
                                         class="img-circle img-size-32 elevation-4" alt="Default Icon" />
                                     <% } %>
                                 </div>
-                                <h3 class="widget-user-username text-light"><%= guild.name %></h3>
-                                <h5 class="widget-user-desc text-light"><%= guild.id %></h5>
+                                <h3 class="widget-user-username <%= brightness(color) ? 'text-dark' : 'text-light' %>"><%= guild.name %></h3>
+                                <h5 class="widget-user-desc <%= brightness(color) ? 'text-dark' : 'text-light' %>"><%= guild.id %></h5>
                             </div>
                         </div>
                     </div>
                     <% if(musicQueue) { %>
                     <div class="col-md-4">
-                        <div class="info-box text-light" style="background-color: <%= color %>">
+                        <div class="info-box <%= brigthness(color) ? 'text-dark' : '<%= brightness(color) ? 'text-dark' : 'text-light' %>' %> style="background-color: <%= color %>">
                             <span class="info-box-icon" >
                                 <img src="<%= musicQueue.songs[0].author.avatar %>" class="img-circle elevation-2" />
                             </span>
@@ -39,7 +39,7 @@
                             </div>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool">
-                                    <a href="/guild/<%= guild.id %>/queue" class="text-light">Queue</a>
+                                    <a href="/guild/<%= guild.id %>/queue" class="<%= brightness(color) ? 'text-dark' : 'text-light' %>">Queue</a>
                                 </button>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="info-box text-light" style="background-color: <%= color %>">
+                            <div class="info-box <%= brightness(color) ? 'text-dark' : '<%= brightness(color) ? 'text-dark' : 'text-light' %>' %>" style="background-color: <%= color %>">
                                 <span class="info-box-icon"><i class="fas fa-user"></i></span>
 
                                 <div class="info-box-content">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="info-box text-light" style="background-color: <%= color %>">
+                            <div class="info-box <%= brightness(color) ? 'text-dark' : '<%= brightness(color) ? 'text-dark' : 'text-light' %>' %>" style="background-color: <%= color %>">
                                 <span class="info-box-icon"><i class="fas fa-robot"></i></span>
 
                                 <div class="info-box-content">
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="info-box text-light" style="background-color: <%= color %>">
+                            <div class="info-box <%= brightness(color) ? 'text-dark' : 'text-light' %>" style="background-color: <%= color %>">
                                 <span class="info-box-icon"><i class="fas fa-list-ol"></i></span>
 
                                 <div class="info-box-content">
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="info-box text-light" style="background-color: <%= color %>">
+                            <div class="info-box <%= brightness(color) ? 'text-dark' : 'text-light' %>" style="background-color: <%= color %>">
                                 <span class="info-box-icon"><i class="fas fa-users-cog"></i></span>
 
                                 <div class="info-box-content">
@@ -109,7 +109,7 @@
 
                                 <div class="card-body">
                                     <ul>
-                                        <% guild.members.cache.filter(m => !m.user.bot).forEach(member => { %>
+                                        <% guild.members.cache.filter(m => !m.user.bot).sort((a, b) => a.joinedTimestamp - a.joinedTimestamp).forEach(member => { %>
                                         <li><a
                                                 href="/guild/<%= guild.id %>/user/<%= member.user.id %>"><%= member.user.username %></a>#<%= member.user.discriminator %>
                                         </li>
@@ -215,7 +215,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <button type="submit" class="btn text-light" style="background-color: <%= color %>">Submit</button>
+                                        <button type="submit" class="btn <%= brightness(color) ? 'text-dark' : 'text-light' %>" style="background-color: <%= color %>">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -242,7 +242,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <button type="submit" class="btn text-light" style="background-color: <%= color %>">Submit</button>
+                                        <button type="submit" class="btn <%= brightness(color) ? 'text-dark' : 'text-light' %>" style="background-color: <%= color %>">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -269,7 +269,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <button type="submit" class="btn text-light" style="background-color: <%= color %>">Submit</button>
+                                        <button type="submit" class="btn <%= brightness(color) ? 'text-dark' : 'text-light' %>" style="background-color: <%= color %>">Submit</button>
                                     </div>
                                 </form>
                             </div>
