@@ -47,7 +47,6 @@
     "lavacord": "^1.1.9",
     "lodash": "^4.17.19",
     "memorystore": "^1.6.2",
-    "method-override": "^3.0.0",
     "minecraft-assets": "^1.2.0",
     "minecraft-data": "^2.62.1",
     "minecraft-lib": "^1.1.6",
