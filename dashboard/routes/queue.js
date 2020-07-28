@@ -1,6 +1,6 @@
 const queue = require('express').Router();
 const { client } = require(`${process.cwd()}/index`);
-const Main = require('../dashboard');
+const Main = require('../app');
 
 queue.get('/', async (req, res) => {
     const guild = client.guilds.cache.get(req.guildID);

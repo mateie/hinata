@@ -1,5 +1,5 @@
 const channels = require('express').Router();
-const Main = require('../dashboard');
+const Main = require('../app');
 const { client } = require(`${process.cwd()}/index`);
 const Discord = require('discord.js');
 

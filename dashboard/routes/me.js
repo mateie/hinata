@@ -1,4 +1,4 @@
-const Main = require('../dashboard');
+const Main = require('../app');
 const router = require('express').Router();
 const { client } = require('../../index');
 const Discord = require('discord.js');

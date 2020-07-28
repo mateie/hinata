@@ -17,8 +17,10 @@ const toastr = require('express-toastr');
 // Routes
 const indexRoute = require('./routes/index');
 const meRoute = require('./routes/me');
+const commandsRoute = require('./routes/commands');
 const guildRoute = require('./routes/guilds');
 const ownerRoute = require('./routes/owner');
+const { commands } = require('../util/loader');
 
 // Initialize App
 const app = express();
@@ -102,6 +104,7 @@ module.exports = async () => {
 
     app.use('/', indexRoute);
     app.use('/user/me', this.checkAuth, meRoute);
+    app.use('/commands', commandsRoute);
     app.use('/guild', this.checkAuth, guildRoute);
     app.use('/owner', this.checkAuth, ownerRoute);
 

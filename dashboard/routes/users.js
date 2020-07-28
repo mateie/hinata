@@ -1,5 +1,5 @@
 const users = require('express').Router();
-const Main = require('../dashboard');
+const Main = require('../app');
 const { client } = require('../../index');
 const Discord = require('discord.js');
 

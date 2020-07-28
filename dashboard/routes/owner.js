@@ -1,6 +1,6 @@
 const owner = require('express').Router();
 const { client } = require(`${process.cwd()}/index`);
-const Main = require('../dashboard');
+const Main = require('../app');
 
 owner.get('/', (req, res) => {
     const owner = req.user;

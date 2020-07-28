@@ -1,5 +1,5 @@
 const { client } = require('../index');
-const Dashboard = require(`${process.cwd()}/dashboard/dashboard`);
+const Dashboard = require(`${process.cwd()}/dashboard/app`);
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE, {

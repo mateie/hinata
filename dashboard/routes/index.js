@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Discord = require('discord.js');
 const { client } = require('../../index');
 
-const Main = require('../dashboard');
+const Main = require('../app');
 
 router.get('/', (req, res, next) => {
     let botStatus = client.presence.status;
