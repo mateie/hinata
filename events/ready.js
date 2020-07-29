@@ -49,19 +49,19 @@ client.on('ready', async () => {
             guild.members.cache.forEach(member => {
                 if (member.id === process.env.OWNER_ID) {
                     ownerStatus = member.presence.status;
-                    ownerActivityObj = member.presence.activities[0];
+                    ownerActivityObj = member.presence.activities;
                     if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
                         let index = Math.floor(Math.random() * presences.length);
                         client.user.setPresence(presences[index]);
                     } else {
-                        if (ownerActivityObj.type === 'LISTENING') {
+                        if (ownerActivityObj[0].type === 'LISTENING') {
                             ownerActivity = {
-                                name: `${ownerActivityObj.details}`,
+                                name: `${ownerActivityObj[0].details}`,
                                 type: 'LISTENING',
                             };
-                        } else if (ownerActivityObj.type === 'PLAYING') {
+                        } else if (ownerActivityObj[0].type === 'PLAYING') {
                             ownerActivity = {
-                                name: `${ownerActivityObj.name}`,
+                                name: `${ownerActivityObj[0].name}`,
                                 type: 'PLAYING',
                             };
                         }
