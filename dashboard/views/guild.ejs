@@ -228,13 +228,13 @@
                                     <h3 class="card-title">Roles</h3>
                                 </div>
 
-                                <form role="form" method="POST" class="form-horizontal">
+                                <form role="form" method="POST">
                                     <div class="card-body">
                                         <h5 class="card-description">Role names are case-sensitive</h5>
                                         <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
-                                        <div class="form-group row">
+                                        <div class="form-group">
                                             <label
-                                                for="role-<%= Object.keys(settings.roles)[i] %>" class="col-sm-2 col-form-label"><%= capL(Object.keys(settings.roles)[i]) %>
+                                                for="role-<%= Object.keys(settings.roles)[i] %>"><%= capL(Object.keys(settings.roles)[i]) %>
                                                 Role</label>
                                             <input type="text" class="form-control"
                                                 name="role-<%= Object.keys(settings.roles)[i] %>"
