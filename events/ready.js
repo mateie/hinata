@@ -49,8 +49,8 @@ client.on('ready', async () => {
             guild.members.cache.forEach(member => {
                 if (member.id === process.env.OWNER_ID) {
                     ownerStatus = member.presence.status;
-                    ownerActivityObj = member.presence.activities[0].type === 'CUSTOM_STATUS' ? member.presence.activities[1] : member.presence.activities[0];
-                    if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
+                    ownerActivityObj = member.presence.activities[0];
+                    if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1 || ownerActivityObj.type === 'CUSTOM_STATUS') {
                         let index = Math.floor(Math.random() * presences.length);
                         client.user.setPresence(presences[index]);
                     } else {
