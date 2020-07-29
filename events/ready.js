@@ -42,24 +42,26 @@ client.on('ready', async () => {
         },
     ];
 
+    let ownerActivityObj, ownerActivity, ownerStatus;
+
     setInterval(() => {
         client.guilds.cache.forEach(guild => {
             guild.members.cache.forEach(member => {
                 if (member.id === process.env.OWNER_ID) {
                     ownerStatus = member.presence.status;
-                    ownerActivityObj = member.presence.activities;
+                    ownerActivityObj = member.presence.activities[0].type === 'CUSTOM_STATUS' ? member.presence.activities[1] : member.presence.activities[0];
                     if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
                         let index = Math.floor(Math.random() * presences.length);
                         client.user.setPresence(presences[index]);
                     } else {
-                        if (ownerActivityObj[0].type === 'LISTENING') {
+                        if (ownerActivityObj.type === 'LISTENING') {
                             ownerActivity = {
-                                name: `${ownerActivityObj[0].details}`,
+                                name: `${ownerActivityObj.details}`,
                                 type: 'LISTENING',
                             };
-                        } else if (ownerActivityObj[0].type === 'PLAYING') {
+                        } else if (ownerActivityObj.type === 'PLAYING') {
                             ownerActivity = {
-                                name: `${ownerActivityObj[0].name}`,
+                                name: `${ownerActivityObj.name}`,
                                 type: 'PLAYING',
                             };
                         }
@@ -75,8 +77,6 @@ client.on('ready', async () => {
             });
         });
     }, 2000);
-
-    let ownerActivityObj, ownerActivity, ownerStatus;
 
     client.guilds.cache.forEach(guild => {
         Servers.findOne({

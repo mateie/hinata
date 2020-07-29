@@ -123,7 +123,7 @@ module.exports = async () => {
 
     // Makes App Online
     app.listen(process.env.PORT, () => {
-        console.info('Dashboard is running');
+        console.info('Dashboard is Running...');
     });
 };
 
