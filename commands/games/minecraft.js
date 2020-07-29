@@ -226,8 +226,6 @@ exports.run = async (client, message, args) => {
         if (!server) {
             return message.reply('Server IP/Domain not provided');
         } else {
-            // let imageBuffer, iconDir, iconName, icon;
-
             if (!server.includes(':')) {
                 server = server.split(':');
                 server[1] = 25565;
