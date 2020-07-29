@@ -50,7 +50,7 @@ client.on('ready', async () => {
                 if (member.id === process.env.OWNER_ID) {
                     ownerStatus = member.presence.status;
                     ownerActivityObj = member.presence.activities[0];
-                    if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1 || ownerActivityObj.type === 'CUSTOM_STATUS') {
+                    if (typeof (ownerActivityObj) === undefined || ownerActivityObj.length < 1) {
                         let index = Math.floor(Math.random() * presences.length);
                         client.user.setPresence(presences[index]);
                     } else {
