@@ -87,7 +87,7 @@ users.post('/:userID', async (req, res) => {
     if(nickname) {
         member.setNickname(nickname);
     }
-
+    
     res.redirect(req.originalUrl);
 });
 
