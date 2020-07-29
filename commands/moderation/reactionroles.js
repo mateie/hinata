@@ -24,7 +24,7 @@ exports.run = async (client, message, args) => {
 
 exports.help = {
     enabled: true,
-    name: 'reactionroels',
+    name: 'reactionroles',
     aliases: ['rr'],
     args: ['<add/remove>', '<emoji name>'],
     permission: 'OWNER',

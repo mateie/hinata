@@ -4,7 +4,8 @@ const Servers = require('../../models/servers');
 
 exports.run = (client, message, args) => {
     if (args[0] === 'add') {
-        const game = args[1].toLowerCase();
+        const game = args[1].slice(1, args.length).join(' ').toLowerCase();
+        console.log(game);
 
         if (!game) {
             return message.reply('Please provide a game name');
@@ -17,7 +18,7 @@ exports.run = (client, message, args) => {
         let emoji = message.attachments.first();
 
         if (!emoji) {
-            return message.reply('Please attach an icon file');
+            return message.reply('Please attach a png file (for emoji purpose)');
         }
 
         axios({
@@ -140,7 +141,8 @@ exports.run = (client, message, args) => {
                 console.error(e);
             });
     } else if (args[0] === 'remove') {
-        const game = args[1].toLowerCase();
+        const game = args[1].slice(1, args.length).join(' ').toLowerCase();
+        console.log(game);
 
         if (!game) {
             return message.reply('Please enter a game name');
