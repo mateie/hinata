@@ -18,7 +18,7 @@ client.on('guildCreate', guild => {
         roles: {
             owner: "Owner",
             admin: "Admin",
-            dj: "DJ",
+            moderator: "Moderator",
             member: "Member",
             mute: "Muted",
         },
@@ -28,6 +28,9 @@ client.on('guildCreate', guild => {
             spam: 'spam',
             notifications: 'welcome',
             reactions: 'roles',
+        },
+        toggles: {
+            autorole: false,
         },
     });
 

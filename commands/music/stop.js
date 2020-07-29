@@ -16,6 +16,6 @@ exports.help = {
     name: 'stop',
     aliases: [],
     args: [],
-    permission: 'DJ',
+    permission: 'MODERATOR',
     description: 'Stop the music',
 };

@@ -138,6 +138,6 @@ exports.help = {
     name: 'play',
     aliases: ['p', 'music'],
     args: ['<video url/video name>'],
-    permission: 'DJ',
+    permission: 'MODERATOR',
     description: 'Play music',
 };

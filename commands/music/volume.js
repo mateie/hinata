@@ -26,6 +26,6 @@ exports.help = {
     name: 'volume',
     aliases: ['vol'],
     args: ['[0-200]'],
-    permission: 'DJ',
+    permission: 'MODERATOR',
     description: 'Set a volume to an integer',
 };

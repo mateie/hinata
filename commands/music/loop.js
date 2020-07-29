@@ -20,6 +20,6 @@ exports.help = {
     name: 'loop',
     aliases: [],
     args: [],
-    permission: 'DJ',
+    permission: 'MODERATOR',
     description: 'Loop the current song',
 };

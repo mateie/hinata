@@ -20,6 +20,6 @@ exports.help = {
     name: 'remove',
     aliases: ['rm'],
     args: ['<position>'],
-    permission: 'DJ',
+    permission: 'MODERATOR',
     description: 'Removes a track from the queue',
 };

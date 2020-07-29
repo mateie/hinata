@@ -66,24 +66,24 @@ client.on('message', async message => {
                         allowed_roles: ['USER'],
                     },
                     {
-                        name: 'DJ',
-                        id: res.roles.dj,
-                        allowed_roles: ['USER', 'DJ'],
+                        name: 'MODERATOR',
+                        id: res.roles.moderator,
+                        allowed_roles: ['USER', 'MODERATOR'],
                     },
                     {
                         name: 'ADMIN',
                         id: res.roles.admin,
-                        allowed_roles: ['USER', 'DJ', 'ADMIN'],
+                        allowed_roles: ['USER', 'MODERATOR', 'ADMIN'],
                     },
                     {
                         name: 'OWNER',
                         id: res.roles.owner,
-                        allowed_roles: ['USER', 'DJ', 'ADMIN', 'OWNER'],
+                        allowed_roles: ['USER', 'MODERATOR', 'ADMIN', 'OWNER'],
                     },
                     {
                         name: 'BOT_OWNER',
                         id: '401269337924829186',
-                        allowed_roles: ['USER', 'DJ', 'ADMIN', 'OWNER', 'BOT_OWNER'],
+                        allowed_roles: ['USER', 'MODERATOR', 'ADMIN', 'OWNER', 'BOT_OWNER'],
                     },
                 ],
             };

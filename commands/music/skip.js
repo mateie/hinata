@@ -15,6 +15,6 @@ exports.help = {
     name: 'skip',
     aliases: ['s'],
     args: [],
-    permission: 'DJ',
+    permission: 'MODERATOR',
     description: 'Skip the current song',
 };

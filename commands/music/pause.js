@@ -22,6 +22,6 @@ exports.help = {
     name: 'pause',
     aliases: [],
     args: [],
-    permission: 'DJ',
+    permission: 'MODERATOR',
     description: 'Pauses the current queue',
 };

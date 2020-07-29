@@ -8,7 +8,7 @@ const serversSchema = mongoose.Schema({
     roles: {
         owner: String,
         admin: String,
-        dj: String,
+        moderator: String,
         member: String,
         mute: String,
     },
@@ -18,6 +18,9 @@ const serversSchema = mongoose.Schema({
         spam: String,
         notifications: String,
         reactions: String,
+    },
+    toggles: {
+        autorole: Boolean,
     },
 });
 
