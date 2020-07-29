@@ -67,7 +67,9 @@ users.get('/:userID', async (req, res) => {
         bgColor = '#007bff';
     }
 
-    Main.renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity, brightness: Main.lightOrDark });
+    let brightness = Main.lightOrDark(bgColor) ? 'text-dark' : 'text-light';
+
+    Main.renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity, brightness: brightness });
 });
 
 users.post('/:userID', async (req, res) => {

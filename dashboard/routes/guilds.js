@@ -28,14 +28,10 @@ guilds.get('/:guildID', async (req, res) => {
 
     let storedSettings = await Servers.findOne({ serverID: guild.id });
 
-    let bgColor;
-    if(guild.icon) {
-        bgColor = await Main.colorHex(`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=128`);
-    } else {
-        bgColor = '#007bff'
-    }
+    let bgColor = guild.icon ? await Main.colorHex(`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=128`) : '#007bff';
+    let brightness = Main.lightOrDark(bgColor) ? 'text-dark' : 'text-light';
 
-    Main.renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor });
+    Main.renderTemplate(res, req, 'guild.ejs', { req: req, guild, settings: storedSettings, alertMessage: null, toasts: res.locals.toasts, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor, brightness: brightness });
 });
 
 guilds.post('/:guildID', async (req, res) => {

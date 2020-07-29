@@ -11,7 +11,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card card-widget widget-user">
+                            <div class="card card-widget widget-user <%= brightness %>">
                                 <% if(member.user.id === member.guild.ownerID) { %>
                                 <div class="ribbon-wrapper ribbon-lg">
                                     <div class="ribbon bg-danger text-lg">
@@ -19,7 +19,7 @@
                                     </div>
                                 </div>
                                 <% } %>
-                                <div class="widget-user-header <%= brightness(color) ? 'text-dark' : 'text-light' %>" style="background-color: <%= color %>">
+                                <div class="widget-user-header <%= brightness %>" style="background-color: <%= color %>">
                                     <h3 class="widget-user-username"><%= member.user.username %></h3>
                                     <h5 class="widget-user-desc"><%= member.user.discriminator %></h5>
                                 </div>
@@ -82,8 +82,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="card card-primary">
-                                <div class="card-header <%= brightness(color) ? 'text-dark' : 'text-light' %>" style="background-color: <%= color %>">
+                            <div class="card card-primary <%= brightness %>">
+                                <div class="card-header <%= brightness %>" style="background-color: <%= color %>">
                                     <h3 class="card-title">Member Settings</h3>
                                 </div>
 
@@ -97,7 +97,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <button type="submit" class="btn <%= brightness(color) ? 'text-dark' : 'text-light' %>"
+                                        <button type="submit" class="btn"
                                             style="background-color: <%= color %>">Submit</button>
                                     </div>
                                 </form>
