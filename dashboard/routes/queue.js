@@ -1,6 +1,9 @@
 const queue = require('express').Router();
 const { client } = require(`${process.cwd()}/index`);
 const Main = require('../app');
+const Discord = require('discord.js');
+const YTDL = require('ytdl-core');
+const Search = require('youtube-search');
 
 queue.get('/', async (req, res) => {
     const guild = client.guilds.cache.get(req.guildID);
