@@ -19,9 +19,9 @@
                                     </div>
                                 </div>
                                 <% } %>
-                                <div class="widget-user-header <%= brightness %>" style="background-color: <%= color %>">
-                                    <h3 class="widget-user-username"><%= member.user.username %></h3>
-                                    <h5 class="widget-user-desc"><%= member.user.discriminator %></h5>
+                                <div class="widget-user-header" style="background-color: <%= color %>">
+                                    <h3 class="widget-user-username <%= brightness %>"><%= member.user.username %></h3>
+                                    <h5 class="widget-user-desc <%= brightness %>"><%= member.user.discriminator %></h5>
                                 </div>
                                 <div class="widget-user-image">
                                     <% if(member.user.avatar !== undefined && member.user.avatar !== null) { %>
