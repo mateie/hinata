@@ -6,14 +6,14 @@ client.on('messageReactionRemove', ({ message, _emoji }, user) => {
     Servers.findOne({
         serverID: message.guild.id,
     }, (err, res) => {
-        if(err) console.error(err);
+        if (err) console.error(err);
 
         let messageID = res.messageID;
-        if(user.bot || message.id !== messageID) {
+        if (user.bot || message.id !== messageID) {
             return;
         }
 
-        if(message.partial) {
+        if (message.partial) {
             try {
                 message.fetch();
             } catch (err) {
@@ -25,9 +25,10 @@ client.on('messageReactionRemove', ({ message, _emoji }, user) => {
         const guild = message.guild;
 
         const member = guild.members.cache.get(user.id);
-        const role = guild.roles.cache.find(r => r.name === _emoji.name.toUpperCase());
+        let roleName = _emoji.name.includes('_') ? _emoji.name.replace('_', ' ').toUpperCase() : _emoji.name.toUpperCase();
+        const role = guild.roles.cache.find(r => r.name === roleName);
 
-        if(!role) {
+        if (!role) {
             console.error(`Role not found for '${_emoji.name.toUpperCase()}'`);
             return;
         }

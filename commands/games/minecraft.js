@@ -61,12 +61,14 @@ exports.run = async (client, message, args) => {
                 breakSpeed = 'Very Slow';
             } else if (block.hardness >= 100) {
                 breakSpeed = 'Unbreakable';
+            } else {
+                breakSpeed = 'Unbreakable';
             }
 
             let embed = new MessageEmbed()
                 .setTitle(`Random Block ${block.name}`)
                 .setDescription(`Block ID: ${block.id}`)
-                .addField('Hardness', block.hardness, true);
+                .addField('Hardness', block.hardness ? block.hardness : 'Unlimited', true);
             if (block.diggable === true) {
                 embed.addField('Breakable', 'Yes', true);
             } else {
@@ -241,16 +243,12 @@ exports.run = async (client, message, args) => {
                 if (srv.online === false) {
                     return message.reply('The following server is offline or doesn\'t exist');
                 }
-                /* if (srv.favicon !== null || srv.favicon !== undefined) {
 
-                    imageBuffer = this.decodeBase64Image(srv.favicon);
-                    iconDir = `${process.cwd()}/data/images/`;
-                    iconName = `server_icon_${randomstr.generate(5)}.png`;
-                    icon = `${iconDir}${iconName}`;
-                    fs.writeFile(icon, imageBuffer.data, err => {
-                        if (err) console.error(err);
-                    });
-                }*/
+                let imageBuffer;
+
+                if (srv.favicon !== null || srv.favicon !== undefined) {
+                    imageBuffer = this.decodeBase64Image(srv.favicon).data;
+                }
 
                 let lastOnline = new Date(parseInt(srv.last_online * 1000)).toDateString();
 
@@ -274,66 +272,65 @@ exports.run = async (client, message, args) => {
 
                 let embed = new MessageEmbed()
                     .setTitle('Server Info')
-                    .setDescription(serverInfo.description)
-                    /* .attachFiles([`${icon}`])
-                    .setThumbnail(`attachment://${iconName}`)*/
-                    .addField('Players Online', serverInfo.players.online, true)
+                    .setDescription(serverInfo.description);
+                if (imageBuffer) {
+                    embed.attachFiles({ attachment: imageBuffer, name: 'icon.png' })
+                    .setThumbnail('attachment://icon.png');
+                }
+                embed.addField('Players Online', serverInfo.players.online, true)
                     .addField('Max Players', serverInfo.players.max, true)
                     .addField('Last Online', serverInfo.last_online, true)
                     .setFooter(`Version: ${serverInfo.version}`);
 
                 return message.channel.send({ embed });
-                /* .then(() => {
-                    fs.unlinkSync(icon);
-                });*/
             });
         }
-    } else if(args[0] === 'user' || args[0] === 'account') {
+    } else if (args[0] === 'user' || args[0] === 'account') {
         let account = args[1];
-        if(!account) {
+        if (!account) {
             return message.reply('Username not provided');
         } else {
             mcLib.players.get(account)
-            .then(p => {
-                let player = {
-                    id: p.uuid,
-                    name: p.username,
-                    skin: {
-                        url: p.textures.skin_url,
-                        cape: p.textures.cape_url,
-                        slim: p.textures.slim,
-                    },
-                    name_history: [],
-                };
+                .then(p => {
+                    let player = {
+                        id: p.uuid,
+                        name: p.username,
+                        skin: {
+                            url: p.textures.skin_url,
+                            cape: p.textures.cape_url,
+                            slim: p.textures.slim,
+                        },
+                        name_history: [],
+                    };
 
-                Object.keys(p.username_history._history).forEach(name => {
-                    player.name_history.push(name);
+                    Object.keys(p.username_history._history).forEach(name => {
+                        player.name_history.push(name);
+                    });
+
+                    player.name_history = player.name_history.join(', ');
+
+                    let embed = new MessageEmbed()
+                        .setTitle(`${player.name}'s Minecraft Profile`)
+                        .setThumbnail(player.skin.url)
+                        .addField(`UUID`, player.id);
+                    if (player.skin.cape === null) {
+                        embed.addField('Cape', 'No', true);
+                    } else {
+                        embed.addField('Cape', 'Yes', true);
+                    }
+                    if (player.skin.slim === true) {
+                        embed.addField('Skin Type', 'Alex', true);
+                    } else {
+                        embed.addField('Skin Type', 'Steve', true);
+                    }
+                    embed.addField('Username History', player.name_history);
+
+                    return message.channel.send({ embed });
+                })
+                .catch(err => {
+                    console.error(err);
+                    return message.reply('Could\'t find that user');
                 });
-
-                player.name_history = player.name_history.join(', ');
-
-                let embed = new MessageEmbed()
-                .setTitle(`${player.name}'s Minecraft Profile`)
-                .setThumbnail(player.skin.url)
-                .addField(`UUID`, player.id);
-                if(player.skin.cape === null) {
-                    embed.addField('Cape', 'No', true);
-                } else {
-                    embed.addField('Cape', 'Yes', true);
-                }
-                if(player.skin.slim === true) {
-                    embed.addField('Skin Type', 'Alex', true);
-                } else {
-                    embed.addField('Skin Type', 'Steve', true);
-                }
-                embed.addField('Username History', player.name_history);
-
-                return message.channel.send({ embed });
-            })
-            .catch(err => {
-                console.error(err);
-                return message.reply('Could\'t find that user');
-            });
         }
     } else {
         message.reply(`Usage: ${this.help.args[0]} ${this.help.args[1]}`);

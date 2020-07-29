@@ -88,14 +88,15 @@ client.on('ready', async () => {
                 let customGuild = guild;
                 client.emit('guildCreate', customGuild);
                 console.info(`Adding new guild to the database... (Guild ID: ${guild.id})`);
-            } else if (res.channels.reactions.length < 0) {
+            }
+
+            if (res.channels.reactions.length < 0) {
                 console.info('This guild doesn\'t have reaction channel set in the database');
             } else {
-                const channel = client.channels.cache.find(ch => ch.name === res.channels.reactions);
+                const channel = guild.channels.cache.find(ch => ch.name === res.channels.reactions);
                 if (!channel) {
                     console.info(`This server doesn't have reactions channel`);
                 } else if (channel.guild.id === res.serverID) {
-
                     try {
                         await channel.messages.fetch();
                     } catch (err) {

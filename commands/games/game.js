@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 const Servers = require('../../models/servers');
-const { exists } = require('../../models/servers');
 
 exports.run = (client, message, args) => {
     if (args[0] === 'add') {
@@ -133,7 +132,7 @@ exports.run = (client, message, args) => {
 
                     let channel = message.guild.channels.cache.find(ch => ch.name === resp.channels.reactions);
                     let msg = channel.messages.cache.get(resp.messageID);
-                    let msgEmoji = message.guild.emojis.cache.find(e => e.name === game);
+                    let msgEmoji = message.guild.emojis.cache.find(e => e.name === emojiName);
                     await msg.react(msgEmoji);
                 });
 
@@ -166,6 +165,7 @@ exports.run = (client, message, args) => {
             .then(async res => {
                 let originalGamesName = res.data[0].name.toLowerCase();
                 let gameNames = res.data[0].alternative_name.toLowerCase();
+                let emojiName = game.includes(' ') ? game.replace(' ', '_') : game;
 
                 if (!gameNames.includes(game) && !originalGamesName.includes(game)) {
                     return message.reply(`${game} doesn't exist, please enter a valid game`);
@@ -209,7 +209,7 @@ exports.run = (client, message, args) => {
 
                 await parent.delete();
 
-                let gameEmoji = message.guild.emojis.cache.find(e => e.name === game.toLowerCase());
+                let gameEmoji = message.guild.emojis.cache.find(e => e.name === emojiName);
                 await gameEmoji.delete();
 
                 let gameRole = message.guild.roles.cache.find(r => r.name === game.toUpperCase());
