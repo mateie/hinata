@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 const { MessageEmbed } = require('discord.js');
-const YTDL = require('ytdl-core');
+const YTDL = require('ytdl-core-discord');
 const Search = require('youtube-search');
 
 exports.run = async (client, message, args) => {
@@ -79,7 +79,7 @@ exports.run = async (client, message, args) => {
     try {
         const connection = await channel.join();
         queueConstruct.connection = connection;
-        this.play(queueConstruct.songs[0], message);
+        this.play(message, queueConstruct.songs[0]);
     } catch (err) {
         console.error(`I could not join the voice channel: ${err}`);
         message.client.queue.delete(message.guild.id);
@@ -110,7 +110,7 @@ exports.help = {
     description: 'Play music',
 };
 
-exports.play = async (song, message) => {
+exports.play = async (message, song) => {
     const queue = message.client.queue.get(message.guild.id);
     if (!song) {
         queue.voiceChannel.leave();
@@ -119,7 +119,7 @@ exports.play = async (song, message) => {
     }
 
     let dispatcher = queue.connection
-        .play(YTDL(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 }))
+        .play(YTDL(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 }), { type: 'opus' })
         .on('finish', () => {
             if (!queue.loop) {
                 queue.songs.shift();
