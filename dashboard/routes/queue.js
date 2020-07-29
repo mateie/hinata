@@ -20,7 +20,7 @@ queue.get('/', async (req, res) => {
 
     let notification;
 
-    Main.renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, alertMessage: notification, member: member, queue: queue, guild: guild, convert: secondsToDuration });
+    Main.renderTemplate(res, req, 'queue.ejs', { req: req, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, alertMessage: notification, member: member, queue: queue, guild: guild, convert: Main.secondsToDuration });
 });
 
 queue.post('/', async (req, res) => {
