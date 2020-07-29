@@ -4,10 +4,6 @@ exports.run = function(client, message, args) {
         if(isNaN(args[1])) return message.channel.send('Specify the valid amount');
         if(parseInt(args[1]) > 100) return message.channel.send('Max 100 Messages at a time');
 
-        if(client.game.hangman.has(message.guild.id)) {
-            return message.channel.send(`The hangman game is running... Try again later`);
-        }
-
         message.channel.messages.fetch({
             limit: args[1],
         }).then(messages => {
