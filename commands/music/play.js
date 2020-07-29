@@ -76,42 +76,10 @@ exports.run = async (client, message, args) => {
     message.client.queue.set(message.guild.id, queueConstruct);
     queueConstruct.songs.push(song);
 
-    const play = async song => {
-        const queue = message.client.queue.get(message.guild.id);
-        if (!song) {
-            queue.voiceChannel.leave();
-            message.client.queue.delete(message.guild.id);
-            return;
-        }
-
-        let dispatcher = queue.connection
-            .play(YTDL(song.url, { filter: 'audioonly', quality: 'highestaudio', highWaterMark: 1 << 25 }), { highWaterMark: 1 })
-            .on('finish', () => {
-                if (!queue.loop) {
-                    queue.songs.shift();
-                }
-                play(queue.songs[0]);
-            })
-            .on('error', err => console.error(err));
-
-        dispatcher.setVolumeLogarithmic(queue.volume / 100);
-        const embed = new MessageEmbed()
-            .setColor('RANDOM')
-            .setTitle(song.title)
-            .setURL(song.url)
-            .setAuthor(song.author.name, song.author.avatar, song.author.channel)
-            .setDescription('Now Playing')
-            .setImage(song.thumbnail)
-            .addField('Video Length', this.secondsToDuration(song.duration), true)
-            .addField('Likes', song.likes, true)
-            .addField('Dislikes', song.dislikes, true);
-        queue.textChannel.send({ embed });
-    };
-
     try {
         const connection = await channel.join();
         queueConstruct.connection = connection;
-        play(queueConstruct.songs[0]);
+        this.play(queueConstruct.songs[0], message);
     } catch (err) {
         console.error(`I could not join the voice channel: ${err}`);
         message.client.queue.delete(message.guild.id);
@@ -140,4 +108,36 @@ exports.help = {
     args: ['<video url/video name>'],
     permission: 'MODERATOR',
     description: 'Play music',
+};
+
+exports.play = async (song, message) => {
+    const queue = message.client.queue.get(message.guild.id);
+    if (!song) {
+        queue.voiceChannel.leave();
+        message.client.queue.delete(message.guild.id);
+        return;
+    }
+
+    let dispatcher = queue.connection
+        .play(YTDL(song.url, { filter: 'audioonly', quality: 'highestaudio', highWaterMark: 1 << 25 }))
+        .on('finish', () => {
+            if (!queue.loop) {
+                queue.songs.shift();
+            }
+            this.play(queue.songs[0]);
+        })
+        .on('error', err => console.error(err));
+
+    dispatcher.setVolumeLogarithmic(queue.volume / 100);
+    const embed = new MessageEmbed()
+        .setColor('RANDOM')
+        .setTitle(song.title)
+        .setURL(song.url)
+        .setAuthor(song.author.name, song.author.avatar, song.author.channel)
+        .setDescription('Now Playing')
+        .setImage(song.thumbnail)
+        .addField('Video Length', this.secondsToDuration(song.duration), true)
+        .addField('Likes', song.likes, true)
+        .addField('Dislikes', song.dislikes, true);
+    queue.textChannel.send({ embed });
 };
