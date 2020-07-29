@@ -119,7 +119,7 @@ exports.play = async (song, message) => {
     }
 
     let dispatcher = queue.connection
-        .play(YTDL(song.url, { filter: 'audioonly', quality: 'highestaudio', highWaterMark: 1 << 25 }))
+        .play(YTDL(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 }))
         .on('finish', () => {
             if (!queue.loop) {
                 queue.songs.shift();

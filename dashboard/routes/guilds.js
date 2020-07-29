@@ -103,7 +103,7 @@ guilds.use('/:guildID/user', (req, res, next) => {
     next();
 }, users);
 
-guilds.use('/queue', (req, res, next) => {
+guilds.use('/:guildID/queue', (req, res, next) => {
     req.guildID = req.params.guildID;
     next();
 }, queue);
