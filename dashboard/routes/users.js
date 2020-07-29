@@ -82,12 +82,16 @@ users.post('/:userID', async (req, res) => {
         return res.redirect('/');
     }
 
-    let nickname = req.body['member-nickname'];
+    console.log(req.body);
 
-    if(nickname) {
-        member.setNickname(nickname);
+    if(req.body.memberNickname.length > 0) {
+        member.setNickname(req.body.memberNickname);
     }
-    
+
+    if(req.body.clearNickname.length === 0) {
+        member.setNickname('');
+    }
+
     res.redirect(req.originalUrl);
 });
 
