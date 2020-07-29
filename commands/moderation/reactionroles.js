@@ -6,9 +6,11 @@ exports.run = async (client, message, args) => {
     }, async (err, res) => {
         if (err) console.error(err);
 
-        let emoji = message.guild.emojis.cache.find(e => e.name === args[1]);
+        let emojiName = args.slice(1, args.length).join(' ');
+
+        let emoji = message.guild.emojis.cache.find(e => e.name === emojiName);
         if (!emoji) {
-            return message.channel.send(`\`\`\`${args[1]} can't be found\`\`\``);
+            return message.channel.send(`\`\`\`${emojiName} can't be found\`\`\``);
         }
 
         let channel = message.guild.channels.cache.find(ch => ch.name === res.channels.reactions);

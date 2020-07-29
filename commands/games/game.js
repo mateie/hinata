@@ -1,10 +1,11 @@
 const axios = require('axios');
 
 const Servers = require('../../models/servers');
+const { exists } = require('../../models/servers');
 
 exports.run = (client, message, args) => {
     if (args[0] === 'add') {
-        const game = args[1].slice(1, args.length).join(' ').toLowerCase();
+        const game = args.slice(1, args.length).join(' ').toLowerCase();
         console.log(game);
 
         if (!game) {
@@ -12,7 +13,7 @@ exports.run = (client, message, args) => {
         }
 
         if (message.guild.roles.cache.find(ch => ch.name === game.toUpperCase())) {
-            return message.reply(`${game.toUpperCase()} role already exists`);
+            message.reply(`${game.toUpperCase()} role already exists, not creating it...`);
         }
 
         let emoji = message.attachments.first();
@@ -60,9 +61,11 @@ exports.run = (client, message, args) => {
                     reason: `Automatically generated Emoji for ${game.toUpperCase()}`,
                 };
 
-                let existsEmoji = message.guild.emojis.cache.find(e => e.name === game);
+                let emojiName = game.includes(' ') ? game.replace(' ', '_') : game;
+
+                let existsEmoji = message.guild.emojis.cache.find(e => e.name === emojiName);
                 if (!existsEmoji) {
-                    await message.guild.emojis.create(emoji.url, game, gameEmoji);
+                    await message.guild.emojis.create(emoji.url, emojiName, gameEmoji);
                 } else {
                     message.reply('Not creating a new Emoji, it already exists');
                 }
@@ -141,8 +144,7 @@ exports.run = (client, message, args) => {
                 console.error(e);
             });
     } else if (args[0] === 'remove') {
-        const game = args[1].slice(1, args.length).join(' ').toLowerCase();
-        console.log(game);
+        const game = args.slice(1, args.length).join(' ').toLowerCase();
 
         if (!game) {
             return message.reply('Please enter a game name');
@@ -218,7 +220,7 @@ exports.run = (client, message, args) => {
                 }, async (err, resp) => {
                     if (err) console.error(err);
 
-                    let channel = message.guild.channels.cache.find(ch => ch.name === resp.reactionChannels[0]);
+                    let channel = message.guild.channels.cache.find(ch => ch.name === resp.channels.reactions);
                     let msg = channel.messages.cache.get(resp.messageID);
                     let msgReaction = msg.reactions.cache.find(e => e._emoji.name === game);
 
