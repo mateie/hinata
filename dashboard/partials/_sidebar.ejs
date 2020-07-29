@@ -36,10 +36,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <% if(user.guilds) { %>
-                        <% user.guilds.forEach(guild => {
-                            const permsOnGuild = new perms(guild.permissions);
-                            if(!permsOnGuild.has('MANAGE_GUILD')) return;
-                        %>
+                        <% user.guilds.forEach(guild => { %>
+                        <% const permsOnGuild = new perms(guild.permissions); %>
+                        <% if(!permsOnGuild.has('MANAGE_GUILD')) return; %>
                         <li class="nav-item">
                             <% if(bot.guilds.cache.get(guild.id)) { %>
                             <a href="/guild/<%= guild.id %>" class="nav-link">
