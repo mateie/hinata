@@ -23,14 +23,17 @@ client.on('guildCreate', guild => {
             mute: "Muted",
         },
         channels: {
+            joinchannel: 'welcome',
+            leavechannel: 'bye',
             commands: 'bot-commands',
             logs: 'logs',
             spam: 'spam',
-            notifications: 'welcome',
             reactions: 'roles',
         },
         toggles: {
             autorole: false,
+            joinmessage: false,
+            leavemessage: false,
         },
     });
 

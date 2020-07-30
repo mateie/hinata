@@ -13,14 +13,17 @@ const serversSchema = mongoose.Schema({
         mute: String,
     },
     channels: {
+        joinchannel: String,
+        leavechannel: String,
         commands: String,
         logs: String,
         spam: String,
-        notifications: String,
         reactions: String,
     },
     toggles: {
         autorole: Boolean,
+        joinmessage: Boolean,
+        leavemessage: Boolean,
     },
 });
 
