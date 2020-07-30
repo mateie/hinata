@@ -103,8 +103,8 @@
                                     <h3 class="card-title">All Members</h3>
 
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool"
-                                            data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
 
@@ -125,8 +125,8 @@
                                     <h3 class="card-title">All Bots</h3>
 
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool"
-                                            data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
 
@@ -145,8 +145,8 @@
                                     <h3 class="card-title">All Channels</h3>
 
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool"
-                                            data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
 
@@ -185,8 +185,8 @@
                                     <h3 class="card-title">All Roles</h3>
 
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool"
-                                            data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                                class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
 
@@ -207,7 +207,7 @@
                                     <h3 class="card-title">Prefix</h3>
                                 </div>
 
-                                <form role="form" method="POST">
+                                <form method="POST">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="prefix"
@@ -216,7 +216,7 @@
 
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn text-light"
+                                        <button type="submit" formaction="<%= guild.id %>/prefix" class="btn text-light"
                                             style="background-color: <%= color %>">Submit</button>
                                     </div>
                                 </form>
@@ -228,7 +228,7 @@
                                     <h3 class="card-title">Roles</h3>
                                 </div>
 
-                                <form role="form" method="POST">
+                                <form method="POST">
                                     <div class="card-body">
                                         <h5 class="card-description">Role names are case-sensitive</h5>
                                         <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
@@ -244,7 +244,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <button type="submit" class="btn text-light"
+                                        <button type="submit" formaction="<%= guild.id %>/roles" class="btn text-light"
                                             style="background-color: <%= color %>">Submit</button>
                                     </div>
                                 </form>
@@ -260,19 +260,60 @@
                                     <div class="card-body">
                                         <h5 class="card-description">Channel names are case-sensitive</h5>
                                         <% for (let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
+                                        <% let channelName = Object.keys(settings.channels)[j];
+                                        let channelValue = Object.values(settings.channels)[j];
+                                        if(channelName.includes('_')) {
+                                            channelName = channelName.split('_');
+                                            channelName.forEach((name, index) => {
+                                                channelName[index] = capL(name);
+                                            });
+                                            channelName = channelName.join(' ');
+                                        } %>
                                         <div class="form-group">
                                             <label
-                                                for="channel-<%= Object.keys(settings.channels)[j] %>"><%= capL(Object.keys(settings.channels)[j]) %>
+                                                for="channel-<%= Object.keys(settings.channels)[j] %>"><%= capL(channelName) %>
                                                 Channel</label>
                                             <input type="text" class="form-control"
                                                 name="channel-<%= Object.keys(settings.channels)[j] %>"
-                                                placeholder="Current value is '<%= Object.values(settings.channels)[j] %>'">
+                                                placeholder="Current value is '<%= channelValue %>'">
                                         </div>
                                         <% } %>
                                     </div>
 
                                     <div class="card-footer">
-                                        <button type="submit" class="btn text-light"
+                                        <button type="submit" formaction="<%= guild.id %>/channels" class="btn text-light"
+                                            style="background-color: <%= color %>">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header" style="background-color: <%= color %>">
+                                    <h3 class="card-title">Moderation (Disabled For Now)</h3>
+                                </div>
+                                <form method="POST">
+                                    <div class="card-body">
+                                        <% for(let k = 1; k <= Object.keys(settings.toggles).length - 1; k++) { 
+                                        let toggleName = Object.keys(settings.toggles)[k] 
+                                        let toggleValue = Object.values(settings.toggles)[k] 
+                                        if(toggleName.includes('_')) { 
+                                        toggleName = toggleName.split('_'); 
+                                        toggleName.forEach((name, index) => { 
+                                        toggleName[index] = capL(name);
+                                        })
+                                        toggleName = toggleName.join(' ');
+                                        } %>
+                                        <div class="form-group">
+                                            <label for="toggle-<%= Object.keys(settings.toggles)[k] %>"><%= capL(toggleName) %></label>
+                                            <input type="checkbox" disabled name="toggle-<%= Object.keys(settings.toggles)[k] %>"
+                                                <%= toggleValue ? 'checked' : '' %> data-bootstrap-switch
+                                                data-off-color="danger" data-on-color="success">
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" disabled formaction="<%= guild.id %>/toggle" class="btn text-light"
                                             style="background-color: <%= color %>">Submit</button>
                                     </div>
                                 </form>

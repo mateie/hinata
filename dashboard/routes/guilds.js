@@ -33,7 +33,7 @@ guilds.get('/:guildID', async (req, res) => {
     Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor });
 });
 
-guilds.post('/:guildID', async (req, res) => {
+guilds.post('/:guildID/prefix', async (req, res) => {
     const guild = client.guilds.cache.get(req.params.guildID);
     if (!guild) {
         return res.redirect('/');
@@ -47,51 +47,108 @@ guilds.post('/:guildID', async (req, res) => {
     }
 
     let storedSettings = await Servers.findOne({ serverID: guild.id });
-    
-    let inputKeys = Object.keys(req.body);
-    let inputValues = Object.values(req.body);
 
-    let embed = new Discord.MessageEmbed()
-        .setTitle('Server Settings')
-        .setDescription('Settings was changed from dashboard');
+    let prefix = req.body.prefix;
 
-    for (let x = 0; x < inputKeys.length; x++) {
-        let inputKey = inputKeys[x];
-        let inputValue = inputValues[x];
-
-        let inputType = inputKey.split('-')[0];
-
-        if (inputValues.length > 1) {
-            inputType += 's';
-        }
-
-        if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValues.length > 1) {
-            storedSettings[inputType][Object.keys(storedSettings[inputType])[x + 1]] = inputValue;
-        } else if (typeof (inputValue) !== 'undefined' && inputValue.length > 0 && inputValue.length === 1) {
-            storedSettings[inputType] = inputValue;
-        }
-
-        let inputs = inputKey;
-        let names = [];
-
-        inputs = inputs.split('-');
-        for (let z = 0; z < inputs.length; z++) {
-            let input = inputs[z];
-            input = Main.capFirstLetter(input);
-            names[z] = input;
-        }
-
-        names = names.join(' ');
-
-        embed.addField('\u200b', `${names} was updated to ${inputValue}`);
-    }
-
-    member.send({ embed });
+    storedSettings.prefix = prefix;
 
     storedSettings.save();
 
-    res.redirect(req.originalUrl);
+    res.redirect('back');
 });
+
+guilds.post('/:guildID/roles', async (req, res) => {
+    const guild = client.guilds.cache.get(req.params.guildID);
+    if (!guild) {
+        return res.redirect('/');
+    }
+    const member = guild.members.cache.get(req.user.id);
+    if (!member) {
+        return res.redirect('/');
+    }
+    if (!member.permissions.has('MANAGE_GUILD')) {
+        return res.redirect('/');
+    }
+
+    let storedSettings = await Servers.findOne({ serverID: guild.id });
+
+    let inputKeys = Object.keys(req.body);
+    let inputValues = Object.values(req.body);
+
+    inputKeys.forEach((key, index) => {
+        let inputType = key.split('-')[0];
+        let role = key.split('-')[1];
+        if (inputType.length > 1) {
+            inputType += 's';
+        }
+        let value = inputValues[index];
+        if (typeof (value) !== 'undefined' && value.length > 0) {
+            storedSettings[inputType][role] = value;
+        }
+    });
+
+    storedSettings.save();
+
+    res.redirect('back');
+});
+
+guilds.post('/:guildID/channels', async (req, res) => {
+    const guild = client.guilds.cache.get(req.params.guildID);
+    if (!guild) {
+        return res.redirect('/');
+    }
+    const member = guild.members.cache.get(req.user.id);
+    if (!member) {
+        return res.redirect('/');
+    }
+    if (!member.permissions.has('MANAGE_GUILD')) {
+        return res.redirect('/');
+    }
+
+    let storedSettings = await Servers.findOne({ serverID: guild.id });
+
+    let inputKeys = Object.keys(req.body);
+    let inputValues = Object.values(req.body);
+
+    inputKeys.forEach((key, index) => {
+        let inputType = key.split('-')[0];
+        let channel = key.split('-')[1];
+        if (inputType.length > 1) {
+            inputType += 's';
+        }
+        let value = inputValues[index];
+        if (typeof (value) !== 'undefined' && value.length > 0) {
+            storedSettings[inputType][channel] = value;
+        }
+    });
+
+    storedSettings.save();
+
+    res.redirect('back');
+});
+
+/* guilds.post('/:guildID/toggle', async (req, res) => {
+    const guild = client.guilds.cache.get(req.params.guildID);
+    if (!guild) {
+        return res.redirect('/');
+    }
+    const member = guild.members.cache.get(req.user.id);
+    if (!member) {
+        return res.redirect('/');
+    }
+    if (!member.permissions.has('MANAGE_GUILD')) {
+        return res.redirect('/');
+    }
+
+    let storedSettings = await Servers.findOne({ serverID: guild.id });
+
+    let inputKeys = Object.keys(req.body);
+    let inputValues = Object.values(req.body);
+
+    console.log(req.body);
+
+    res.redirect('back');
+}); */
 
 guilds.use('/:guildID/channel', (req, res, next) => {
     req.guildID = req.params.guildID;
