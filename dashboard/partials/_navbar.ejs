@@ -9,7 +9,7 @@
     <ul class="navbar-nav align-items-center ml-auto">
         <% if(user) { %>
         <li class="nav-item dropdown no-caret mr-2 dropdown-user">
-            <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
+            <a class="btn btn-icon btn-transparent-light dropdown-toggle" id="navbarDropdownUserImage"
                 href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
                 <% if(user.avatar !== undefined && user.avatar !== null) { %>
@@ -33,7 +33,7 @@
                     </div>
                 </h6>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/profile">
+                <a class="dropdown-item disabled" href="/profile">
                     <div class="dropdown-item-icon"><i data-feather="user"></i></div>
                     Profile
                 </a>
@@ -45,7 +45,7 @@
         </li>
         <% } else { %>
         <li class="nav-item mr-2">
-            <a class="btn btn-icon btn-transparent-dark" href="/login" role="button" aria-haspopup="true"
+            <a class="btn btn-icon btn-transparent-light" href="/login" role="button" aria-haspopup="true"
                 aria-expanded="false"><i data-feather="log-in"></i></a>
         </li>
         <% } %>
