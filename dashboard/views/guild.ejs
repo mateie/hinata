@@ -1,329 +1,201 @@
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Settings`}) %>
+<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Dashboard` }) %>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
-        <%- include('../partials/_navbar') %>
+<body class="nav-fixed">
+    <%- include('../partials/_navbar') %>
+
+    <div id="layoutSidenav">
         <%- include('../partials/_sidebar') %>
-
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card card-widget widget-user-2">
-                            <div class="widget-user-header text-light" style="background-color: <%= color %>">
-                                <div class="widget-user-image">
-                                    <% if(guild.icon != undefined && guild.icon != null) { %>
-                                    <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=32"
-                                        class="img-circle elevation-4" alt="User Image">
-                                    <% } else { %>
-                                    <img src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
-                                        class="img-circle img-size-32 elevation-4" alt="Default Icon" />
-                                    <% } %>
-                                </div>
-                                <h3 class="widget-user-username">
-                                    <%= guild.name %></h3>
-                                <h5 class="widget-user-desc">
-                                    <%= guild.id %></h5>
-                            </div>
-                        </div>
-                    </div>
-                    <% if(musicQueue) { %>
-                    <div class="col-md-4">
-                        <div class="info-box text-light" style="background-color: <%= color %>">
-                            <span class="info-box-icon">
-                                <img src="<%= musicQueue.songs[0].author.avatar %>" class="img-circle elevation-2" />
-                            </span>
-                            <div class="info-box-content">
-                                <span
-                                    class="info-box-text"><%= musicQueue.playing ? 'Currently Playing' : 'Paused' %></span>
-                                <span class="info-box-number"><%= musicQueue.songs[0].title %></span>
-                            </div>
-                            <div class="card-tools">
-                                <button type="button" class="btn">
-                                    <a href="/guild/<%= guild.id %>/queue" class="text-light">Queue</a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <% } %>
-                </div>
-            </section>
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row text-light">
-                        <div class="col-md-3">
-                            <div class="info-box" style="background-color: <%= color %>">
-                                <span class="info-box-icon"><i class="fas fa-user"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Total Members</span>
-                                    <span
-                                        class="info-box-number"><%= guild.members.cache.filter(m => !m.user.bot).size %></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info-box" style="background-color: <%= color %>">
-                                <span class="info-box-icon"><i class="fas fa-robot"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Total Bots</span>
-                                    <span
-                                        class="info-box-number"><%= guild.members.cache.filter(m => m.user.bot).size %></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info-box" style="background-color: <%= color %>">
-                                <span class="info-box-icon"><i class="fas fa-list-ol"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Total Channels</span>
-                                    <span
-                                        class="info-box-number"><%= guild.channels.cache.filter(ch => ch.type !== 'category').size %></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info-box" style="background-color: <%= color %>">
-                                <span class="info-box-icon"><i class="fas fa-users-cog"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Total Roles</span>
-                                    <span class="info-box-number"><%= guild.roles.cache.size %></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="card card-primary collapsed-card">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">All Members</h3>
-
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
-                                </div>
-
-                                <div class="card-body">
-                                    <ul>
-                                        <% guild.members.cache.filter(m => !m.user.bot).sort((a, b) => a.joinedTimestamp - a.joinedTimestamp).forEach(member => { %>
-                                        <li><a
-                                                href="/guild/<%= guild.id %>/user/<%= member.user.id %>"><%= member.user.username %></a>#<%= member.user.discriminator %>
-                                        </li>
-                                        <% }) %>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card card-primary collapsed-card">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">All Bots</h3>
-
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
-                                </div>
-
-                                <div class="card-body">
-                                    <ul>
-                                        <% guild.members.cache.filter(m => m.user.bot).forEach(bot => { %>
-                                        <li><%= bot.user.username %>#<%= bot.user.discriminator %></li>
-                                        <% }) %>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card card-primary collapsed-card">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">All Channels</h3>
-
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
-                                </div>
-
-                                <div class="card-body">
-                                    <ul>
-                                        <% guild.channels.cache.filter(ch => ch.parentID === null).filter(ch => ch.type !== 'category').sort((a, b) => a.rawPosition - b.rawPosition - 1).forEach(cha => { %>
-                                        <% if(cha.type === 'voice') { %>
-                                        <li><%= cha.name %> (<%= cha.type %>)</li>
-                                        <% } else { %>
-                                        <li><a href="/guild/<%= guild.id%>/channel/<%= cha.id %>"><%= cha.name %>
-                                                (<%= cha.type %>)</a></li>
-                                        <% } %>
-                                        <% }) %>
-                                        <% guild.channels.cache.filter(ch => ch.type === 'category').sort((a, b) => a.rawPosition - b.rawPosition - 1).forEach(category => { %>
-                                        <li><%= category.name %></li>
-                                        <ol>
-                                            <% guild.channels.cache.filter(ch => ch.type !== 'category').sort((a, b) => a.rawPosition - b.rawPosition - 1).forEach(channel => { %>
-                                            <% if (channel.parentID === category.id) { %>
-                                            <% if(channel.type === 'voice') { %>
-                                            <li><%= channel.name %> (<%= channel.type %>)</li>
+        <div id="layoutSidenav_content">
+            <main>
+                <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                    <div class="container">
+                        <div class="page-header-content pt-4">
+                            <div class="row align-items-center justify-content-between">
+                                <div class="col-auto mt-4">
+                                    <h1 class="page-header-title">
+                                        <div class="page-header-icon">
+                                            <% if(guild.icon !== undefined && guild.icon !== null) { %>
+                                            <img class="img-fluid avatar avatar-lg avatar-img"
+                                                src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=32" />
                                             <% } else { %>
-                                            <li><a href="/guild/<%= guild.id %>/channel/<%= channel.id %>"><%= channel.name %>
-                                                    (<%= channel.type %>)</a></li>
+                                            <img class="img-fluid avatar avatar-lg avatar-img"
+                                                src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
                                             <% } %>
-                                            <% } %>
-                                            <% }) %>
-                                        </ol>
-                                        <% }) %>
-                                    </ul>
+                                        </div>
+                                        <%= guild.name %>
+                                    </h1>
+                                    <div class="page-header-subtitle">Server Dashboard</div>
+                                </div>
+                                <div class="col-auto mt-4">
+                                    <div class="page-header-subtitle">
+                                        Current Prefix is <%= settings.prefix %>
+                                        <button class="btn btn-success btn-sm" type="button" data-toggle="modal"
+                                            data-target="#prefixModal">Change</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="prefixModal" tabindex="-1" role="dialog"
+                                aria-labelledby="prefixModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="prefixModalLabel">Change Prefix</h5>
+                                            <button class="close" type="button" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <form method="POST">
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="prefix" placeholder="Current Prefix is '<%= settings.prefix %>'">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-danger" type="button"
+                                                    data-dismiss="modal">Close</button>
+                                                <button class="btn btn-success" formaction="<%= guild.id %>/prefix" type="submit">Save Changes</button>
+                                            </div>
+                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card card-primary collapsed-card">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">All Roles</h3>
-
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
-                                </div>
-
+                    </div>
+                </header>
+                <div class="container mt-n10">
+                    <div class="row">
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: <%= color %>">
                                 <div class="card-body">
-                                    <ul>
-                                        <% guild.roles.cache.filter(r => !r.managed).filter(r => r.name !== '@everyone').forEach(role => { %>
-                                        <li><%= role.name %></li>
-                                        <% }) %>
-                                    </ul>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">Total Members</div>
+                                            <div class="text-lg font-weight-bold">
+                                                <%= guild.members.cache.filter(m => !m.user.bot).size %> Members</div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="user-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: <%= color %>">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">Total Bots</div>
+                                            <div class="text-lg font-weight-bold">
+                                                <%= guild.members.cache.filter(m => m.user.bot).size %> Bots</div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="aperture"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: <%= color %>">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">Total Channels</div>
+                                            <div class="text-lg font-weight-bold">
+                                                <%= guild.channels.cache.filter(ch => ch.type !== 'category').size %>
+                                                Channels</div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="align-left"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: <%= color %>">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">Total Roles</div>
+                                            <div class="text-lg font-weight-bold">
+                                                <%= guild.roles.cache.size %> Roles
+                                            </div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="users"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row text-li">
-                        <div class="col-md-12">
-                            <div class="card card-primary">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">Prefix</h3>
-                                </div>
-
-                                <form method="POST">
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div id="default">
+                                <div class="card mb-4">
+                                    <div class="card-header">Roles</div>
                                     <div class="card-body">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" name="prefix"
-                                                placeholder="Current prefix is '<%= settings.prefix %>'">
+                                        <div class="sbp-preview">
+                                            <div class="sbp-preview-content">
+                                                <form method="POST">
+                                                    <% for(let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
+                                                    <div class="form-group">
+                                                        <label
+                                                            for="role-<%= Object.keys(settings.roles)[i] %>"><%= capL(Object.keys(settings.roles)[i]) %>
+                                                            Role</label>
+                                                        <input type="text" class="form-control"
+                                                            name="role-<%= Object.keys(settings.roles)[i] %>"
+                                                            placeholder="Current Value is '<%= Object.values(settings.roles)[i] %>'">
+                                                    </div>
+                                                    <% } %>
+                                                    <button type="submit" formaction="<%= guild.id %>/channels"
+                                                        class="btn btn-success">Save Changes</button>
+                                                </form>
+                                            </div>
                                         </div>
-
                                     </div>
-                                    <div class="card-footer">
-                                        <button type="submit" formaction="<%= guild.id %>/prefix" class="btn text-light"
-                                            style="background-color: <%= color %>">Submit</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card card-primary">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">Roles</h3>
-                                </div>
-
-                                <form method="POST">
+                        <div class="col-lg-9">
+                            <div id="defualt">
+                                <div class="card mb-4">
+                                    <div class="card-header">Channels</div>
                                     <div class="card-body">
-                                        <h5 class="card-description">Role names are case-sensitive</h5>
-                                        <% for (let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
-                                        <div class="form-group">
-                                            <label
-                                                for="role-<%= Object.keys(settings.roles)[i] %>"><%= capL(Object.keys(settings.roles)[i]) %>
-                                                Role</label>
-                                            <input type="text" class="form-control"
-                                                name="role-<%= Object.keys(settings.roles)[i] %>"
-                                                placeholder="Current value is '<%= Object.values(settings.roles)[i] %>'">
+                                        <div class="sbp-preview">
+                                            <div class="sbp-preview-content">
+                                                <form method="POST">
+                                                    <% for(let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
+                                                    <% let channelName = Object.keys(settings.channels)[j];
+                                                        let channelValue = Object.values(settings.channels)[j];
+                                                        if(channelName.includes('_')) {
+                                                            channelName = channelName.split('_');
+                                                            channelName.forEach((name, index) => {
+                                                                channelName[index] = capL(name);
+                                                            });
+                                                            channelName = channelName.join(' ');
+                                                        } %>
+                                                    <div class="form-group">
+                                                        <label
+                                                            for="channel-<%= Object.keys(settings.channels)[j] %>"><%= capL(channelName) %>
+                                                            Channel</label>
+                                                        <input type="text" class="form-control"
+                                                            name="channel-<%= Object.keys(settings.channels)[j] %>"
+                                                            placeholder="Current Value is '<%= channelValue %>'" />
+                                                    </div>
+                                                    <% } %>
+                                                    <button type="submit" formaction="<%= guild.id %>/channels"
+                                                        class="btn btn-success">Save Changes</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <% } %>
                                     </div>
-
-                                    <div class="card-footer">
-                                        <button type="submit" formaction="<%= guild.id %>/roles" class="btn text-light"
-                                            style="background-color: <%= color %>">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-primary">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">Channels</h3>
                                 </div>
-
-                                <form method="POST">
-                                    <div class="card-body">
-                                        <h5 class="card-description">Channel names are case-sensitive</h5>
-                                        <% for (let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
-                                        <% let channelName = Object.keys(settings.channels)[j];
-                                        let channelValue = Object.values(settings.channels)[j];
-                                        if(channelName.includes('_')) {
-                                            channelName = channelName.split('_');
-                                            channelName.forEach((name, index) => {
-                                                channelName[index] = capL(name);
-                                            });
-                                            channelName = channelName.join(' ');
-                                        } %>
-                                        <div class="form-group">
-                                            <label
-                                                for="channel-<%= Object.keys(settings.channels)[j] %>"><%= capL(channelName) %>
-                                                Channel</label>
-                                            <input type="text" class="form-control"
-                                                name="channel-<%= Object.keys(settings.channels)[j] %>"
-                                                placeholder="Current value is '<%= channelValue %>'">
-                                        </div>
-                                        <% } %>
-                                    </div>
-
-                                    <div class="card-footer">
-                                        <button type="submit" formaction="<%= guild.id %>/channels" class="btn text-light"
-                                            style="background-color: <%= color %>">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-primary">
-                                <div class="card-header" style="background-color: <%= color %>">
-                                    <h3 class="card-title">Moderation (Disabled For Now)</h3>
-                                </div>
-                                <form method="POST">
-                                    <div class="card-body">
-                                        <% for(let k = 1; k <= Object.keys(settings.toggles).length - 1; k++) { 
-                                        let toggleName = Object.keys(settings.toggles)[k] 
-                                        let toggleValue = Object.values(settings.toggles)[k] 
-                                        if(toggleName.includes('_')) { 
-                                        toggleName = toggleName.split('_'); 
-                                        toggleName.forEach((name, index) => { 
-                                        toggleName[index] = capL(name);
-                                        })
-                                        toggleName = toggleName.join(' ');
-                                        } %>
-                                        <div class="form-group">
-                                            <label for="toggle-<%= Object.keys(settings.toggles)[k] %>"><%= capL(toggleName) %></label>
-                                            <input type="checkbox" disabled name="toggle-<%= Object.keys(settings.toggles)[k] %>"
-                                                <%= toggleValue ? 'checked' : '' %> data-bootstrap-switch
-                                                data-off-color="danger" data-on-color="success">
-                                        </div>
-                                        <% } %>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" disabled formaction="<%= guild.id %>/toggle" class="btn text-light"
-                                            style="background-color: <%= color %>">Submit</button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
-            </section>
+                </div>
+            </main>
+            <%- include('../partials/_footer') %>
         </div>
-        <%- include('../partials/_footer') %>
     </div>
+
     <%- include('../partials/_scripts') %>
 </body>
 

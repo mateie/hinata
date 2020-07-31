@@ -1,81 +1,88 @@
 <html lang="en">
 <%- include('../partials/_head', { bot, user, path, title: `${bot.user.username} Home` }) %>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
+<body class="nav-fixed">
+    <%- include('../partials/_navbar') %>
 
-        <%- include('../partials/_navbar') %>
-
+    <div id="layoutSidenav">
         <%- include('../partials/_sidebar') %>
-
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Bot Information</h1>
+        <div id="layoutSidenav_content">
+            <main>
+                <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                    <div class="container">
+                        <div class="page-header-content pt-4">
+                            <div class="row align-items-center justify-content-between">
+                                <div class="col-auto mt-4">
+                                    <h1 class="page-header-title">
+                                        <div class="page-header-icon"><i data-feather="terminal"></i></div>
+                                        <%= bot.user.username %>
+                                    </h1>
+                                    <div class="page-header-subtitle">Bot Information</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-            </section>
-
-            <section class="content">
-                <div class="container-fluid">
+                </header>
+                <div class="container mt-n10">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box bg-<%= bg %>">
-
-                                <span class="info-box-icon"><i class="fas fa-terminal"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Status</span>
-                                    <span class="info-box-number"><%= status %></span>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card bg-<%= bg %> text-white mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">Status</div>
+                                            <div class="text-lg font-weight-bold"><%= status %></div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="terminal"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box bg-primary">
-
-                                <span class="info-box-icon"><i class="fas fa-user"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Activity</span>
-                                    <span class="info-box-number"><%= activity.type %> <%= activity.name %></span>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">Activity</div>
+                                            <div class="text-lg font-weight-bold"><%= activity.type %> <%= activity.name %></div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="activity"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box bg-gradient-info">
-                                <span class="info-box-icon"><i class="fas fa-list-ul"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Server Count</span>
-                                    <span class="info-box-number"><%= bot.guilds.cache.size %> Servers</span>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card bg-info text-white mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">Server Count</div>
+                                            <div class="text-lg font-weight-bold"><%= bot.guilds.cache.size %> Servers</div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="server"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="clearfix hidden-md-up"></div>
-
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box bg-gradient-success">
-                                <span class="info-box-icon"><i class="fas fa-users"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">User Count</span>
-                                    <span class="info-box-number"><%= bot.users.cache.filter(u => !u.bot).size %>
-                                        Users</span>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="mr-3">
+                                            <div class="text-light-75 small">User Count</div>
+                                            <div class="text-lg font-weight-bold"><%= bot.users.cache.filter(u => !u.bot).size %> Users</div>
+                                        </div>
+                                        <i class="feather-xl text-white-50" data-feather="users"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
-    </div>
+            </main>
 
-    <%- include('../partials/_footer') %>
+            <%- include('../partials/_footer') %>
+        </div>
     </div>
 
     <%- include('../partials/_scripts') %>

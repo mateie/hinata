@@ -8,23 +8,23 @@ router.get('/', (req, res, next) => {
     let botStatus = client.presence.status;
     let botActivity = client.presence.activities[0];
 
-    let bgColor = 'gradient-';
+    let bgColor;
 
     switch (botStatus) {
         case 'dnd':
-            bgColor += 'danger';
+            bgColor = 'danger';
             botStatus = Main.capAllLetters(botStatus);
             break;
         case 'idle':
-            bgColor += 'warning';
+            bgColor = 'warning';
             botStatus = Main.capFirstLetter(botStatus);
             break;
         case 'online':
-            bgColor += 'success';
+            bgColor = 'success';
             botStatus = Main.capFirstLetter(botStatus);
             break;
         default:
-            bgColor += 'black';
+            bgColor = 'black';
             botStatus = Main.capFirstLetter(botStatus);
             break;
     }
