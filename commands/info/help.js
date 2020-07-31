@@ -51,6 +51,6 @@ exports.help = {
     name: 'help',
     aliases: ['?', 'hlep', 'hepl'],
     args: ['[category]'],
-    permission: '@everyone',
+    permission: 'USER',
     description: 'Shows all commands',
 };
