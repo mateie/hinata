@@ -87,4 +87,8 @@
      
   })
 
+  $('.reset').click(function() {
+    $(this).trigger('reset');
+  })
+
 })(jQuery);

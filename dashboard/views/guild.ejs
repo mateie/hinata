@@ -15,13 +15,15 @@
                                 <div class="col-auto mt-4">
                                     <h1 class="page-header-title">
                                         <div class="page-header-icon">
-                                            <% if(guild.icon !== undefined && guild.icon !== null) { %>
-                                            <img class="img-fluid avatar avatar-lg avatar-img"
-                                                src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=32" />
-                                            <% } else { %>
-                                            <img class="img-fluid avatar avatar-lg avatar-img"
-                                                src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
-                                            <% } %>
+                                            <div class="avatar avatar-lg">
+                                                <% if(guild.icon !== undefined && guild.icon !== null) { %>
+                                                <img class="img-fluid avatar-img"
+                                                    src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=32" />
+                                                <% } else { %>
+                                                <img class="img-fluid avatar-img"
+                                                    src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
+                                                <% } %>
+                                            </div>
                                         </div>
                                         <%= guild.name %>
                                     </h1>
@@ -47,13 +49,15 @@
                                         <form method="POST">
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" name="prefix" placeholder="Current Prefix is '<%= settings.prefix %>'">
+                                                    <input type="text" class="form-control" name="prefix"
+                                                        placeholder="Current Prefix is '<%= settings.prefix %>'">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-danger" type="button"
                                                     data-dismiss="modal">Close</button>
-                                                <button class="btn btn-success" formaction="<%= guild.id %>/prefix" type="submit">Save Changes</button>
+                                                <button class="btn btn-success" formaction="<%= guild.id %>/prefix"
+                                                    type="submit">Save Changes</button>
                                             </div>
                                     </div>
                                     </form>
@@ -128,12 +132,23 @@
                     <div class="row">
                         <div class="col-lg-9">
                             <div id="default">
-                                <div class="card mb-4">
-                                    <div class="card-header">Roles</div>
-                                    <div class="card-body">
-                                        <div class="sbp-preview">
-                                            <div class="sbp-preview-content">
-                                                <form method="POST">
+                                <div class="card card-header-actions mb-4 mx-auto">
+                                    <form>
+                                        <div class="card-header">
+                                            Roles
+                                            <div>
+                                                <button class="btn btn-danger btn-icon mr-2 clear">
+                                                    <i data-feather="delete"></i>
+                                                </button>
+                                                <button formmethod="POST" type="submit"
+                                                    formaction="<%= guild.id %>/roles" class="btn btn-success btn-icon">
+                                                    <i data-feather="share"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="sbp-preview">
+                                                <div class="sbp-preview-content">
                                                     <% for(let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
                                                     <div class="form-group">
                                                         <label
@@ -144,33 +159,43 @@
                                                             placeholder="Current Value is '<%= Object.values(settings.roles)[i] %>'">
                                                     </div>
                                                     <% } %>
-                                                    <button type="submit" formaction="<%= guild.id %>/channels"
-                                                        class="btn btn-success">Save Changes</button>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-9">
                             <div id="defualt">
-                                <div class="card mb-4">
-                                    <div class="card-header">Channels</div>
-                                    <div class="card-body">
-                                        <div class="sbp-preview">
-                                            <div class="sbp-preview-content">
-                                                <form method="POST">
+                                <div class="card card-header-actions mb-4 mx-auto">
+                                    <form method="POST">
+                                        <div class="card-header">
+                                            Channels
+                                            <div>
+                                                <button class="btn btn-danger btn-icon mr-2 clear">
+                                                    <i data-feather="delete"></i>
+                                                </button>
+                                                <button formmethod="POST" type="submit"
+                                                    formaction="<%= guild.id %>/channels"
+                                                    class="btn btn-success btn-icon">
+                                                    <i data-feather="share"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="sbp-preview">
+                                                <div class="sbp-preview-content">
                                                     <% for(let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
-                                                    <% let channelName = Object.keys(settings.channels)[j];
-                                                        let channelValue = Object.values(settings.channels)[j];
-                                                        if(channelName.includes('_')) {
-                                                            channelName = channelName.split('_');
-                                                            channelName.forEach((name, index) => {
-                                                                channelName[index] = capL(name);
-                                                            });
-                                                            channelName = channelName.join(' ');
-                                                        } %>
+                                                    <% let channelName = Object.keys(settings.channels)[j]; %>
+                                                    <% let channelValue = Object.values(settings.channels)[j]; %>
+                                                    <% if(channelName.includes('_')) { %>
+                                                    <% channelName = channelName.split('_'); %>
+                                                    <% channelName.forEach((name, index) => { %>
+                                                    <% channelName[index] = capL(name); %>
+                                                    <% }); %>
+                                                    <% channelName = channelName.join(' '); %>
+                                                    <% } %>
                                                     <div class="form-group">
                                                         <label
                                                             for="channel-<%= Object.keys(settings.channels)[j] %>"><%= capL(channelName) %>
@@ -180,12 +205,10 @@
                                                             placeholder="Current Value is '<%= channelValue %>'" />
                                                     </div>
                                                     <% } %>
-                                                    <button type="submit" formaction="<%= guild.id %>/channels"
-                                                        class="btn btn-success">Save Changes</button>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
