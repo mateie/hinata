@@ -20,6 +20,6 @@ exports.help = {
     name: 'feed',
     aliases: [],
     args: ['<@mention>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Feed someone UwU',
 };

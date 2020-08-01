@@ -7,6 +7,6 @@ exports.help = {
     name: 'ping',
     aliases: [],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Pings Discord for API response',
 };

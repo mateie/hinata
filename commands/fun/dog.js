@@ -20,6 +20,6 @@ exports.help = {
     name: 'dog',
     aliases: ['doggo'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Sends a random doggy',
 };

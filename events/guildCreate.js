@@ -16,11 +16,26 @@ client.on('guildCreate', guild => {
         prefix: 'h!',
         messageID: '',
         roles: {
-            owner: "Owner",
-            admin: "Admin",
-            moderator: "Moderator",
-            member: "Member",
-            mute: "Muted",
+            owner: {
+                id: '',
+                name: 'Owner',
+            },
+            admin: {
+                id: '',
+                name: 'Admin',
+            },
+            moderator: {
+                id: '',
+                name: 'Moderator',
+            },
+            member: {
+                id: '',
+                name: 'Member',
+            },
+            mute: {
+                id: '',
+                name: 'Muted',
+            },
         },
         channels: {
             join_channel: 'welcome',

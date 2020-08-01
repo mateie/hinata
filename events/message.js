@@ -12,9 +12,6 @@ const Users = require('../models/users');
 const XPCalc = require('../util/experience');
 
 client.on('message', async message => {
-    if (message.author.bot) return;
-    if (message.channel.type === 'dm') return;
-
     await Servers.findOne({
         serverID: message.guild.id,
     }, (err, res) => {
@@ -27,6 +24,9 @@ client.on('message', async message => {
 
         client.prefix = res.prefix;
     });
+
+    if (!message.content.startsWith(client.prefix) || message.author.bot) return;
+    if (message.channel.type === 'dm') return;
 
     let messageArray = message.content.split(' ');
     let cmd = messageArray[0].toLowerCase();
@@ -44,58 +44,57 @@ client.on('message', async message => {
                 return message.guild.leave();
             }
 
-            let everyone = message.guild.roles.cache.find(role => role.name === '@everyone');
+            let everyone = message.guild.roles.everyone;
 
             let member = message.member.roles.cache;
             let permission = {
                 actual: -1,
                 nodes: [
                     {
-                        name: '@everyone',
+                        name: 'everyone',
                         id: everyone.id,
-                        allowed_roles: ['@everyone'],
+                        allowed_roles: ['EVERYONE'],
                     },
                     {
                         name: 'MUTE',
-                        id: res.roles.mute,
+                        id: res.roles.mute.id,
                         allowed_roles: ['MUTE'],
                     },
                     {
-                        name: 'USER',
-                        id: res.roles.user,
-                        allowed_roles: ['USER'],
+                        name: 'MEMBER',
+                        id: res.roles.member.id,
+                        allowed_roles: ['MEMBER'],
                     },
                     {
                         name: 'MODERATOR',
-                        id: res.roles.moderator,
-                        allowed_roles: ['USER', 'MODERATOR'],
+                        id: res.roles.moderator.id,
+                        allowed_roles: ['MEMBER', 'MODERATOR'],
                     },
                     {
                         name: 'ADMIN',
-                        id: res.roles.admin,
-                        allowed_roles: ['USER', 'MODERATOR', 'ADMIN'],
+                        id: res.roles.admin.id,
+                        allowed_roles: ['MEMBER', 'MODERATOR', 'ADMIN'],
                     },
                     {
                         name: 'OWNER',
-                        id: res.roles.owner,
-                        allowed_roles: ['USER', 'MODERATOR', 'ADMIN', 'OWNER'],
+                        id: res.roles.owner.id,
+                        allowed_roles: ['MEMBER', 'MODERATOR', 'ADMIN', 'OWNER'],
                     },
                     {
                         name: 'BOT_OWNER',
                         id: '401269337924829186',
-                        allowed_roles: ['USER', 'MODERATOR', 'ADMIN', 'OWNER', 'BOT_OWNER'],
+                        allowed_roles: ['MEMBER', 'MODERATOR', 'ADMIN', 'OWNER', 'BOT_OWNER'],
                     },
                 ],
             };
 
             let lastMax = -1;
             permission.nodes.forEach((value, index) => {
-                if (member.some(r => r.id == value.id) && value.allowed_roles.length > index) {
-                    lastMax = index;
+                if (member.some(r => r.id === value.id) && value.allowed_roles.length < index) {
+                    lastMax = value.allowed_roles.length;
+                    permission.actual = value;
                 }
             });
-
-            permission.actual = lastMax;
 
             if (message.author.id == message.guild.ownerID) {
                 permission.actual = permission.nodes.find(n => n.name == 'OWNER');
@@ -137,6 +136,8 @@ client.on('message', async message => {
                     let err = `Usage:\`\`\`${client.prefix}${commandFile.help.name} ${commandFile.help.args.join(' ')}\`\`\``;
                     message.channel.send(err);
                 }
+            } else {
+                message.reply('Not enough permission');
             }
         });
     } else {

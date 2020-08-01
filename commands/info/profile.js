@@ -59,7 +59,7 @@ exports.help = {
     name: 'profile',
     aliases: ['me'],
     args: [''],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Shows User\'s Profile',
 };
 

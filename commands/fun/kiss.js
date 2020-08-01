@@ -20,6 +20,6 @@ exports.help = {
     name: 'kiss',
     aliases: [],
     args: ['<@mention>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Kisses someone UwU',
 };

@@ -41,6 +41,6 @@ exports.help = {
     name: 'bug',
     aliases: [],
     args: ['<bug explanation>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Report a bug',
 };

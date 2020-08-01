@@ -67,6 +67,6 @@ exports.help = {
     name: 'currency',
     aliases: [],
     args: ['<amount>', '<Base Currency>', '<Target Currency>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Convert Currencies',
 };

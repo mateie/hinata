@@ -20,6 +20,6 @@ exports.help = {
     name: 'neko',
     aliases: [],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Sends a random Neko',
 };

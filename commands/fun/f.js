@@ -11,6 +11,6 @@ exports.help = {
     name: 'f',
     aliases: [],
     args: ['[person]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Press F to Pay Respect',
 };

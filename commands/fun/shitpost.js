@@ -17,6 +17,6 @@ exports.help = {
     name: 'shitpost',
     aliases: ['spost', 'sp', 'shitp'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Sends a random shitpost from the Bot\'s space',
 };

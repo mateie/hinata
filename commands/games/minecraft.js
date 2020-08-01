@@ -361,6 +361,6 @@ exports.help = {
     name: 'minecraft',
     args: ['<item/block/biomes/entity/server/user|account>', '<item name/block name/*/entity name/server ip|port or hostname/username>'],
     aliases: ['mc'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Minecraft Database',
 };

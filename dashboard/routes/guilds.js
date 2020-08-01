@@ -83,7 +83,7 @@ guilds.post('/:guildID/roles', async (req, res) => {
         }
         let value = inputValues[index];
         if (typeof (value) !== 'undefined' && value.length > 0) {
-            storedSettings[inputType][role] = value;
+            storedSettings[inputType][role].name = value;
         }
     });
 

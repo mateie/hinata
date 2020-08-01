@@ -23,6 +23,6 @@ exports.help = {
     name: 'advice',
     aliases: [],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     descirption: 'Sends a Life advice',
 };

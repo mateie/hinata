@@ -16,6 +16,6 @@ exports.help = {
     name: 'uptime',
     aliases: [],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Shows how long the bot has been online for',
 };

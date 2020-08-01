@@ -39,6 +39,6 @@ exports.help = {
     name: 'rule34',
     aliases: ['r34'],
     args: ['<tag>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Gives a random Rule34 image',
 };

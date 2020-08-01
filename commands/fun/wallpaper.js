@@ -17,6 +17,6 @@ exports.help = {
     name: 'wallpaper',
     aliases: ['wp'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Anime Wallpapers',
 };

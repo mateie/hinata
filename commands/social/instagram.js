@@ -81,6 +81,6 @@ exports.help = {
     name: 'instagram',
     aliases: ['ig'],
     args: ['<user>', '[post]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Displays information about a user on instagram',
 };

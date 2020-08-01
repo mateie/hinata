@@ -18,6 +18,6 @@ exports.help = {
     name: 'kitsune',
     aliases: ['foxgirls'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Kitsunes (Fox Girls)',
 };

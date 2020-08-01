@@ -33,6 +33,6 @@ exports.help = {
     name: 'tatsumaki',
     aliases: ['tatsu'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Shows Tatsumaki\'s Pictures',
 };

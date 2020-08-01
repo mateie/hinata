@@ -68,7 +68,7 @@ exports.help = {
     name: 'user',
     aliases: ['usr'],
     args: ['[@mention]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Information about a user',
 };
 

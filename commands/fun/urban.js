@@ -43,6 +43,6 @@ exports.help = {
     name: 'urban',
     aliases: ['dictionary', 'urb'],
     args: ['<word>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Search the Urban Dictionary',
 };

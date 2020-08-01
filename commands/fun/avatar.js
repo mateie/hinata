@@ -20,6 +20,6 @@ exports.help = {
     name: 'avatar',
     aliases: [],
     args: ['[@mention]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Gets a user\'s avatar',
 };

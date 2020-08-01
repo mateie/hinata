@@ -50,6 +50,6 @@ exports.help = {
     name: 'lyrics',
     aliases: [],
     args: ['[song name]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Shows Lyrics for the music',
 };

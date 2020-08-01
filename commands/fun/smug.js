@@ -17,6 +17,6 @@ exports.help = {
     name: 'smug',
     aliases: [],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Smugs',
 };

@@ -10,6 +10,6 @@ exports.help = {
     name: "say",
     aliases: [],
     args: ['<message>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: "Makes the bot repeat your message",
 };

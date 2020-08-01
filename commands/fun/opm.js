@@ -33,6 +33,6 @@ exports.help = {
     name: 'opm',
     aliases: ['onepunchman'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Shows One Punch Man\'s Pictures',
 };

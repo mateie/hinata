@@ -8,6 +8,6 @@ exports.help = {
     name: 'hammer',
     aliases: [],
     args: ['<@mention>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Throws a hammer at a user',
 };

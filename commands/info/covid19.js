@@ -69,6 +69,6 @@ exports.help = {
     name: 'covid19',
     aliases: ['coronavirus', 'covid'],
     args: ['[country|world|global|all]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Displays COVID-19 Statistics',
 };

@@ -110,13 +110,24 @@ client.on('ready', async () => {
                         console.info('There is no messages in the channel');
                     } else {
                         res.messageID = channel.messages.cache.first().id;
-                        res.save();
 
                         console.log(`Watching message '${res.messageID}' in ${res.serverName} for reactions...`);
                     }
                 }
             }
 
+            for (let i = 1; i < Object.keys(res.roles).length; i++) {
+                let roleObjName = Object.keys(res.roles)[i];
+                let role = Object.values(res.roles)[i];
+                let gRole = guild.roles.cache.find(r => r.name === role.name);
+                if(!gRole) {
+                    console.log(`Please Set up ${roleObjName} for your server`);
+                } else {
+                    role.id = gRole.id;
+                }
+            }
+
+            res.save();
         });
 
         guild.members.cache.forEach(member => {

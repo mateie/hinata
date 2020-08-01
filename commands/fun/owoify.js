@@ -12,6 +12,6 @@ exports.help = {
     name: 'owoify',
     aliases: [],
     args: ['<text>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'OwO-ify a message',
 };

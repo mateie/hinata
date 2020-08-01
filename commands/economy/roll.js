@@ -7,6 +7,6 @@ exports.help = {
     name: 'roll',
     aliases: ['dice'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Rolls a dice',
 };

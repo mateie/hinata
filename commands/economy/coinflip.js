@@ -12,6 +12,6 @@ exports.help = {
     name: 'coinflip',
     aliases: ['cf'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Flip a coin',
 };

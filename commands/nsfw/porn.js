@@ -65,6 +65,6 @@ exports.help = {
     name: 'porn',
     aliases: [],
     args: ['<tag>', '<type>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Gives a video with a providen tag',
 };

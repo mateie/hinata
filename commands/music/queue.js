@@ -35,7 +35,7 @@ exports.help = {
     name: 'queue',
     aliases: ['q'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Shows the current queue',
 };
 

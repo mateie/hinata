@@ -55,6 +55,6 @@ exports.help = {
     name: 'warn',
     aliases: [],
     args: ['<@mention>', '[reason]'],
-    permission: 'ADMIN',
+    permission: 'MODERATOR',
     description: 'warns a user with a reason',
 };

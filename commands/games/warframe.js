@@ -93,6 +93,6 @@ exports.help = {
     name: 'warframe',
     aliases: ['wf'],
     args: ['<platform>', '<earth/cetus/sorties/baro>', '[items]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Warframe Command',
 };

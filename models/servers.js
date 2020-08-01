@@ -6,11 +6,26 @@ const serversSchema = mongoose.Schema({
     prefix: String,
     messageID: String,
     roles: {
-        owner: String,
-        admin: String,
-        moderator: String,
-        member: String,
-        mute: String,
+        owner: {
+            id: String,
+            name: String,
+        },
+        admin: {
+            id: String,
+            name: String,
+        },
+        moderator: {
+            id: String,
+            name: String,
+        },
+        member: {
+            id: String,
+            name: String,
+        },
+        mute: {
+            id: String,
+            name: String,
+        },
     },
     channels: {
         join_channel: String,

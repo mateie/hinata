@@ -53,6 +53,6 @@ exports.help = {
     name: 'kick',
     aliases: [],
     args: ['<@mention>', '[reason]'],
-    permission: 'USER',
+    permission: 'ADMIN',
     description: 'Kicks the mentioned user',
 };

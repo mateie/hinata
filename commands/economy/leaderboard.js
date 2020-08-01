@@ -49,6 +49,6 @@ exports.help = {
     name: 'leaderboard',
     aliases: ['ranks'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Displays server\'s leaderboard',
 };

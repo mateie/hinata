@@ -26,6 +26,6 @@ exports.help = {
     name: 'poke',
     aliases: [],
     args: ['<@mention>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Poke someone',
 };

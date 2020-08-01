@@ -18,6 +18,6 @@ exports.help = {
     name: 'ngif',
     aliases: ['nekogif'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Neko GIFs',
 };

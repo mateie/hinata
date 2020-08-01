@@ -17,6 +17,6 @@ exports.help = {
     name: 'leave',
     aliases: [],
     args: ['[guild id]'],
-    permission: 'ADMIN',
+    permission: 'OWNER',
     description: 'Leave the server that bot is invited in',
 };

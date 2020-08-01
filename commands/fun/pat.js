@@ -21,6 +21,6 @@ exports.help = {
     name: 'pat',
     aliases: [],
     args: ['<@mention>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Pats someone OwO',
 };

@@ -14,7 +14,7 @@ exports.help = {
     name: 'amiajoke',
     aliases: [],
     args: ['[@mention]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Am I A Joke To You?',
     usage: 'amiajoke (with or w/o @mention)',
 };

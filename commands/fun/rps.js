@@ -13,6 +13,6 @@ exports.help = {
     name: 'rps',
     aliases: ['rockpaperscissors'],
     args: [],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Rock, Paper, Scissors',
 };

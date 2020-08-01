@@ -49,6 +49,6 @@ exports.help = {
     name: '8ball',
     aliases: [],
     args: ['<question>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Ask the bot a Question.',
 };

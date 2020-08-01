@@ -41,6 +41,6 @@ exports.help = {
     name: 'gay',
     aliases: ['pride', 'lgbt'],
     args: ['[@mention]'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Makes avatar with gay flag',
 };

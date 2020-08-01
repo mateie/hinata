@@ -16,6 +16,6 @@ exports.help = {
     name: 'fight',
     aliases: [],
     args: ['<@mention>'],
-    permission: 'USER',
+    permission: 'MEMBER',
     description: 'Fight a user',
 };
