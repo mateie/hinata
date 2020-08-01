@@ -27,67 +27,97 @@ if(!categoryExists) {
 %>
 
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, query, title: 'Commands' }) %>
+<%- include('../partials/_head', { bot, user, path, title: `${bot.user.username} Home` }) %>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
-        <%- include('../partials/_navbar') %>
+<body class="nav-fixed">
+    <%- include('../partials/_navbar') %>
+
+    <div id="layoutSidenav">
         <%- include('../partials/_sidebar') %>
-
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Commands for <%= categoryNames %></h1>
+        <div id="layoutSidenav_content">
+            <main>
+                <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                    <div class="container">
+                        <div class="page-header-content pt-4">
+                            <div class="row align-items-center justify-content-between">
+                                <div class="col-auto mt-4">
+                                    <h1 class="page-header-title">
+                                        <div class="page-header-icon"><i data-feather="terminal"></i></div>
+                                        Commands
+                                    </h1>
+                                    <div class="page-header-subtitle">Category: <%= categoryNames %></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <section class="content">
-                <div class="container-fluid">
+                </header>
+                <div class="container">
                     <div class="row">
                         <% bot.commands.forEach(command => { %>
                         <% if(command.help.category === category) { %>
-                        <div class="col-md-3">
-                            <div class="card card-primary">
+                        <div class="col-md-4">
+                            <div class="card card-header-actions">
                                 <div class="card-header">
-                                    <h3 class="card-title"><%= command.help.name %></h3>
-                                    <!-- /.card-tools -->
+                                    <ul class="nav nav-pills card-header-pills" id="cardPill" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="<%= command.help.name %>-pill-desc"
+                                                href="#command-<%= command.help.name %>-desc" data-toggle="tab"
+                                                role="tab" aria-controls="command-<%= command.help.name %>-desc"
+                                                aria-selected="true">Description</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="<%= command.help.name %>-pill-perms"
+                                                href="#command-<%= command.help.name %>-perms" data-toggle="tab"
+                                                role="tab" aria-controls="command-<%= command.help.name %>-perms"
+                                                aria-selected="false">Permissions</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="<%= command.help.name%>-pill-aliases"
+                                                href="#command-<%= command.help.name %>-aliases" data-toggle="tab"
+                                                role="tab" aria-controls="command-<%= command.help.name %>-aliases"
+                                                aria-selected="false">Aliases</a>
+                                        </li>
+                                    </ul>
+                                    <button
+                                        class="btn btn-<%= command.help.enabled ? 'green' : 'red' %> btn-sm"><%= command.help.enabled ? 'Enabled' : 'Disabled' %></button>
                                 </div>
-                                <!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="ribbon-wrapper">
-                                        <div class="ribbon bg-<%= command.help.enabled ? 'success' : 'danger' %>">
-                                            <%= command.help.enabled ? 'Enabled' : 'Disabled' %>
+                                    <div class="tab-content" id="cardPillContent">
+                                        <div class="tab-pane fade show active"
+                                            id="command-<%= command.help.name %>-desc" role="tabpanel"
+                                            aria-labelledby="<%= command.help.name %>-pill-desc">
+                                            <h5 class="card-title"><%= command.help.name %></h5>
+                                            <p class="card-text"><%= command.help.description %></p>
+                                            <p class="card-text">
+                                                Arguments (<> required, [] optional)
+                                            </p>
+                                            <p class="card-text">
+                                                <%= command.help.args.join(', ') ? command.help.args.join(', ') : 'None' %>
+                                            </p>
                                         </div>
+                                        <div class="tab-pane fade" id="command-<%= command.help.name %>-perms"
+                                            role="tabpanel" aria-labelledby="<%= command.help.name %>-pill-perms">
+                                            <h5 class="card-title">All Permissions (Given and Above)</h5>
+                                            <p class="card-text"><%= command.help.permission %></p>
+                                        </div>
+                                        <div class="tab-pane fade" id="command-<%= command.help.name %>-aliases" role="tabpanel" aria-labelledby="<%= command.help.name %>-pill-aliases">
+                                        <h5 class="card-title">All Aliases</h5>
+                                        <p class="card-text"><%= command.help.aliases.join(', ') ? command.help.aliases.join(', ') : 'None' %></p>
                                     </div>
-                                    <h5><%= command.help.description %></h5>
-                                    <p>Aliases:
-                                        <%= command.help.aliases.join(', ') ? command.help.aliases.join(', ') : 'None' %>
-                                    </p>
-                                    <p>Arguments:
-                                        <%= command.help.args.join(', ') ? command.help.args.join(', ') : 'None' %>
-                                    </p>
-                                    <p>Permission:
-                                        <%= command.help.permission %>
-                                    </p>
+                                    </div>
                                 </div>
-                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card -->
                         </div>
                         <% } %>
                         <% }) %>
-                        <!-- /.col -->
                     </div>
-                    <!-- /.row -->
                 </div>
-            </section>
+            </main>
+
+            <%- include('../partials/_footer') %>
         </div>
-        <%- include('../partials/_footer') %>
     </div>
+
     <%- include('../partials/_scripts') %>
 </body>
 

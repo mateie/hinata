@@ -2,8 +2,11 @@
     <nav class="sidenav shadow-right sidenav-dark">
         <div class="sidenav-menu">
             <div class="nav accordion" id="accordionSidenav">
-                <% if(user) { %>
                 <div class="sidenav-menu-heading">Dashboard</div>
+                <% if(!user) { %>
+                <a class="nav-link" href="/login">Login to access Dashboard</a>
+                <% } %>
+                <% if(user) { %>
                 <% if(user.guilds) { %>
                 <nav class="sidenav-menu nav accordion" id="accordionSidenavPages">
                     <% user.guilds.forEach(guild => { %>
@@ -11,14 +14,16 @@
                     <% if(!permsOnGuild.has('MANAGE_GUILD')) return; %>
                     <% if(bot.guilds.cache.get(guild.id)) { %>
                     <a class="nav-link" href="/guild/<%= guild.id %>">
-                        <div class="avatar avatar-lg">
-                            <% if(guild.icon !== undefined && guild.icon !== null) { %>
-                            <img class="img-fluid avatar-img"
-                                src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=64" />
-                            <% } else { %>
-                            <img class="img-fluid avatar-img"
-                                src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
-                            <% } %>
+                        <div class="nav-link-icon">
+                            <div class="avatar avatar-lg">
+                                <% if(guild.icon !== undefined && guild.icon !== null) { %>
+                                <img class="img-fluid avatar-img"
+                                    src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=64" />
+                                <% } else { %>
+                                <img class="img-fluid avatar-img"
+                                    src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
+                                <% } %>
+                            </div>
                         </div>
                         <%= guild.name %>
                         <span class="badge badge-success text-light ml-auto">Manage</span>
@@ -26,14 +31,16 @@
                     <% } else { %>
                     <a class="nav-link"
                         href="https://discord.com/api/oauth2/authorize?client_id=<%= bot.user.id %>&guild_id=<%= guild.id %>&permissions=2146954487&redirect_uri=<%= encodeURIComponent(`${process.env.DOMAIN}`) %>/callback&scope=bot">
-                        <div class="avatar avatar-lg">
-                            <% if(guild.icon !== undefined && guild.icon !== null) { %>
-                            <img class="img-fluid avatar-img"
-                                src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=64" />
-                            <% } else { %>
-                            <img class="img-fluid avatar-img"
-                                src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
-                            <% } %>
+                        <div class="nav-link-icon">
+                            <div class="avatar avatar-lg">
+                                <% if(guild.icon !== undefined && guild.icon !== null) { %>
+                                <img class="img-fluid avatar-img"
+                                    src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=64" />
+                                <% } else { %>
+                                <img class="img-fluid avatar-img"
+                                    src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
+                                <% } %>
+                            </div>
                         </div>
                         <%= guild.name %>
                         <span class="badge badge-danger text-light ml-auto">Add To Server</span>
@@ -43,6 +50,42 @@
                 </nav>
                 <% } %>
                 <% } %>
+                <div class="sidenav-menu-heading">Commands</div>
+                <% bot.categories.forEach(category => { %>
+                <%
+                    let categoryNames = category;
+                    let categoryCount = 0;
+                    bot.commands.forEach(command => {
+                        if(category == command.help.category) {
+                            categoryCount++;
+                        }
+                    });
+                    if(category === 'nsfw') {
+                        categoryNames = capA(categoryNames);
+                    } else if(category.includes('_')) {
+                        categoryNames = categoryNames.split('_');
+                        for(let i = 0; i < categoryNames.length; i++) { categoryNames[i]=capL(categoryNames[i]); }
+                        categoryNames = categoryNames.join(' ');
+                    } else {
+                        categoryNames = capL(categoryNames);
+                    }
+                %>
+
+                <a class="nav-link" href="/commands?cat=<%= category %>">
+                    <div class="nav-link-icon"><i data-feather="folder"></i></div>
+                    <%= categoryNames %>
+                </a>
+                <% }) %>
+            </div>
+            <div class="sidenav-footer">
+                <div class="sidenav-footer-content">
+                    <% if(user) { %>
+                    <div class="sidenav-footer-subtitle">Logged in as:</div>
+                    <div class="sidenav-footer-title"><%= user.username %>#<%= user.discriminator %></div>
+                    <% } else { %>
+                    <div class="sidenav-footer-title">Not Logged In</div>
+                    <% } %>
+                </div>
             </div>
         </div>
     </nav>
