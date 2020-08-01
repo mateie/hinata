@@ -16,7 +16,7 @@ exports.run = async (client, message, args) => {
         channel.delete();
         const newChannel = await message.guild.channels.create(channel.name, options);
 
-        return newChannel.send(`This Channel has been Nuked by @${message.author.username}`, { files: [randomNukeGIF[Math.floor(Math.random() * randomNukeGIF.length)]] });
+        return newChannel.send(`This Channel has been Nuked by ${message.member.displayName}`, { files: [randomNukeGIF[Math.floor(Math.random() * randomNukeGIF.length)]] });
     } else {
         const argsChannel = args[0];
         const channel = message.guild.channels.cache.find(ch => ch.name === argsChannel);
