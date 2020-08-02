@@ -32,7 +32,7 @@
                                 <div class="col-auto mt-4">
                                     <div class="page-header-subtitle">
                                         Current Prefix is <%= settings.prefix %>
-                                        <button class="btn btn-success btn-sm" type="button" data-toggle="modal"
+                                        <button class="btn btn-success btn-sm lift lift-sm" type="button" data-toggle="modal"
                                             data-target="#prefixModal">Change</button>
                                     </div>
                                 </div>
@@ -54,9 +54,9 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-danger" type="button"
+                                                <button class="btn btn-danger lift lift-sm" type="button"
                                                     data-dismiss="modal">Close</button>
-                                                <button class="btn btn-success" formaction="<%= guild.id %>/prefix"
+                                                <button class="btn btn-success lift lift-sm" formaction="<%= guild.id %>/prefix"
                                                     type="submit">Save Changes</button>
                                             </div>
                                     </div>
@@ -137,11 +137,11 @@
                                         <div class="card-header">
                                             Roles
                                             <div>
-                                                <button class="btn btn-danger btn-icon mr-2 clear">
+                                                <button class="btn btn-danger btn-icon mr-2 clear lift lift-sm">
                                                     <i data-feather="delete"></i>
                                                 </button>
                                                 <button formmethod="POST" type="submit"
-                                                    formaction="<%= guild.id %>/roles" class="btn btn-success btn-icon">
+                                                    formaction="<%= guild.id %>/roles" class="btn btn-success btn-icon lift lift-sm">
                                                     <i data-feather="share"></i>
                                                 </button>
                                             </div>
@@ -173,12 +173,12 @@
                                         <div class="card-header">
                                             Channels
                                             <div>
-                                                <button class="btn btn-danger btn-icon mr-2 clear">
+                                                <button class="btn btn-danger btn-icon mr-2 clear lift lift-sm">
                                                     <i data-feather="delete"></i>
                                                 </button>
                                                 <button formmethod="POST" type="submit"
                                                     formaction="<%= guild.id %>/channels"
-                                                    class="btn btn-success btn-icon">
+                                                    class="btn btn-success btn-icon lift lift-sm">
                                                     <i data-feather="share"></i>
                                                 </button>
                                             </div>
