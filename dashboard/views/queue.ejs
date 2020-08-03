@@ -23,9 +23,56 @@
                         </div>
                     </div>
                 </header>
-                <div class="container">
-                    <div class="row">
-
+                <div class="container mt-n10">
+                    <div class="card mb-4">
+                        <div class="card-header">Current Tracklist</div>
+                        <div class="card-body">
+                            <div class="datatable">
+                                <table class="table table-bordered table-hover" id="datatable" width="100%"
+                                    cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Artist</th>
+                                            <th>Length</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Artist</th>
+                                            <th>Length</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <% queue.songs.forEach((song, index) => { %>
+                                        <tr>
+                                            <% let progress = '' %>
+                                            <% if(index === 0) { %>
+                                            <% progress = queue.connection.dispatcher.streamTime / 1000 %>
+                                            <% progress = Math.floor(progress) %>
+                                            <% progress = convert(progress) %>
+                                            <td>Currently Playing</td>
+                                            <td><a href="<%= song.url %>" target="_blank"><%= song.title %></a></td>
+                                            <td><a href="<%= song.author.channel %>"
+                                                    target="_blank"><%= song.author.name %></a></td>
+                                            <td><%= progress %>/<%= convert(song.duration) %></td>
+                                            <% } else { %>
+                                            <td><%= index + 1 %></td>
+                                            <td><a href="<%= song.url %>" target="_blank"><%= song.title %></a></td>
+                                            <td><a href="<%= song.author.channel %>"
+                                                    target="_blank"><%= song.author.name %></a></td>
+                                            <td><%= convert(song.duration) %></td>
+                                            <% } %>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
