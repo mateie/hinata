@@ -60,13 +60,24 @@
                                             <td><a href="<%= song.url %>" target="_blank"><%= song.title %></a></td>
                                             <td><a href="<%= song.author.channel %>"
                                                     target="_blank"><%= song.author.name %></a></td>
-                                            <td><%= progress %>/<%= convert(song.duration) %></td>
+                                            <td>
+                                                <div class="badge badge-primary badge-pill">
+                                                    <%= progress %>/<%= convert(song.duration) %></div>
+                                            </td>
                                             <% } else { %>
                                             <td><%= index + 1 %></td>
                                             <td><a href="<%= song.url %>" target="_blank"><%= song.title %></a></td>
                                             <td><a href="<%= song.author.channel %>"
                                                     target="_blank"><%= song.author.name %></a></td>
-                                            <td><%= convert(song.duration) %></td>
+                                            <td>
+                                                <div class="badge badge-primary badge-pill">
+                                                    <%= convert(song.duration) %></div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
+                                                        data-feather="plus-circle"></i></button>
+                                                <button class="btn btn-datatable btn-icon btn-transparent-dark"><i class="more-vertical"></i></button>
+                                            </td>
                                             <% } %>
                                         </tr>
                                         <% }) %>
