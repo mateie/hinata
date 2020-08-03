@@ -1,124 +1,39 @@
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Music Queue`}) %>
+<%- include('../partials/_head', { bot, user, path, title: `${bot.user.username} Home` }) %>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
-        <%- include('../partials/_navbar') %>
+<body class="nav-fixed">
+    <%- include('../partials/_navbar') %>
+
+    <div id="layoutSidenav">
         <%- include('../partials/_sidebar') %>
-
-        <div class="content-wrapper">
-            <section class="content">
-                <div class="container-fluild">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title"><%= guild.name %> Music Queue</h3>
-                                    <span class="card-desc float-right">Loop: <%= queue.loop ? 'On' : 'Off' %> | Queue
-                                        Size: <%= queue.songs.length %></h3>
-                                </div>
-                                <div class="card-body table-responsive p-0">
-                                    <table class="table table-hover text-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Track Name</th>
-                                                <th>Track Artist</th>
-                                                <th>Track Length</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% queue.songs.forEach((song, index) => { %>
-                                            <tr>
-                                                <% let progress = '' %>
-                                                <% if(index === 0) { %>
-                                                <% progress = queue.connection.dispatcher.streamTime / 1000;
-                                                progress = Math.floor(progress);
-                                                progress = convert(progress);
-
-                                                %>
-                                                <td><%= index + 1 %></td>
-                                                <td><a href="<%= song.url %>" target="_blank"><%= song.title %></a>
-                                                    (Currently Playing)</td>
-                                                <td><a href="<%= song.author.channel %>"
-                                                        target="_blank"><%= song.author.name %></a></td>
-                                                <td><%= progress %>/<%= convert(song.duration) %></td>
-                                                <% } else { %>
-                                                <td><%= index + 1 %></td>
-                                                <td><a href="<%= song.url %>" target="_blank"><%= song.title %></a></td>
-                                                <td><a href="<%= song.author.channel %>"
-                                                        target="_blank"><%= song.author.name %></a></td>
-                                                <td><%= convert(song.duration) %></td>
-                                                <% } %>
-                                            </tr>
-                                            <% }) %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="card-footer justify-content-between">
-                                    <button type="button" class="btn bg-success" data-toggle="modal"
-                                        data-target="#modal-addsong">Add Song</button>
-                                    <button type="button" class="btn bg-danger" data-toggle="modal"
-                                        data-target="#modal-clearqueue">Clear Queue</button>
+        <div id="layoutSidenav_content">
+            <main>
+                <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                    <div class="container">
+                        <div class="page-header-content pt-4">
+                            <div class="row align-items-center justify-content-between">
+                                <div class="col-auto mt-4">
+                                    <h1 class="page-header-title">
+                                        <div class="page-header-icon"><i data-feather="music"></i></div>
+                                        <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
+                                    </h1>
+                                    <div class="page-header-subtitle"><%= musicQueue.songs[0].title %></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </header>
+                <div class="container">
+                    <div class="row">
 
-                <div class="modal fade" id="modal-clearqueue">
-                    <form method="POST">
-                        <div class="modal-dialog">
-                            <div class="modal-content bg-danger">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Clear Queue</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to clear music queue?
-                                </div>
-                                <div class="modal-footer justify-content-between">
-                                    <button type="button" class="btn btn-outline-light"
-                                        data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-outline-light">Clear</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
+            </main>
 
-                <div class="modal fade" id="modal-addsong">
-                    <form method="POST">
-                        <div class="modal-dialog">
-                            <div class="modal-content bg-success">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Add Song</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="song">Song Name or Link</label>
-                                        <input type="text" class="form-control" name="song-link"
-                                            placeholder="Song Name or Link">
-                                    </div>
-                                </div>
-                                <div class="modal-footer justify-content-between">
-                                    <button type="button" class="btn btn-outline-light"
-                                        data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-outline-light">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </section>
+            <%- include('../partials/_footer') %>
         </div>
-        <%- include('../partials/_footer') %>
     </div>
+
     <%- include('../partials/_scripts') %>
 </body>
 
