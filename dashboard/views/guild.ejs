@@ -37,6 +37,11 @@
                                                 style="background-color: <%= color %>">
                                                 <img src="<%= musicQueue.songs[0].author.avatar %>" class="img-fluid" />
                                             </div>
+                                            <div class="col">
+                                                <div class="card-body py-5">
+                                                    <h5 class="card-title"><%= musicQueue.playing ? 'Currently Playing' : 'Paused' %></h5>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
