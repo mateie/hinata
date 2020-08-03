@@ -31,17 +31,12 @@
                                 </div>
                                 <% if(musicQueue) { %>
                                 <div class="col-auto mt-4">
-                                    <div class="card card-icon text-white">
-                                        <div class="row no-gutters">
-                                            <div class="col-auto card-icon-aside"
-                                                style="background-color: <%= color %>">
-                                                <img src="<%= musicQueue.songs[0].author.avatar %>" class="img-fluid" />
-                                            </div>
-                                            <div class="col">
-                                                <div class="card-body py-5">
-                                                    <h5 class="card-title"><%= musicQueue.playing ? 'Currently Playing' : 'Paused' %></h5>
-                                                </div>
-                                            </div>
+                                    <div class="card card-header-actions">
+                                        <div class="card-header">
+                                            <img src="<%= musicQueue.songs[0].author.avatar %>" class="img-fluid avatar" />
+                                            <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
+                                            <button href="/guild/<%= guild.id %>/queue" class="btn btn-danger btn-sm">Queue</button>
+
                                         </div>
                                     </div>
                                 </div>
