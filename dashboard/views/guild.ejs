@@ -37,7 +37,7 @@
                                                 class="img-fluid avatar" />
                                             <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
                                             <button href="/guild/<%= guild.id %>/queue"
-                                                class="btn btn-danger btn-sm">Queue</button>
+                                                class="btn btn-danger lift lift-sm btn-sm" role="button">Queue</button>
                                         </div>
                                         <div class="card-body">
                                             <p><%= musicQueue.songs[0].title %></p>
