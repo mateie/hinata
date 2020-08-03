@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 const { MessageEmbed } = require('discord.js');
-const YTDL = require('ytdl-core-discord');
+const YTDL = require('ytdl-core');
 const Search = require('youtube-search');
 
 exports.run = async (client, message, args) => {
@@ -119,7 +119,7 @@ exports.play = async (message, song) => {
     }
 
     let dispatcher = queue.connection
-        .play(YTDL(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 }), { type: 'opus' })
+        .play(YTDL(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 }))
         .on('finish', () => {
             if (!queue.loop) {
                 queue.songs.shift();
