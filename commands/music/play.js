@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 const { MessageEmbed } = require('discord.js');
-const YTDL = require('ytdl-core');
+const YTDL = require('ytdl-core-discord');
 const Search = require('youtube-search');
 
 exports.run = async (client, message, args) => {
