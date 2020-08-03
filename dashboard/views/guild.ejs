@@ -32,7 +32,7 @@
                                 <% if(musicQueue) { %>
                                 <div class="col-md-4 mt-4">
                                     <div class="card card-header-actions">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color: <%= color %>">
                                             <img src="<%= musicQueue.songs[0].author.avatar %>" class="img-fluid avatar" />
                                             <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
                                             <button href="/guild/<%= guild.id %>/queue" class="btn btn-danger btn-sm">Queue</button>
