@@ -29,18 +29,18 @@
                                     </h1>
                                     <div class="page-header-subtitle">Server Dashboard</div>
                                 </div>
-                                <% if(musicQueue) { %>
+                                <% if(queue) { %>
                                 <div class="col-md-4 mt-4">
                                     <div class="card bg-primary text-white card-header-actions">
                                         <div class="card-header">
-                                            <img src="<%= musicQueue.songs[0].author.avatar %>"
+                                            <img src="<%= queue.songs[0].author.avatar %>"
                                                 class="img-fluid avatar" />
-                                            <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
+                                            <%= queue.playing ? 'Currently Playing' : 'Paused' %>
                                             <a href="/guild/<%= guild.id %>/queue"
                                                 class="btn btn-danger lift lift-sm btn-sm" role="button">Queue</a>
                                         </div>
                                         <div class="card-body">
-                                            <p><%= musicQueue.songs[0].title %></p>
+                                            <p><%= queue.songs[0].title %></p>
                                         </div>
                                     </div>
                                 </div>
