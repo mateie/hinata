@@ -1,6 +1,5 @@
 exports.run = async (client, message) => {
-    let queue = client.queue;
-    let serverQueue = queue.get(message.guild.id);
+    let serverQueue = client.queue.get(message.guild.id);
 
     if(serverQueue && serverQueue.playing) {
         if(serverQueue.loop) {

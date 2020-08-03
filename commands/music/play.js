@@ -152,5 +152,5 @@ const play = async (message, song) => {
         .addField('Video Length', this.secondsToDuration(song.duration), true)
         .addField('Likes', song.likes, true)
         .addField('Dislikes', song.dislikes, true);
-    queue.textChannel.send({ embed });
+    serverQueue.textChannel.send({ embed });
 };
