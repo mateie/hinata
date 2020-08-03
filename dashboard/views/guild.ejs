@@ -1,5 +1,5 @@
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Dashboard` }) %>
+<%- include('../partials/_head', { bot, user, path, title: `${bot.user.username} Home` }) %>
 
 <body class="nav-fixed">
     <%- include('../partials/_navbar') %>
@@ -14,225 +14,22 @@
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-auto mt-4">
                                     <h1 class="page-header-title">
-                                        <div class="page-header-icon">
-                                            <div class="avatar avatar-lg">
-                                                <% if(guild.icon !== undefined && guild.icon !== null) { %>
-                                                <img class="img-fluid avatar-img"
-                                                    src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>?size=32" />
-                                                <% } else { %>
-                                                <img class="img-fluid avatar-img"
-                                                    src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
-                                                <% } %>
-                                            </div>
-                                        </div>
-                                        <%= guild.name %>
+                                        <div class="page-header-icon"><i data-feather="music"></i></div>
+                                        <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
                                     </h1>
-                                    <div class="page-header-subtitle">Server Dashboard</div>
-                                </div>
-                                <% if(musicQueue) { %>
-                                <div class="col-md-4 mt-4">
-                                    <div class="card bg-primary text-white card-header-actions">
-                                        <div class="card-header">
-                                            <img src="<%= musicQueue.songs[0].author.avatar %>"
-                                                class="img-fluid avatar" />
-                                            <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
-                                            <a href="/guild/<%= guild.id %>/queue"
-                                                class="btn btn-danger lift lift-sm btn-sm" role="button">Queue</a>
-                                        </div>
-                                        <div class="card-body">
-                                            <p><%= musicQueue.songs[0].title %></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% } %>
-                                <div class="col-auto mt-4">
-                                    <div class="page-header-subtitle">
-                                        Current Prefix is <%= settings.prefix %>
-                                        <button class="btn btn-success btn-sm lift lift-sm" type="button"
-                                            data-toggle="modal" data-target="#prefixModal">Change</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="prefixModal" tabindex="-1" role="dialog"
-                                aria-labelledby="prefixModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="prefixModalLabel">Change Prefix</h5>
-                                            <button class="close" type="button" data-dismiss="modal"
-                                                aria-label="Close"><span aria-hidden="true">×</span></button>
-                                        </div>
-                                        <form method="POST">
-                                            <div class="modal-body">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" name="prefix"
-                                                        placeholder="Current Prefix is '<%= settings.prefix %>'">
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-danger lift lift-sm" type="button"
-                                                    data-dismiss="modal">Close</button>
-                                                <button class="btn btn-success lift lift-sm"
-                                                    formaction="<%= guild.id %>/prefix" type="submit">Save
-                                                    Changes</button>
-                                            </div>
-                                    </div>
-                                    </form>
+                                    <div class="page-header-subtitle"><%= musicQueue.songs[0].title %></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </header>
-                <div class="container mt-n10">
-                    <div class="row">
-                        <div class="col-xxl-3 col-lg-6">
-                            <div class="card text-white mb-4" style="background-color: <%= color %>">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="mr-3">
-                                            <div class="text-light-75 small">Total Members</div>
-                                            <div class="text-lg font-weight-bold">
-                                                <%= guild.members.cache.filter(m => !m.user.bot).size %> Members</div>
-                                        </div>
-                                        <i class="feather-xl text-white-50" data-feather="user-check"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-lg-6">
-                            <div class="card text-white mb-4" style="background-color: <%= color %>">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="mr-3">
-                                            <div class="text-light-75 small">Total Bots</div>
-                                            <div class="text-lg font-weight-bold">
-                                                <%= guild.members.cache.filter(m => m.user.bot).size %> Bots</div>
-                                        </div>
-                                        <i class="feather-xl text-white-50" data-feather="aperture"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-lg-6">
-                            <div class="card text-white mb-4" style="background-color: <%= color %>">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="mr-3">
-                                            <div class="text-light-75 small">Total Channels</div>
-                                            <div class="text-lg font-weight-bold">
-                                                <%= guild.channels.cache.filter(ch => ch.type !== 'category').size %>
-                                                Channels</div>
-                                        </div>
-                                        <i class="feather-xl text-white-50" data-feather="align-left"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-lg-6">
-                            <div class="card text-white mb-4" style="background-color: <%= color %>">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="mr-3">
-                                            <div class="text-light-75 small">Total Roles</div>
-                                            <div class="text-lg font-weight-bold">
-                                                <%= guild.roles.cache.size %> Roles
-                                            </div>
-                                        </div>
-                                        <i class="feather-xl text-white-50" data-feather="users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-9">
-                            <div id="default">
-                                <div class="card card-header-actions mb-4 mx-auto">
-                                    <form>
-                                        <div class="card-header">
-                                            Roles
-                                            <div>
-                                                <button class="btn btn-danger btn-icon mr-2 clear lift lift-sm">
-                                                    <i data-feather="delete"></i>
-                                                </button>
-                                                <button formmethod="POST" type="submit"
-                                                    formaction="<%= guild.id %>/roles"
-                                                    class="btn btn-success btn-icon lift lift-sm">
-                                                    <i data-feather="share"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="sbp-preview">
-                                                <div class="sbp-preview-content">
-                                                    <% for(let i = 1; i <= Object.keys(settings.roles).length - 1; i++) { %>
-                                                    <div class="form-group">
-                                                        <label
-                                                            for="role-<%= Object.keys(settings.roles)[i] %>"><%= capL(Object.keys(settings.roles)[i]) %>
-                                                            Role</label>
-                                                        <input type="text" class="form-control"
-                                                            name="role-<%= Object.keys(settings.roles)[i] %>"
-                                                            placeholder="Current Value is '<%= Object.values(settings.roles)[i].name %>'">
-                                                    </div>
-                                                    <% } %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-9">
-                            <div id="defualt">
-                                <div class="card card-header-actions mb-4 mx-auto">
-                                    <form method="POST">
-                                        <div class="card-header">
-                                            Channels
-                                            <div>
-                                                <button class="btn btn-danger btn-icon mr-2 clear lift lift-sm">
-                                                    <i data-feather="delete"></i>
-                                                </button>
-                                                <button formmethod="POST" type="submit"
-                                                    formaction="<%= guild.id %>/channels"
-                                                    class="btn btn-success btn-icon lift lift-sm">
-                                                    <i data-feather="share"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="sbp-preview">
-                                                <div class="sbp-preview-content">
-                                                    <% for(let j = 1; j <= Object.keys(settings.channels).length - 1; j++) { %>
-                                                    <% let channelName = Object.keys(settings.channels)[j]; %>
-                                                    <% let channelValue = Object.values(settings.channels)[j]; %>
-                                                    <% if(channelName.includes('_')) { %>
-                                                    <% channelName = channelName.split('_'); %>
-                                                    <% channelName.forEach((name, index) => { %>
-                                                    <% channelName[index] = capL(name); %>
-                                                    <% }); %>
-                                                    <% channelName = channelName.join(' '); %>
-                                                    <% } %>
-                                                    <div class="form-group">
-                                                        <label
-                                                            for="channel-<%= Object.keys(settings.channels)[j] %>"><%= capL(channelName) %>
-                                                            Channel</label>
-                                                        <input type="text" class="form-control"
-                                                            name="channel-<%= Object.keys(settings.channels)[j] %>"
-                                                            placeholder="Current Value is '<%= channelValue %>'" />
-                                                    </div>
-                                                    <% } %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                
                     </div>
                 </div>
             </main>
+
             <%- include('../partials/_footer') %>
         </div>
     </div>
