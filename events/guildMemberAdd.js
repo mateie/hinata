@@ -1,6 +1,9 @@
 const { client } = require('../index');
 const Canvas = require('canvas');
 const { MessageAttachment } = require('discord.js');
+const gm = require('gm').subClass({ imageMagick: true });
+const request = require('request');
+const jimp = require('jimp');
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE, {
@@ -24,7 +27,7 @@ client.on('guildMemberAdd', async member => {
 
     let server = await Servers.findOne({ serverID: member.guild.id });
 
-    if (server.toggles.autorole === true) {
+    if (server.toggles.auto_role === true) {
         let memberRole = member.guild.roles.cache.find(r => r.name === server.roles.member);
         if (!memberRole) {
             member.guild.owner.send('Please set up AutoRole');
@@ -33,46 +36,67 @@ client.on('guildMemberAdd', async member => {
         }
     }
 
-    if (server.toggles.joinmessage === true) {
-        let joinChannel = member.guild.channels.cache.find(ch => ch.name === server.channels.joinchannel);
+    if (server.toggles.join_message === true) {
+        let joinChannel = member.guild.channels.cache.find(ch => ch.name === server.channels.join_channel);
 
         if (joinChannel) {
-            const canvas = Canvas.createCanvas(700, 250);
+            Canvas.registerFont(`${process.cwd()}/data/fonts/main.ttf`, { family: 'Naruto' });
+            const canvas = Canvas.createCanvas(942, 677);
             const ctx = canvas.getContext('2d');
 
             const bg = await Canvas.loadImage(`${process.cwd()}/data/images/messagebg.jpg`);
             ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
-            ctx.strokeStyle = '#097b03';
+            ctx.strokeStyle = '#b19cd9';
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            ctx.font = '28px sans-serif';
-            let welcomeGradient = ctx.createLinearGradient(0, 0, 170, 170);
-            welcomeGradient.addColorStop(0, 'green');
-            welcomeGradient.addColorStop(1, 'grey');
-            ctx.fillStyle = welcomeGradient;
-            ctx.fillText(`Welcome to ${member.guild.name}`, canvas.width / 2.5, canvas.height / 2.3);
+            ctx.font = '60px Naruto';
+            ctx.fillStyle = 'white';
+            ctx.fillText('Welcome', canvas.width / 3.3, canvas.height / 3.3);
 
-            ctx.font = applyText(canvas, `${member.displayName}`);
-            let memberGradient = ctx.createLinearGradient(0, 0, 170, 170);
-            memberGradient.addColorStop(0, 'grey');
-            memberGradient.addColorStop(1, 'black');
-            ctx.fillStyle = memberGradient;
-            ctx.fillText(`${member.displayName}`, canvas.width / 2.5, canvas.height / 1.5);
+            ctx.font = applyText(canvas, `to ${member.guild.name}`);
+            ctx.fillStyle = 'white';
+            ctx.fillText(`to ${member.guild.name}`, canvas.width / 3.1, canvas.height / 2.4);
 
-            ctx.beginPath();
-            ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
+            console.log(member);
 
-            const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
-            ctx.drawImage(avatar, 25, 25, 200, 200);
+            if (member.guild.icon) {
+                let url = `https://cdn.discordapp.com/icons/${member.guild.id}/${member.guild.icon}`;
+                let gAvatarBuffer = await roundImage(url);
 
-            const attachment = new MessageAttachment(canvas.toBuffer(), 'welcome.png');
+                const gAvatar = await Canvas.loadImage(gAvatarBuffer);
 
-            joinChannel.send(`Welcome to the village, ${member}`, attachment);
+                ctx.drawImage(gAvatar, canvas.width / 1.5, canvas.height / 1.243, 64, 64);
+            }
+
+            if (member.user.avatar) {
+                let url = member.user.displayAvatarURL({ format: 'jpg' });
+                let avatarBuffer = await roundImage(url);
+
+                const avatar = await Canvas.loadImage(avatarBuffer);
+
+                ctx.drawImage(avatar, canvas.width / 3.25, canvas.height / 2.042, 128, 128);
+            }
+
+            let extLayer = await Canvas.loadImage(`${process.cwd()}/data/images/layer.png`);
+            ctx.drawImage(extLayer, 0, 0);
+
+            ctx.font = applyText(canvas, `${member.user.username}`);
+            ctx.fillStyle = 'white';
+            ctx.fillText(`${member.user.username}`, canvas.width / 2.24, canvas.height / 1.72);
+
+            ctx.font = '42px Naruto';
+            ctx.fillStyle = 'grey';
+            ctx.fillText(`#${member.user.discriminator}`, canvas.width / 2.24, canvas.height / 1.51);
+
+            const attachment = new MessageAttachment(canvas.toBuffer(), `welcome-${member.user.username}-${member.user.discriminator}.png`);
+
+            joinChannel.send(attachment)
+            .catch(err => {
+                console.error(err);
+            });
         } else {
-            member.guild.owner.send('Please set up your welcome channel inside config or disable "join message" toggle');
+            // member.guild.owner.send('Please set up your welcome channel inside config or disable "join message" toggle');
         }
     }
 });
@@ -80,11 +104,28 @@ client.on('guildMemberAdd', async member => {
 const applyText = (canvas, text) => {
     const ctx = canvas.getContext('2d');
 
-	let fontSize = 70;
+    let fontSize = 55;
 
-	do {
-		ctx.font = `${fontSize -= 10}px sans-serif`;
-	} while (ctx.measureText(text).width > canvas.width - 300);
+    do {
+        ctx.font = `${fontSize -= 10}px Naruto`;
+    } while (ctx.measureText(text).width > canvas.width - 300);
 
-	return ctx.font;
+    return ctx.font;
+};
+
+const roundImage = url => {
+    return new Promise((resolve, reject) => {
+        gm(request(url)).drawArc(125, 125, 0, 0, 100, 100).toBuffer('png', async (err, buffer) => {
+            if (err) reject(err);
+            jimp.read(buffer)
+                .then(image => {
+                    image.quality(100)
+                        .circle();
+                    resolve(image.getBufferAsync('image/png'));
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    });
 };

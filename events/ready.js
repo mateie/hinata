@@ -117,12 +117,9 @@ client.on('ready', async () => {
             }
 
             for (let i = 1; i < Object.keys(res.roles).length; i++) {
-                let roleObjName = Object.keys(res.roles)[i];
                 let role = Object.values(res.roles)[i];
                 let gRole = guild.roles.cache.find(r => r.name === role.name);
-                if(!gRole) {
-                    console.log(`Please Set up ${roleObjName} for your server`);
-                } else {
+                if (gRole) {
                     role.id = gRole.id;
                 }
             }

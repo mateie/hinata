@@ -43,6 +43,8 @@
     "express-session": "^1.17.1",
     "express-toastr": "^2.0.2",
     "ffmpeg-static": "^4.2.5",
+    "gm": "^1.23.1",
+    "jimp": "^0.14.0",
     "jquery": "^3.5.1",
     "lavacord": "^1.1.9",
     "lodash": "^4.17.19",
