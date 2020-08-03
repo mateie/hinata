@@ -64,12 +64,6 @@
                                                 <div class="badge badge-primary badge-pill">
                                                     <%= progress %>/<%= convert(song.duration) %></div>
                                             </td>
-                                            <td>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
-                                                        data-feather="plus-circle"></i></button>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark"><i
-                                                        data-feather="more-vertical"></i></button>
-                                            </td>
                                             <% } else { %>
                                             <td><%= index + 1 %></td>
                                             <td><a href="<%= song.url %>" target="_blank"><%= song.title %></a></td>
@@ -79,17 +73,40 @@
                                                 <div class="badge badge-primary badge-pill">
                                                     <%= convert(song.duration) %></div>
                                             </td>
+                                            <% } %>
                                             <td>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
+                                                <button
+                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark mr-2"
+                                                    type="button" data-toggle="modal" data-target="#add-modal"><i
                                                         data-feather="plus-circle"></i></button>
-                                                <button class="btn btn-datatable btn-icon btn-transparent-dark"><i
+                                                <button
+                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark"><i
                                                         data-feather="more-vertical"></i></button>
                                             </td>
-                                            <% } %>
                                         </tr>
                                         <% }) %>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add a Song</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">×</span></button>
+                                </div>
+                                <form method="POST">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="song-link" placeholder="Song Name or Link">
+                                    </div>
+                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
