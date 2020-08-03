@@ -4,87 +4,97 @@ const YTDL = require('ytdl-core');
 const Search = require('youtube-search');
 
 exports.run = async (client, message, args) => {
-    const { channel } = message.member.voice;
-    if (!channel) {
-        return message.channel.send('You have to be in a voice channel to play music');
-    }
+    try {
+        const queue = client.queue;
+        const serverQueue = client.queue.get(message.guild.id);
 
-    const serverQueue = message.client.queue.get(message.guild.id);
+        const voiceChannel = message.member.voice.channel;
+        if (!voiceChannel) {
+            return message.channel.send("You have to be in a voice channel");
+        }
 
-    let validate = YTDL.validateURL(args[0]);
-    if (!validate) {
-        let searchOptions = {
-            maxResults: 10,
-            key: process.env.GOOGLE_API_KEY,
-        };
-        let searchResults = await Search(args.join(" "), searchOptions);
-        if (searchResults.results.length > 0) {
-            args[0] = searchResults.results.find(val => val.kind == 'youtube#video').link;
-            if (!YTDL.validateURL(args[0])) {
+        const permissions = voiceChannel.permissionsFor(client.user);
+        if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
+            return message.channel.send('I need the permissions to join and speak in your voice channel');
+        }
+
+        let validate = YTDL.validateURL(args[0]);
+        if (!validate) {
+            let searchOptions = {
+                maxResults: 10,
+                key: process.env.GOOGLE_API_KEY,
+            };
+            let searchResults = await Search(args.join(" "), searchOptions);
+            if (searchResults.results.length > 0) {
+                args[0] = searchResults.results.find(val => val.kind == 'youtube#video').link;
+                if (!YTDL.validateURL(args[0])) {
+                    return message.channel.send(':no_entry_sign: Video not found');
+                }
+            } else {
                 return message.channel.send(':no_entry_sign: Video not found');
             }
+        }
+
+        let songInfo = await YTDL.getInfo(args[0]);
+        let song = {
+            author: {
+                name: songInfo.videoDetails.author.name,
+                channel: songInfo.videoDetails.author.channel_url,
+                avatar: songInfo.videoDetails.author.avatar,
+            },
+            title: songInfo.videoDetails.title,
+            url: songInfo.videoDetails.video_url,
+            duration: songInfo.videoDetails.lengthSeconds,
+            likes: songInfo.videoDetails.likes,
+            dislikes: songInfo.videoDetails.dislikes,
+            thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url ? songInfo.videoDetails.thumbnail.thumbnails[4].url : songInfo.videoDetails.thumbnail.thumbnails[0].url,
+        };
+
+        if (!serverQueue) {
+            let queueConstruct = {
+                textChannel: message.channel,
+                voiceChannel: voiceChannel,
+                connection: null,
+                songs: [],
+                volume: 100,
+                last_volume: 100,
+                loop: false,
+                playing: true,
+            };
+
+            queue.set(message.guild.id, queueConstruct);
+            queueConstruct.songs.push(song);
+
+            try {
+                let connection = await voiceChannel.join();
+                queueConstruct.connection = connection;
+                play(message, queueConstruct.songs[0]);
+            } catch (err) {
+                console.log(err);
+                queue.delete(message.guild.id);
+                return message.channel.send(err);
+            }
         } else {
-            return message.channel.send(':no_entry_sign: Video not found');
+            if (serverQueue.songs.length >= 20) {
+                return message.channel.send('**Max Queue Length is 20**');
+            }
+
+            serverQueue.songs.push(song);
+            const embed = new MessageEmbed()
+                .setColor('RANDOM')
+                .setTitle(song.title)
+                .setURL(song.url)
+                .setAuthor(song.author.name, song.author.avatar, song.author.channel)
+                .setDescription('Added To The Queue')
+                .setImage(song.thumbnail)
+                .addField('Video Length', this.secondsToDuration(song.duration), true)
+                .addField('Likes', song.likes, true)
+                .addField('Dislikes', song.dislikes, true);
+            return message.channel.send({ embed });
         }
-    }
-
-    let songInfo = await YTDL.getInfo(args[0]);
-    let song = {
-        author: {
-            name: songInfo.videoDetails.author.name,
-            channel: songInfo.videoDetails.author.channel_url,
-            avatar: songInfo.videoDetails.author.avatar,
-        },
-        title: songInfo.videoDetails.title,
-        url: songInfo.videoDetails.video_url,
-        duration: songInfo.videoDetails.lengthSeconds,
-        likes: songInfo.videoDetails.likes,
-        dislikes: songInfo.videoDetails.dislikes,
-        thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url ? songInfo.videoDetails.thumbnail.thumbnails[4].url : songInfo.videoDetails.thumbnail.thumbnails[0].url,
-    };
-
-    if (serverQueue) {
-        if (serverQueue.songs.length >= 20) {
-            return message.channel.send('**Max Queue Length is 20**');
-        }
-
-        serverQueue.songs.push(song);
-        const embed = new MessageEmbed()
-            .setColor('RANDOM')
-            .setTitle(song.title)
-            .setURL(song.url)
-            .setAuthor(song.author.name, song.author.avatar, song.author.channel)
-            .setDescription('Added To The Queue')
-            .setImage(song.thumbnail)
-            .addField('Video Length', this.secondsToDuration(song.duration), true)
-            .addField('Likes', song.likes, true)
-            .addField('Dislikes', song.dislikes, true);
-        return message.channel.send({ embed });
-    }
-
-    let queueConstruct = {
-        textChannel: message.channel,
-        voiceChannel: channel,
-        connection: null,
-        songs: [],
-        volume: 100,
-        last_volume: 100,
-        loop: false,
-        playing: true,
-    };
-
-    message.client.queue.set(message.guild.id, queueConstruct);
-    queueConstruct.songs.push(song);
-
-    try {
-        const connection = await channel.join();
-        queueConstruct.connection = connection;
-        this.play(message, queueConstruct.songs[0]);
-    } catch (err) {
-        console.error(`I could not join the voice channel: ${err}`);
-        message.client.queue.delete(message.guild.id);
-        await channel.leave();
-        return message.channel.send(`I could not join the voice channel: \`\`\`${err}\`\`\``);
+    } catch (error) {
+        console.error(error);
+        message.channel.send(error.message);
     }
 };
 
@@ -110,25 +120,28 @@ exports.help = {
     description: 'Play music',
 };
 
-exports.play = async (message, song) => {
-    const queue = message.client.queue.get(message.guild.id);
+const play = async (message, song) => {
+    const queue = message.client.queue;
+    const guild = message.guild;
+    const serverQueue = queue.get(message.guild.id);
+
     if (!song) {
-        queue.voiceChannel.leave();
-        message.client.queue.delete(message.guild.id);
+        serverQueue.voiceChannel.leave();
+        queue.delete(guild.id);
         return;
     }
 
-    let dispatcher = queue.connection
-        .play(YTDL(song.url, { filter: 'audioonly', highWaterMark: 1 << 25 }))
-        .on('finish', () => {
-            if (!queue.loop) {
-                queue.songs.shift();
+    const dispatcher = serverQueue.connection
+        .play(YTDL(song.url))
+        .on("finish", () => {
+            if (!serverQueue.loop) {
+                serverQueue.songs.shift();
             }
-            this.play(queue.songs[0]);
+            play(message, serverQueue.songs[0]);
         })
-        .on('error', err => console.error(err));
+        .on("error", error => console.error(error));
 
-    dispatcher.setVolumeLogarithmic(queue.volume / 100);
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 100);
     const embed = new MessageEmbed()
         .setColor('RANDOM')
         .setTitle(song.title)

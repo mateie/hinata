@@ -1,11 +1,10 @@
 exports.run = async (client, message) => {
-    let queue = client.queue;
-    let serverQueue = queue.get(message.guild.id);
+    let serverQueue = client.queue.get(message.guild.id);
 
     if(serverQueue && serverQueue.playing) {
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end();
-        message.channel.send(':stop_button: Music stopped');
+        return message.channel.send(':stop_button: Music stopped');
     } else {
         return message.channel.send(':no_entry_sign: Music not playing');
     }
