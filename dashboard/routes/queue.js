@@ -72,7 +72,7 @@ queue.post('/', async (req, res) => {
                 duration: songInfo.videoDetails.lengthSeconds,
                 likes: songInfo.videoDetails.likes,
                 dislikes: songInfo.videoDetails.dislikes,
-                thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url,
+                thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url ? songInfo.videoDetails.thumbnail.thumbnails[4].url ? songInfo.videoDetails.thumbnail[0].url,
             };
 
             if (queue) {
