@@ -129,14 +129,13 @@ client.on('ready', async () => {
 
         guild.members.cache.forEach(member => {
             Users.findOne({
-                serverID: guild.id,
                 userID: member.user.id,
             }, (err, res) => {
                 if (err) console.error(err);
 
                 if (!res && !member.user.bot) {
                     client.emit('guildMemberAdd', member);
-                    console.debug(`Adding new guild member to the database... (Guild ID: ${guild.id}, User ID: ${member.id}, Name: ${member.user.username})`);
+                    console.debug(`Adding new guild member to the database... (User ID: ${member.id}, Name: ${member.user.username})`);
                 }
             });
         });

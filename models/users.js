@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const usersSchema = mongoose.Schema({
-    serverID: String,
-    userName: String,
     userID: String,
+    userName: String,
+    hashtag: String,
     level: Number,
     xp: Number,
 });

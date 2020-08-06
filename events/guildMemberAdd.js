@@ -15,19 +15,22 @@ const Users = require('../models/users');
 const Servers = require('../models/servers');
 
 client.on('guildMemberAdd', async member => {
-    const newMember = new Users({
-        serverID: member.guild.id,
-        userName: member.user.username,
-        userID: member.user.id,
-        level: 0,
-        xp: 0,
-    });
+    const mm = await Users.findOne({ userID: member.user.id });
 
-    newMember.save().catch(err => console.error(err));
+    if (!mm) {
+        const newMember = new Users({
+            userID: member.user.id,
+            userName: member.user.username,
+            level: 0,
+            xp: 0,
+        });
+
+        newMember.save().catch(err => console.error(err));
+    }
 
     let server = await Servers.findOne({ serverID: member.guild.id });
 
-    if (server.toggles.auto_role === true) {
+    if (server.toggles.auto_role) {
         let memberRole = member.guild.roles.cache.find(r => r.name === server.roles.member);
         if (!memberRole) {
             member.guild.owner.send('Please set up AutoRole');
@@ -36,7 +39,7 @@ client.on('guildMemberAdd', async member => {
         }
     }
 
-    if (server.toggles.join_message === true) {
+    if (server.toggles.join_message) {
         let joinChannel = member.guild.channels.cache.find(ch => ch.name === server.channels.join_channel);
 
         if (joinChannel) {
@@ -57,8 +60,6 @@ client.on('guildMemberAdd', async member => {
             ctx.font = applyText(canvas, `to ${member.guild.name}`);
             ctx.fillStyle = 'white';
             ctx.fillText(`to ${member.guild.name}`, canvas.width / 3.1, canvas.height / 2.4);
-
-            console.log(member);
 
             if (member.guild.icon) {
                 let url = `https://cdn.discordapp.com/icons/${member.guild.id}/${member.guild.icon}`;
@@ -92,9 +93,9 @@ client.on('guildMemberAdd', async member => {
             const attachment = new MessageAttachment(canvas.toBuffer(), `welcome-${member.user.username}-${member.user.discriminator}.png`);
 
             joinChannel.send(attachment)
-            .catch(err => {
-                console.error(err);
-            });
+                .catch(err => {
+                    console.error(err);
+                });
         } else {
             // member.guild.owner.send('Please set up your welcome channel inside config or disable "join message" toggle');
         }

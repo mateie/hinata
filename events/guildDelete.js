@@ -7,17 +7,10 @@ mongoose.connect(process.env.DATABASE, {
 });
 
 const Servers = require('../models/servers');
-const Users = require('../models/users');
 const Warns = require('../models/warns');
 
 client.on('guildDelete', guild => {
     Servers.findOneAndDelete({
-        serverID: guild.id,
-    }, err => {
-        if(err) console.error(err);
-    });
-
-    Users.deleteMany({
         serverID: guild.id,
     }, err => {
         if(err) console.error(err);

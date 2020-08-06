@@ -55,12 +55,13 @@ client.on('guildCreate', guild => {
     newServer.save().catch(err => console.error(err));
 
     let guildMembers = [];
-    guild.members.cache.forEach(member => {
-        if(!member.user.bot) {
+    guild.members.cache.forEach(async member => {
+        const mm = await Users.findOne({ userID: member.user.id });
+        if (!member.user.bot && !mm) {
             guildMembers.push({
-                serverID: member.guild.id,
-                userName: member.user.username,
                 userID: member.user.id,
+                userName: member.user.username,
+                hashtag: member.user.discriminator,
                 level: 0,
                 xp: 0,
             });
@@ -68,11 +69,11 @@ client.on('guildCreate', guild => {
     });
 
     Users.insertMany(guildMembers, err => {
-        if(err) console.error(err);
+        if (err) console.error(err);
     });
 
     let owner = client.users.cache.get(guild.ownerID);
-    if(!owner) guild.leave();
+    if (!owner) guild.leave();
 
     /* owner.send(`Hello! I just configured your **${guild.name}** server. Please, setup all the required permission, roles and channels`).catch(err => {
         if(err) return console.error(err);

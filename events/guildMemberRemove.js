@@ -11,7 +11,6 @@ const Warns = require('../models/warns');
 
 client.on('guildMemberRemove', member => {
     Users.findOneAndDelete({
-        serverID: member.guild.id,
         userID: member.id,
     }, err => {
         if(err) console.error(err);
