@@ -29,7 +29,7 @@
                         <span class="badge badge-success text-light ml-auto">Manage</span>
                     </a>
                     <% } else { %>
-                    <a class="nav-link"
+                    <a class="nav-link" target="_blank"
                         href="https://discord.com/api/oauth2/authorize?client_id=<%= bot.user.id %>&guild_id=<%= guild.id %>&permissions=2146954487&redirect_uri=<%= encodeURIComponent(`${process.env.DOMAIN}`) %>/callback&scope=bot">
                         <div class="nav-link-icon">
                             <div class="avatar avatar-lg">
