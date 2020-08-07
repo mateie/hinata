@@ -19,8 +19,9 @@ client.on('guildMemberAdd', async member => {
 
     if (!mm) {
         const newMember = new Users({
-            userID: member.user.id,
+            serverID: member.guild.id,
             userName: member.user.username,
+            userID: member.user.id,
             level: 0,
             xp: 0,
         });

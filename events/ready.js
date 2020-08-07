@@ -78,67 +78,65 @@ client.on('ready', async () => {
         });
     }, 2000);
 
-    client.guilds.cache.forEach(guild => {
-        Servers.findOne({
-            serverID: guild.id,
-        }, async (err, res) => {
-            if (err) console.error(err);
+    client.guilds.cache.forEach(async guild => {
+        let server = await Servers.findOne({ serverID: guild.id }).catch(err => console.error(err));
 
-            if (!res) {
-                let customGuild = guild;
-                client.emit('guildCreate', customGuild);
-                console.info(`Adding new guild to the database... (Guild ID: ${guild.id})`);
-            }
+        if (!server) {
+            let customGuild = guild;
+            client.emit('guildCreate', customGuild);
+            console.info(`Adding new guild to the database... (Guild ID: ${guild.id})`);
+        }
 
-            if (res.channels.reactions.length < 0) {
-                console.info('This guild doesn\'t have reaction channel set in the database');
-            } else {
-                const channel = guild.channels.cache.find(ch => ch.name === res.channels.reactions);
-                if (!channel) {
-                    console.info(`This server doesn't have reactions channel`);
-                } else if (channel.guild.id === res.serverID) {
-                    try {
-                        await channel.messages.fetch();
-                    } catch (err) {
-                        console.error('Error fetching messages');
-                        console.error(err);
-                        return;
-                    }
+        if (server.channels.reactions.length < 0) {
+            console.info('This guild doesn\'t have reaction channel set in the database');
+        } else {
+            const channel = guild.channels.cache.find(ch => ch.name === server.channels.reactions);
+            if (!channel) {
+                console.info(`This server doesn't have reactions channel`);
+            } else if (channel.guild.id === server.serverID) {
+                try {
+                    await channel.messages.fetch();
+                } catch (err) {
+                    console.error('Error fetching messages');
+                    console.error(err);
+                    return;
+                }
 
-                    const messages = channel.messages;
-                    if (!messages) {
-                        console.info('There is no messages in the channel');
-                    } else {
-                        res.messageID = channel.messages.cache.first().id;
+                const messages = channel.messages;
+                if (!messages) {
+                    console.info('There is no messages in the channel');
+                } else {
+                    server.messageID = channel.messages.cache.first().id;
 
-                        console.log(`Watching message '${res.messageID}' in ${res.serverName} for reactions...`);
-                    }
+                    console.log(`Watching message '${server.messageID}' in ${server.serverName} for reactions...`);
                 }
             }
+        }
 
-            for (let i = 1; i < Object.keys(res.roles).length; i++) {
-                let role = Object.values(res.roles)[i];
-                let gRole = guild.roles.cache.find(r => r.name === role.name);
-                if (gRole) {
-                    role.id = gRole.id;
-                }
+        for (let i = 1; i < Object.keys(server.roles).length; i++) {
+            let role = Object.values(server.roles)[i];
+            let gRole = guild.roles.cache.find(r => r.name === role.name);
+            if (gRole) {
+                role.id = gRole.id;
             }
+        }
 
-            res.save();
-        });
+        server.save();
 
         guild.members.cache.forEach(member => {
             Users.findOne({
+                serverID: guild.id,
                 userID: member.user.id,
             }, (err, res) => {
                 if (err) console.error(err);
 
                 if (!res && !member.user.bot) {
                     client.emit('guildMemberAdd', member);
-                    console.debug(`Adding new guild member to the database... (User ID: ${member.id}, Name: ${member.user.username})`);
+                    console.debug(`Adding new guild member to the database... (Guild ID: ${guild.id}, User ID: ${member.id}, Name: ${member.user.username})`);
                 }
             });
         });
+
     });
 
     Dashboard(client);

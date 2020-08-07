@@ -142,6 +142,7 @@ client.on('message', async message => {
         });
     } else {
         Users.findOne({
+            serverID: message.member.guild.id,
             userID: message.member.user.id,
         }, (err, res) => {
             if (err) console.error(err);
@@ -150,9 +151,9 @@ client.on('message', async message => {
 
             if (!res) {
                 const newUser = new Users({
+                    serverID: message.member.guild.id,
                     userID: message.member.user.id,
                     userName: message.member.user.username,
-                    hashtag: message.member.user.discriminator,
                     level: 0,
                     xp: 0,
                 });

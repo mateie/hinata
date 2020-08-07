@@ -55,13 +55,12 @@ client.on('guildCreate', guild => {
     newServer.save().catch(err => console.error(err));
 
     let guildMembers = [];
-    guild.members.cache.forEach(async member => {
-        const mm = await Users.findOne({ userID: member.user.id });
-        if (!member.user.bot && !mm) {
+    guild.members.cache.forEach(member => {
+        if (!member.user.bot) {
             guildMembers.push({
-                userID: member.user.id,
+                serverID: member.guild.id,
                 userName: member.user.username,
-                hashtag: member.user.discriminator,
+                userID: member.user.id,
                 level: 0,
                 xp: 0,
             });
