@@ -84,6 +84,12 @@ guilds.post('/:guildID/roles', async (req, res) => {
         let value = inputValues[index];
         if (typeof (value) !== 'undefined' && value.length > 0) {
             storedSettings[inputType][role].name = value;
+            let gRole = guild.roles.cache.find(r => r.name === value);
+            if(gRole) {
+                storedSettings[inputType][role].id = gRole.id
+            } else {
+                storedSettings[inputType][role].id = '';
+            }
         }
     });
 
@@ -118,7 +124,7 @@ guilds.post('/:guildID/channels', async (req, res) => {
         }
         let value = inputValues[index];
         if (typeof (value) !== 'undefined' && value.length > 0) {
-            storedSettings[inputType][channel] = value;
+            storedSettings[inputType][channel].name = value;
         }
     });
 

@@ -142,16 +142,12 @@ client.on('message', async message => {
         });
     } else {
         Users.findOne({
-            serverID: message.member.guild.id,
             userID: message.member.user.id,
         }, (err, res) => {
             if (err) console.error(err);
 
-            console.log(res);
-
             if (!res) {
                 const newUser = new Users({
-                    serverID: message.member.guild.id,
                     userID: message.member.user.id,
                     userName: message.member.user.username,
                     level: 0,
@@ -181,7 +177,7 @@ client.on('message', async message => {
 
                 if (res.xp >= XPCalc.getXp(res.level + 1)) {
                     res.level += 1;
-                    // message.channel.send(`<@${message.member.id}> advanced to level ${res.level}`);
+                    message.channel.send(`<@${message.member.id}> advanced to level ${res.level}`);
                 }
 
                 res.save();

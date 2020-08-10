@@ -28,17 +28,34 @@ const serversSchema = mongoose.Schema({
         },
     },
     channels: {
-        join_channel: String,
-        leave_channel: String,
-        commands: String,
-        logs: String,
-        spam: String,
-        reactions: String,
+        join_channel: {
+            id: String,
+            name: String,
+        },
+        leave_channel: {
+            id: String,
+            name: String,
+        },
+        commands: {
+            id: String,
+            name: String,
+        },
+        system_messages: {
+            id: String,
+            name: String,
+        },
+        reactions: {
+            id: String,
+            name: String,
+        },
     },
     toggles: {
         auto_role: Boolean,
         join_message: Boolean,
         leave_message: Boolean,
+        strict_commands: Boolean,
+        system_messages: Boolean,
+        reaction_roles: Boolean,
     },
 });
 

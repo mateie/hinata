@@ -85,58 +85,84 @@ client.on('ready', async () => {
             let customGuild = guild;
             client.emit('guildCreate', customGuild);
             console.info(`Adding new guild to the database... (Guild ID: ${guild.id})`);
-        }
-
-        if (server.channels.reactions.length < 0) {
-            console.info('This guild doesn\'t have reaction channel set in the database');
         } else {
-            const channel = guild.channels.cache.find(ch => ch.name === server.channels.reactions);
-            if (!channel) {
-                console.info(`This server doesn't have reactions channel`);
-            } else if (channel.guild.id === server.serverID) {
-                try {
-                    await channel.messages.fetch();
-                } catch (err) {
-                    console.error('Error fetching messages');
-                    console.error(err);
-                    return;
-                }
 
-                const messages = channel.messages;
-                if (!messages) {
-                    console.info('There is no messages in the channel');
+            if (server.toggles.reaction_roles) {
+                if (server.channels.reactions.length < 0) {
+                    console.info('This guild doesn\'t have reaction channel set in the database');
                 } else {
-                    server.messageID = channel.messages.cache.first().id;
+                    const channel = guild.channels.cache.find(ch => ch.name === server.channels.reactions);
+                    if (!channel) {
+                        console.info(`This server doesn't have reactions channel`);
+                    } else if (channel.guild.id === server.serverID) {
+                        try {
+                            await channel.messages.fetch();
+                        } catch (err) {
+                            console.error('Error fetching messages');
+                            console.error(err);
+                            return;
+                        }
 
-                    console.log(`Watching message '${server.messageID}' in ${server.serverName} for reactions...`);
+                        const messages = channel.messages;
+                        if (!messages) {
+                            console.info('There is no messages in the channel');
+                        } else {
+                            server.messageID = channel.messages.cache.first().id;
+
+                            console.log(`Watching message '${server.messageID}' in ${server.serverName} for reactions...`);
+                        }
+                    }
                 }
             }
-        }
 
-        for (let i = 1; i < Object.keys(server.roles).length; i++) {
-            let role = Object.values(server.roles)[i];
-            let gRole = guild.roles.cache.find(r => r.name === role.name);
-            if (gRole) {
-                role.id = gRole.id;
+            for (let i = 1; i < Object.keys(server.roles).length; i++) {
+                let role = Object.values(server.roles)[i];
+                let gRole = guild.roles.cache.find(r => r.name === role.name);
+                if (gRole) {
+                    role.id = gRole.id;
+                } else {
+                    role.id = '';
+                }
             }
+
+            for(let j = 1; j < Object.keys(server.channels).length; j++) {
+                let channel = Object.values(server.channels)[j];
+                let gChan = guild.channels.cache.find(ch => ch.name === channel.name);
+                if(gChan) {
+                    channel.id = gChan.id;
+                } else {
+                    channel.id = '';
+                }
+            }
+
+            guild.members.cache.forEach(member => {
+                Users.findOne({
+                    userID: member.user.id,
+                }, (err, res) => {
+                    if (err) console.error(err);
+
+                    if (!res && !member.user.bot) {
+                        client.emit('guildMemberAdd', member);
+                        console.debug(`Adding new guild member to the database... (Guild ID: ${guild.id}, User ID: ${member.id}, Name: ${member.user.username})`);
+                    }
+                });
+            });
         }
 
         server.save();
+    });
 
-        guild.members.cache.forEach(member => {
-            Users.findOne({
-                serverID: guild.id,
-                userID: member.user.id,
-            }, (err, res) => {
-                if (err) console.error(err);
+    client.users.cache.filter(u => !u.bot).forEach(user => {
+        Users.findOne({
+            userID: user.id,
+        }, (err, res) => {
+            if (err) console.error(err);
 
-                if (!res && !member.user.bot) {
-                    client.emit('guildMemberAdd', member);
-                    console.debug(`Adding new guild member to the database... (Guild ID: ${guild.id}, User ID: ${member.id}, Name: ${member.user.username})`);
-                }
-            });
+            if (!res && !user.bot) {
+                client.emit('guildMemberAdd', user);
+                console.debug(`Adding new User to the database... (User ID: ${user.id}, Name: ${user.username})`);
+            }
         });
-
     });
 
     Dashboard(client);

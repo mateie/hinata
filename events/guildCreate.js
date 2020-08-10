@@ -38,17 +38,34 @@ client.on('guildCreate', guild => {
             },
         },
         channels: {
-            join_channel: 'welcome',
-            leave_channel: 'bye',
-            commands: 'bot-commands',
-            logs: 'logs',
-            spam: 'spam',
-            reactions: 'roles',
+            join_channel: {
+                id: '',
+                name: 'welcome',
+            },
+            leave_channel: {
+                id: '',
+                name: 'bye',
+            },
+            commands: {
+                id: '',
+                name: 'bot-commands',
+            },
+            system_messages: {
+                id: '',
+                name: 'logs',
+            },
+            reactions: {
+                id: '',
+                name: 'roles',
+            },
         },
         toggles: {
             auto_role: false,
             join_message: false,
             leave_message: false,
+            strict_commands: false,
+            system_messages: false,
+            reaction_roles: false,
         },
     });
 

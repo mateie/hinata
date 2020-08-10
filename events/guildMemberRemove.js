@@ -17,7 +17,6 @@ client.on('guildMemberRemove', member => {
     });
 
     Warns.deleteMany({
-        serverID: member.guild.id,
         userID: member.id,
     }, err => {
         if(err) console.error(err);
