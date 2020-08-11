@@ -76,7 +76,7 @@ client.on('ready', async () => {
                 }
             });
         });
-    }, 5000);
+    }, 30000);
 
     client.guilds.cache.forEach(async guild => {
         let server = await Servers.findOne({ serverID: guild.id }).catch(err => console.error(err));
