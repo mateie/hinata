@@ -8,7 +8,7 @@ const toastr = require('toastr');
 // Routes
 const guilds = require('express').Router();
 const channels = require('./channels');
-const users = require('./users');
+const members = require('./members');
 const queue = require('./queue');
 
 guilds.get('/:guildID', async (req, res) => {
@@ -161,10 +161,10 @@ guilds.use('/:guildID/channel', (req, res, next) => {
     next();
 }, channels);
 
-guilds.use('/:guildID/user', (req, res, next) => {
+guilds.use('/:guildID/member', (req, res, next) => {
     req.guildID = req.params.guildID;
     next();
-}, users);
+}, members);
 
 guilds.use('/:guildID/queue', (req, res, next) => {
     req.guildID = req.params.guildID;

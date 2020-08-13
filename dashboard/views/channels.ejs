@@ -40,68 +40,72 @@
                         </div>
                     </div>
                 </header>
-                <div class="container channel">
+                <div class="container mt-n10">
                     <div class="row">
                         <div class="col-xxl-12">
-                            <div class="timeline">
-                                <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
-                                <% if(message.content.length > 0) { %>
-                                <% if (message.author.id === user.id) { %>
-                                <div class="timeline-item">
-                                    <div class="timeline-item-marker">
-                                        <div class="timeline-item-marker-text"><%= time(message.createdTimestamp) %>
-                                        </div>
-                                        <div class="timeline-item-marker-indicator"><img
-                                                class="img-fluid avatar avatar-lg shadow-sm"
-                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128">
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item-content pt-0">
-                                        <div class="card rounded shadow-sm p-3 mb-3">
-                                            <div class="card-body">
-                                                <h6><%= message.author.username %>#<%= message.author.discriminator %>
-                                                </h6>
-                                                <%= message.content %>
+                            <div class="card card-scrollable">
+                                <div class="card-body messages">
+                                    <div class="timeline">
+                                        <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
+                                        <% if(message.content.length > 0) { %>
+                                        <% if (message.author.id === user.id) { %>
+                                        <div class="timeline-item">
+                                            <div class="timeline-item-marker">
+                                                <div class="timeline-item-marker-text">
+                                                    <%= time(message.createdTimestamp) %>
+                                                </div>
+                                                <div class="timeline-item-marker-indicator"><img
+                                                        class="img-fluid avatar avatar-lg shadow-sm"
+                                                        src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128">
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item-content pt-0">
+                                                <div class="card rounded shadow-sm p-3 mb-3">
+                                                    <div class="card-body">
+                                                        <h6><%= message.author.username %>#<%= message.author.discriminator %>
+                                                        </h6>
+                                                        <%= message.content %>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <% } else { %>
-                                <div class="timeline-item">
-                                    <div class="timeline-item-marker">
-                                        <div class="timeline-item-marker-text"><%= time(message.createdTimestamp) %>
-                                        </div>
-                                        <div class="timeline-item-marker-indicator"><img
-                                                class="img-fluid avatar avatar-lg shadow-sm"
-                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128">
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item-content pt-0">
-                                        <div class="card rounded p-3 mb-3">
-                                            <div class="card-body">
-                                                <h6><%= message.author.username %>#<%= message.author.discriminator %>
-                                                </h6>
-                                                <%= message.content %>
+                                        <% } else { %>
+                                        <div class="timeline-item">
+                                            <div class="timeline-item-marker">
+                                                <div class="timeline-item-marker-text">
+                                                    <%= time(message.createdTimestamp) %>
+                                                </div>
+                                                <div class="timeline-item-marker-indicator"><img
+                                                        class="img-fluid avatar avatar-lg shadow-sm"
+                                                        src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128">
+                                                </div>
+                                            </div>
+                                            <div class="timeline-item-content pt-0">
+                                                <div class="card rounded p-3 mb-3">
+                                                    <div class="card-body">
+                                                        <h6><%= message.author.username %>#<%= message.author.discriminator %>
+                                                        </h6>
+                                                        <%= message.content %>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                        <% } %>
+                                        <% } %>
+                                        <% }) %>
                                     </div>
                                 </div>
-                                <% } %>
-                                <% } %>
-                                <% }) %>
-                            </div>
-                            <div class="card">
-                                <form method="POST">
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <input type="text" name="message" class="form-control"
-                                                placeholder="Your Message...">
+                                <div class="card-footer">
+                                    <form method="POST">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <input type="text" name="message" class="form-control"
+                                                    placeholder="Your Message...">
+                                                <button type="submit" class="btn btn-success lift lift-sm">Send</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-success lift lift-sm">Send</button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

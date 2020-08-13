@@ -91,6 +91,8 @@
     $(this).trigger('reset');
   })
 
-  window.scrollTo(0, document.querySelector(".channel").scrollHeight);
+  var wtf = $('.messages');
+  var height = wtf[0].scrollHeight;
+  wtf.scrollTop(height);
 
 })(jQuery);

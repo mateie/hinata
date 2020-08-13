@@ -1,9 +1,9 @@
-const users = require('express').Router();
+const members = require('express').Router();
 const Main = require('../app');
 const { client } = require('../../index');
 const Discord = require('discord.js');
 
-users.get('/:userID', async (req, res) => {
+members.get('/:userID', async (req, res) => {
     const guild = client.guilds.cache.get(req.guildID);
     if (!guild) {
         return res.redirect('/');
@@ -72,7 +72,7 @@ users.get('/:userID', async (req, res) => {
     Main.renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity, brightness: brightness });
 });
 
-users.post('/:userID', async (req, res) => {
+members.post('/:userID', async (req, res) => {
     const guild = client.guilds.cache.get(req.guildID);
     if(!guild) {
         return res.redirect('/');
