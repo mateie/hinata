@@ -94,7 +94,60 @@
                                             <div class="text-lg font-weight-bold">
                                                 <%= guild.members.cache.filter(m => !m.user.bot).size %> Members</div>
                                         </div>
-                                        <i class="feather-xl text-white-50" data-feather="user-check"></i>
+                                        <button title="View All Members for <%= guild.name %>"
+                                            class="btn btn-sm lift lift-sm" type="button" data-toggle="modal"
+                                            data-target="#membersModal"><i class="feather-xl text-white-50"
+                                                data-feather="user-check"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="membersModal" tabindex="-1" role="dialog"
+                                aria-labelledby="modal-dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="usersModalLabel">All Members in
+                                                <%= guild.name %></h5>
+                                            <button class="close" type="button" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="datatable">
+                                                <table class="table" id="datatable" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Discriminator (#)</th>
+                                                            <th>ID</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <% guild.members.cache.filter(m => !m.user.bot).sort((a, b) => a.joinedTimestamp - a.joinedTimestamp).forEach(member => { %>
+                                                        <tr>
+                                                            <td><%= member.user.username %></td>
+                                                            <td><%= member.user.discriminator %></td>
+                                                            <td><%= member.id %></td>
+                                                            <td>
+                                                                <button title="Kick User"
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark mr-2"
+                                                                    type="button"><i
+                                                                        class="fas fa-user-slash"></i></button>
+                                                                <button title="Ban User"
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark">
+                                                                    <i class="fas fa-ban"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                        <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-danger lift lift-sm" type="button"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +176,87 @@
                                                 <%= guild.channels.cache.filter(ch => ch.type !== 'category').size %>
                                                 Channels</div>
                                         </div>
-                                        <i class="feather-xl text-white-50" data-feather="align-left"></i>
+                                        <button title="View All Members for <%= guild.name %>"
+                                            class="btn btn-sm lift lift-sm" type="button" data-toggle="modal"
+                                            data-target="#channelsModal"><i class="feather-xl text-white-50"
+                                                data-feather="align-left"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="channelsModal" tabindex="-1" role="dialog"
+                                aria-labelledby="modal-dialog" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="channelsModalLabel">All Channels in
+                                                <%= guild.name %></h5>
+                                            <button class="close" type="button" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="datatable">
+                                                <table class="table" id="datatable" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Type</th>
+                                                            <th>Name</th>
+                                                            <th>ID</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% guild.channels.cache.filter(ch => ch.parentID === null).filter(ch => ch.type !== 'category').sort((a, b) => a.rawPosition - b.rawPosition - 1).forEach(cha => { %>
+                                                        <tr>
+                                                            <td><%= capL(cha.type) %></td>
+                                                            <td><%= cha.name %></td>
+                                                            <td><%= cha.id %></td>
+                                                            <td>
+                                                                <% if(cha.type === 'text') { %>
+                                                                <button title="View Channel"
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark mr-2"
+                                                                    type="button"><i
+                                                                        class="fas fa-arrow-circle-right"></i></button>
+                                                                <% } %>
+                                                                <button title="Delete <%= capL(cha.type) %> Channel"
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark delete-channel">
+                                                                    <i class="fas fa-trash-alt"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                        <% }) %>
+                                                        <% guild.channels.cache.filter(ch => ch.type === 'category').sort((a, b) => a.rawPosition - b.rawPosition - 1).forEach(category => { %>
+                                                        <tr>
+                                                            <td><%= capL(category.type) %></td>
+                                                            <td><%= category.name %></td>
+                                                            <td><%= category.id %></td>
+                                                            <td>
+                                                                <button title="View Category"
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark mr-2"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false" type="button"><i
+                                                                        class="fas fa-arrow-circle-right"></i></button>
+                                                                <div class="dropdown-menu">
+                                                                    <% guild.channels.cache.filter(ch => ch.type !== 'category').sort((a, b) => a.rawPosition - b.rawPosition - 1).forEach(channel => { %>
+                                                                    <% if (channel.parentID === category.id) { %>
+                                                                    <% if(channel.type === 'voice') { %>
+                                                                    <a title="Voice Channel" class="dropdown-item"
+                                                                        href="javascript:void(0);"><i data-feather="mic"></i> <%= channel.name %> (Voice)</a>
+                                                                    <% } else { %>
+                                                                    <a title="Text Channel" class="dropdown-item"
+                                                                        href="/guild/<%= guild.id %>/channel/<%= channel.id %>"><i data-feather="align-left"></i> <%= channel.name %> (Text)</a>
+                                                                    <% } %>
+                                                                    <% } %>
+                                                                    <% }) %>
+                                                                </div>
+                                                                <button title="Delete Category"
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark delete-channel">
+                                                                    <i class="fas fa-trash-alt"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                        <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -133,12 +266,43 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="mr-3">
-                                            <div class="text-light-75 small">Total Roles</div>
+                                            <div class="text-light-75 small">Total Roles
+                                            </div>
                                             <div class="text-lg font-weight-bold">
                                                 <%= guild.roles.cache.size %> Roles
                                             </div>
                                         </div>
-                                        <i class="feather-xl text-white-50" data-feather="users"></i>
+                                        <button title="View All Roles for <%= guild.name %>"
+                                            class="btn btn-sm lift lift-sm" type="button" data-toggle="modal"
+                                            data-target="#rolesModal"><i class="feather-xl text-white-50"
+                                                data-feather="users"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="rolesModal" tabindex="-1" role="dialog"
+                                aria-labelledby="modal-dialog" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="usersModalLabel">All Roles in
+                                                <%= guild.name %></h5>
+                                            <button class="close" type="button" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="datatable">
+                                                <ul>
+                                                    <% guild.roles.cache.filter(r => !r.managed).filter(r => r.name !== '@everyone').forEach(role => { %>
+                                                    <li style="color: <%= role.hexColor %>">
+                                                        <%= role.name %></li>
+                                                    <% }) %>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-danger lift lift-sm" type="button"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

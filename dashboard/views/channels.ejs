@@ -1,109 +1,116 @@
 <html lang="en">
-<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Channel`}) %>
+<%- include('../partials/_head', { bot, user, path, title: `${guild.name} Dashboard` }) %>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
-        <%- include('../partials/_navbar') %>
+<body class="nav-fixed">
+    <%- include('../partials/_navbar') %>
+
+    <div id="layoutSidenav">
         <%- include('../partials/_sidebar') %>
-
-        <div class="content-wrapper">
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title"><%= capL(channel.name) %> Channel</h3>
+        <div id="layoutSidenav_content">
+            <main>
+                <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10 fixed">
+                    <div class="container">
+                        <div class="page-header-content pt-4">
+                            <div class="row align-items-center justify-content-between">
+                                <div class="col-auto mt-4">
+                                    <h1 class="page-header-title">
+                                        <div class="page-header-icon">
+                                            <div class="avatar avatar-lg">
+                                                <i data-feather="align-left"></i>
+                                            </div>
+                                        </div>
+                                        <%= channel.name %>
+                                    </h1>
                                 </div>
-                                <div class="card-body">
+                                <div class="col-auto mt-4">
+                                    <h1 class="page-header-title">
+                                        Info
+                                        <div class="page-header-icon">
+                                            <div class="avatar avatar-lg">
+                                                <i data-feather="info"></i>
+                                            </div>
+                                        </div>
+                                    </h1>
                                     <% let parent = guild.channels.cache.get(channel.parentID) %>
-                                    <% let everyone = guild.roles.cache.find(e => e.name === '@everyone') %>
-                                    <p>Name: <%= channel.name %></p>
-                                    <p>Topic: <%= channel.topic ? channel.topic : 'None' %></p>
-                                    <p>NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></p>
-                                    <p>Category: <%= parent ? parent.name : 'None' %></p>
-                                    <% if(channel.permissionOverwrites.size > 0) { %>
-                                    <p>
-                                        Roles:
-                                    <ul>
-                                        <% channel.permissionOverwrites.filter(p => p.id !== everyone.id).forEach(perm => { %>
-                                        <% let role = guild.roles.cache.get(perm.id) %>
-                                        <% if(role) { %>
-                                        <li><%= role.name %></li>
-                                        <% } else { %>
-                                        <li>None</li>
-                                        <% } %>
-                                        <% }) %>
-                                    </ul>
-                                    </p>
-                                    <% } %>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-primary carduotline direct-chat direct-chat-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title">Channel Messages</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="direct-chat-messages">
-                                        <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
-                                        <% if(!message.author.bot || message.author.id === bot.user.id) { %>
-                                        <% if (message.author.id === user.id) { %>
-                                        <div class="direct-chat-msg right">
-                                            <div class="direct-chat-infos clearfix">
-                                                <span
-                                                    class="direct-chat-name float-right"><%= message.author.username %>#<%= message.author.discriminator %></span>
-                                                <span
-                                                    class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
-                                            </div>
-                                            <img class="direct-chat-img"
-                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
-                                                alt="Message User Image">
-                                            <div class="direct-chat-text">
-                                                <%= message.content %>
-                                            </div>
-                                        </div>
-                                        <% } else { %>
-                                        <div class="direct-chat-msg">
-                                            <div class="direct-chat-infos clearfix">
-                                                <span
-                                                    class="direct-chat-name float-left"><%= message.author.username %>#<%= message.author.discriminator %></span>
-                                                <span
-                                                    class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
-                                            </div>
-                                            <img class="direct-chat-img"
-                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128"
-                                                alt="Message User Image">
-                                            <div class="direct-chat-text">
-                                                <%= message.content %>
-                                            </div>
-                                        </div>
-                                        <% } %>
-                                        <% } %>
-                                        <% }) %>
+                                    <div class="page-header-subtitle">NSFW: <%= channel.nsfw ? 'Yes' : 'No' %></div>
+                                    <div class="page-header-subtitle">Category: <%= parent ? parent.name : 'None' %>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <form method="POST">
-                                        <div class="input-group">
-                                            <input type="text" name="message" placeholder="Type Message..."
-                                                class="form-control">
-                                            <span class="input-group-append">
-                                                <button type="submit" class="btn btn-primary">Send</button>
-                                            </span>
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </header>
+                <div class="container channel">
+                    <div class="row">
+                        <div class="col-xxl-12">
+                            <div class="timeline">
+                                <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
+                                <% if(message.content.length > 0) { %>
+                                <% if (message.author.id === user.id) { %>
+                                <div class="timeline-item">
+                                    <div class="timeline-item-marker">
+                                        <div class="timeline-item-marker-text"><%= time(message.createdTimestamp) %>
+                                        </div>
+                                        <div class="timeline-item-marker-indicator"><img
+                                                class="img-fluid avatar avatar-lg shadow-sm"
+                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128">
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item-content pt-0">
+                                        <div class="card rounded shadow-sm p-3 mb-3">
+                                            <div class="card-body">
+                                                <h6><%= message.author.username %>#<%= message.author.discriminator %>
+                                                </h6>
+                                                <%= message.content %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } else { %>
+                                <div class="timeline-item">
+                                    <div class="timeline-item-marker">
+                                        <div class="timeline-item-marker-text"><%= time(message.createdTimestamp) %>
+                                        </div>
+                                        <div class="timeline-item-marker-indicator"><img
+                                                class="img-fluid avatar avatar-lg shadow-sm"
+                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>.png?size=128">
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item-content pt-0">
+                                        <div class="card rounded p-3 mb-3">
+                                            <div class="card-body">
+                                                <h6><%= message.author.username %>#<%= message.author.discriminator %>
+                                                </h6>
+                                                <%= message.content %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <% } %>
+                                <% }) %>
+                            </div>
+                            <div class="card">
+                                <form method="POST">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <input type="text" name="message" class="form-control"
+                                                placeholder="Your Message...">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-success lift lift-sm">Send</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </main>
+            <%- include('../partials/_footer') %>
         </div>
-
-        <%- include('../partials/_footer') %>
     </div>
+
     <%- include('../partials/_scripts') %>
 </body>
 

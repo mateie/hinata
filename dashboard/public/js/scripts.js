@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
   "use strict";
 
   // Enable Bootstrap tooltips via data-attributes globally
@@ -13,14 +13,14 @@
 
   // Add active state to sidbar nav links
   var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
-  $("#layoutSidenav_nav .sidenav a.nav-link").each(function() {
+  $("#layoutSidenav_nav .sidenav a.nav-link").each(function () {
     if (this.href === path) {
       $(this).addClass("active");
     }
   });
 
   // Toggle the side navigation
-  $("#sidebarToggle").on("click", function(e) {
+  $("#sidebarToggle").on("click", function (e) {
     e.preventDefault();
     $("body").toggleClass("sidenav-toggled");
   });
@@ -35,10 +35,10 @@
   });
 
   // Scrolls to an offset anchor when a sticky nav link is clicked
-  $('.nav-sticky a.nav-link[href*="#"]:not([href="#"])').click(function() {
+  $('.nav-sticky a.nav-link[href*="#"]:not([href="#"])').click(function () {
     if (
       location.pathname.replace(/^\//, "") ==
-        this.pathname.replace(/^\//, "") &&
+      this.pathname.replace(/^\//, "") &&
       location.hostname == this.hostname
     ) {
       var target = $(this.hash);
@@ -56,13 +56,13 @@
   });
 
   // Click to collapse responsive sidebar
-  $("#layoutSidenav_content").click(function() {
+  $("#layoutSidenav_content").click(function () {
     const BOOTSTRAP_LG_WIDTH = 992;
     if (window.innerWidth >= 992) {
       return;
     }
     if ($("body").hasClass("sidenav-toggled")) {
-        $("body").toggleClass("sidenav-toggled");
+      $("body").toggleClass("sidenav-toggled");
     }
   });
 
@@ -75,20 +75,22 @@
   else {
     activatedPath = 'index.html';
   }
-    
+
   let targetAnchor = $('[href="' + activatedPath + '"]');
   let collapseAncestors = targetAnchor.parents('.collapse');
-  
+
   targetAnchor.addClass('active');
-  
-  collapseAncestors.each(function() {
+
+  collapseAncestors.each(function () {
     $(this).addClass('show');
-    $('[data-target="#' + this.id +  '"]').removeClass('collapsed');
-     
+    $('[data-target="#' + this.id + '"]').removeClass('collapsed');
+
   })
 
-  $('.reset').click(function() {
+  $('.reset').click(function () {
     $(this).trigger('reset');
   })
+
+  window.scrollTo(0, document.querySelector(".channel").scrollHeight);
 
 })(jQuery);

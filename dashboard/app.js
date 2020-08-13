@@ -226,6 +226,10 @@ exports.getTime = timestamp => {
     let time = d.toLocaleTimeString();
     let date = d.toDateString();
     date = date.split(' ');
+    time = time.split(' ');
+    time = time[0];
+    time = time.split(':');
+    time = `${time[0]}:${time[1]}`;
     date = `${date[1]} ${date[2]}`;
 
     let newDate = `${date} ${time}`;
