@@ -69,7 +69,7 @@ members.get('/:memberID', async (req, res) => {
 
     let brightness = Main.lightOrDark(bgColor) ? 'text-dark' : 'text-light';
 
-    Main.renderTemplate(res, req, 'user.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity, brightness: brightness });
+    Main.renderTemplate(res, req, 'member.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity, brightness: brightness });
 });
 
 members.post('/:memberID', async (req, res) => {

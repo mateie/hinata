@@ -214,7 +214,7 @@
                                                                 <% if(cha.type === 'text') { %>
                                                                 <button title="View Channel"
                                                                     class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark mr-2"
-                                                                    type="button"><i
+                                                                    onclick="window.location.href='/guild/<%= guild.id %>/channel/<%= cha.id %>'"><i
                                                                         class="fas fa-arrow-circle-right"></i></button>
                                                                 <% } %>
                                                                 <button title="Delete <%= capL(cha.type) %> Channel"
@@ -239,16 +239,20 @@
                                                                     <% if (channel.parentID === category.id) { %>
                                                                     <% if(channel.type === 'voice') { %>
                                                                     <a title="Voice Channel" class="dropdown-item"
-                                                                        href="javascript:void(0);"><i data-feather="mic"></i> <%= channel.name %> (Voice)</a>
+                                                                        href="javascript:void(0);"><i
+                                                                            data-feather="mic"></i> <%= channel.name %>
+                                                                    </a>
                                                                     <% } else { %>
                                                                     <a title="Text Channel" class="dropdown-item"
-                                                                        href="/guild/<%= guild.id %>/channel/<%= channel.id %>"><i data-feather="align-left"></i> <%= channel.name %> (Text)</a>
+                                                                        href="/guild/<%= guild.id %>/channel/<%= channel.id %>"><i
+                                                                            data-feather="align-left"></i>
+                                                                        <%= channel.name %></a>
                                                                     <% } %>
                                                                     <% } %>
                                                                     <% }) %>
                                                                 </div>
                                                                 <button title="Delete Category"
-                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark delete-channel">
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark delete-category">
                                                                     <i class="fas fa-trash-alt"></i></button>
                                                             </td>
                                                         </tr>

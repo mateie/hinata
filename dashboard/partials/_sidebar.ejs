@@ -64,7 +64,7 @@
                         categoryNames = capA(categoryNames);
                     } else if(category.includes('_')) {
                         categoryNames = categoryNames.split('_');
-                        for(let i = 0; i < categoryNames.length; i++) { categoryNames[i]=capL(categoryNames[i]); }
+                        for(let i = 0; i < categoryNames.length; i++) { categoryNames[i] = capL(categoryNames[i]); }
                         categoryNames = categoryNames.join(' ');
                     } else {
                         categoryNames = capL(categoryNames);
@@ -72,7 +72,7 @@
                 %>
 
                 <a class="nav-link" href="/commands?cat=<%= category %>">
-                    <div class="nav-link-icon"><i data-feather="folder"></i></div>
+                    <div class="nav-link-icon"><i data-feather="grid"></i></div>
                     <%= categoryNames %>
                 </a>
                 <% }) %>
