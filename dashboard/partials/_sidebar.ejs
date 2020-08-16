@@ -2,11 +2,11 @@
     <nav class="sidenav shadow-right sidenav-dark">
         <div class="sidenav-menu">
             <div class="nav accordion" id="accordionSidenav">
-                <div class="sidenav-menu-heading">Dashboard</div>
                 <% if(!user) { %>
-                <a class="nav-link" href="/login">Login to access Dashboard</a>
+                <div class="sidenav-menu-heading"><a class="nav-link" href="/login">Login to access Dashboard</a></div>
                 <% } %>
                 <% if(user) { %>
+                <div class="sidenav-menu-heading">Dashboard</div>
                 <% if(user.guilds) { %>
                 <nav class="sidenav-menu nav accordion" id="accordionSidenavPages">
                     <% user.guilds.forEach(guild => { %>

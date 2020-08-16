@@ -30,7 +30,44 @@ guilds.get('/:guildID', async (req, res) => {
 
     let bgColor = guild.icon ? await Main.colorHex(`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=128`) : '#007bff';
 
-    Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor });
+    Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor, convert: Main.secondsToDuration });
+});
+
+guilds.get('/:guildID/player', async (req, res) => {
+    const guild = client.guilds.cache.get(req.params.guildID);
+    if (!guild) {
+        return res.redirect('/');
+    }
+    const member = guild.members.cache.get(req.user.id);
+    if (!member) {
+        return res.redirect('/');
+    }
+    if (!member.permissions.has('MANAGE_GUILD')) {
+        return res.redirect('/');
+    }
+
+    const queue = client.queue.get(guild.id);
+
+    // console.log(queue);
+
+    if (queue) {
+        let progress = ''
+        progress = queue.connection.dispatcher.streamTime / 1000;
+        progress = Math.floor(progress);
+        progress = Main.secondsToDuration(progress);
+
+        res.json({
+            track: {
+                artist: queue.songs[0].author,
+                title: queue.songs[0].title,
+                duration: Main.secondsToDuration(queue.songs[0].duration),
+                progress: progress,
+                thumbnail: queue.songs[0].thumbnail,
+                playing: queue.playing,
+            },
+            songs: queue.songs,
+        });
+    }
 });
 
 guilds.post('/:guildID/prefix', async (req, res) => {
@@ -85,7 +122,7 @@ guilds.post('/:guildID/roles', async (req, res) => {
         if (typeof (value) !== 'undefined' && value.length > 0) {
             storedSettings[inputType][role].name = value;
             let gRole = guild.roles.cache.find(r => r.name === value);
-            if(gRole) {
+            if (gRole) {
                 storedSettings[inputType][role].id = gRole.id
             } else {
                 storedSettings[inputType][role].id = '';

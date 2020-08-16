@@ -98,19 +98,6 @@ exports.run = async (client, message, args) => {
     }
 };
 
-exports.secondsToDuration = sec => {
-    let hours = Math.floor(sec / 3600);
-    let minutes = Math.floor((sec - (hours * 3600)) / 60);
-    let seconds = sec - (hours * 3600) - (minutes * 60);
-
-    if (hours < 10) hours = `0${hours}`;
-    if (minutes < 10) minutes = `0${minutes}`;
-    if (seconds < 10) seconds = `0${seconds}`;
-
-    if (hours > 0) return `${hours}:${minutes}:${seconds}`;
-    else return `${minutes}:${seconds}`;
-};
-
 exports.help = {
     enabled: true,
     name: 'play',
@@ -132,7 +119,7 @@ const play = async (message, song) => {
     }
 
     const dispatcher = serverQueue.connection
-        .play(YTDL(song.url))
+        .play(YTDL(song.url, { highWaterMark: 1 << 25, quality: 'highestaudio', filter: 'audioonly' }))
         .on("finish", () => {
             if (!serverQueue.loop) {
                 serverQueue.songs.shift();
@@ -153,4 +140,17 @@ const play = async (message, song) => {
         .addField('Likes', song.likes, true)
         .addField('Dislikes', song.dislikes, true);
     serverQueue.textChannel.send({ embed });
+};
+
+exports.secondsToDuration = sec => {
+    let hours = Math.floor(sec / 3600);
+    let minutes = Math.floor((sec - (hours * 3600)) / 60);
+    let seconds = sec - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) hours = `0${hours}`;
+    if (minutes < 10) minutes = `0${minutes}`;
+    if (seconds < 10) seconds = `0${seconds}`;
+
+    if (hours > 0) return `${hours}:${minutes}:${seconds}`;
+    else return `${minutes}:${seconds}`;
 };
