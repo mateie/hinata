@@ -4,8 +4,6 @@ const { client } = require(`${process.cwd()}/index`);
 const Discord = require('discord.js');
 
 channels.get('/:channelID', async (req, res) => {
-    const io = req.app.get('socketio');
-
     const guild = client.guilds.cache.get(req.guildID);
     if (!guild) {
         return res.redirect('/');
@@ -29,7 +27,7 @@ channels.get('/:channelID', async (req, res) => {
 
     let messages = channel.messages.cache;
 
-    Main.renderTemplate(res, req, 'channels.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, time: Main.getTime });
+    Main.renderTemplate(res, req, 'channel.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, time: Main.getTime });
 });
 
 channels.post('/:channelID', async (req, res) => {
