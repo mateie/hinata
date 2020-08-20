@@ -18342,6 +18342,11 @@ body {
   max-height: 15rem;
   overflow-y: auto;
 }
+ 
+.card-scrollable-chat .card-body {
+  max-height: 30rem;
+  overflow-y: auto;
+}
 
 .card-progress .progress {
   height: 0.5rem;

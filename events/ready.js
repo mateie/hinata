@@ -125,10 +125,10 @@ client.on('ready', async () => {
                 }
             }
 
-            for(let j = 1; j < Object.keys(server.channels).length; j++) {
+            for (let j = 1; j < Object.keys(server.channels).length; j++) {
                 let channel = Object.values(server.channels)[j];
                 let gChan = guild.channels.cache.find(ch => ch.name === channel.name);
-                if(gChan) {
+                if (gChan) {
                     channel.id = gChan.id;
                 } else {
                     channel.id = '';

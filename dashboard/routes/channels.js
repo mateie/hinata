@@ -4,6 +4,8 @@ const { client } = require(`${process.cwd()}/index`);
 const Discord = require('discord.js');
 
 channels.get('/:channelID', async (req, res) => {
+    const io = req.app.get('socketio');
+
     const guild = client.guilds.cache.get(req.guildID);
     if (!guild) {
         return res.redirect('/');
@@ -55,10 +57,20 @@ channels.post('/:channelID', async (req, res) => {
     let messageSent = req.body.message;
 
     if (messageSent) {
-        channel.send(`\`\`\`From: Dashboard\nSent by: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`);
-    }
+        let msg = {
+            author: {
+                id: member.user.id,
+                avatar: member.user.avatar,
+                username: member.user.username,
+                hashtag: member.user.discriminator,
+            },
+            message: `\`\`\`From: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`,
+        };
 
-    res.redirect(req.originalUrl);
+        res.io.emit('channel message', msg);
+
+        channel.send(msg.message);
+    }
 });
 
 module.exports = channels;

@@ -29,22 +29,6 @@
                                     </h1>
                                     <div class="page-header-subtitle">Server Dashboard</div>
                                 </div>
-                                <% if(musicQueue) { %>
-                                <div class="col-md-4 mt-4">
-                                    <div class="card bg-primary text-white card-header-actions">
-                                        <div class="card-header">
-                                            <img src="<%= musicQueue.songs[0].author.avatar %>"
-                                                class="img-fluid avatar" />
-                                            <%= musicQueue.playing ? 'Currently Playing' : 'Paused' %>
-                                            <a href="/guild/<%= guild.id %>/queue"
-                                                class="btn btn-danger lift lift-sm btn-sm" role="button">Player</a>
-                                        </div>
-                                        <div class="card-body">
-                                            <p><%= musicQueue.songs[0].title %></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% } %>
                                 <div class="col-auto mt-4">
                                     <div class="page-header-subtitle">
                                         Current Prefix is <%= settings.prefix %>
@@ -213,7 +197,7 @@
                                                             <td>
                                                                 <% if(cha.type === 'text') { %>
                                                                 <button title="View Channel"
-                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark mr-2"
+                                                                    class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark"
                                                                     onclick="window.location.href='/guild/<%= guild.id %>/channel/<%= cha.id %>'"><i
                                                                         class="fas fa-arrow-circle-right"></i></button>
                                                                 <% } %>
@@ -393,18 +377,32 @@
                             </div>
                         </div>
                         <% if(musicQueue) { %>
-                        <div class="fixed-bottom music-player invisible">
+                        <div class="fixed-bottom col-auto music-player">
                             <main class='pre-enter mini-player' ontouchstart>
                                 <div class='container'>
                                     <div class='player'>
                                         <div class='back'>
                                             <header>
                                                 <h1>
-                                                    <a>&lsaquo;</a>
+                                                    <a class="currently">&lsaquo;</a>
                                                 </h1>
                                                 <h1>Up Next</h1>
                                             </header>
                                             <ol>
+                                                <% musicQueue.songs.forEach((song, index) => { %>
+                                                <% if(index !== 0) { %>
+                                                <li>
+                                                    <a>
+                                                        <img src='<%= song.thumbnail %>'>
+                                                        <div>
+                                                            <h3><%= song.author.name %></h3>
+                                                            <h4><%= song.title %></h4>
+                                                        </div>
+                                                    </a>
+                                                    <hr>
+                                                </li>
+                                                <% } %>
+                                                <% }) %>
                                             </ol>
                                         </div>
                                         <div class='front'>
@@ -414,26 +412,11 @@
                                             </div>
                                             <div class='meta'>
                                                 <time>
-                                                    <span>--:--</span>
-                                                    <span>--:--</span>
+                                                    <span class="current-duration">--:--</span>
+                                                    <span class="total-duration">--:--</span>
                                                 </time>
                                                 <div class='controls top'>
-                                                    <a class='rewind skip'>
-                                                        <svg viewBox='0 0 36 20'>
-                                                            <path
-                                                                d='M1.69813738,11.0254725 C0.75331072,10.4595484 0.761328762,9.53720142 1.69813738,8.97607983 L16.2885768,0.236823587 C17.2334034,-0.329100579 17.9993368,0.11180583 17.9993368,1.20339155 L17.9993368,18.7981608 C17.9993368,19.8979057 17.2253854,20.3258504 16.2885768,19.7647288 L1.69813738,11.0254725 Z'>
-                                                            </path>
-                                                            <path
-                                                                d='M19.6988006,8.97607983 C18.7539739,9.542004 18.761992,10.4643509 19.6988006,11.0254725 L34.28924,19.7647288 C35.2340667,20.3306529 36,19.8897465 36,18.7981608 L36,1.20339155 C36,0.103646637 35.2260486,-0.324298001 34.28924,0.236823587 L19.6988006,8.97607983 Z'>
-                                                            </path>
-                                                        </svg>
-                                                    </a>
-                                                    <a class='play'>
-                                                        <svg viewBox='0 0 36 42'>
-                                                            <path
-                                                                d='M35.26504,19.9918476 C36.223232,20.5486348 36.2272024,21.4490581 35.26504,22.0081524 L1.73495997,41.4918476 C0.776768039,42.0486348 0,41.6018839 0,40.4980004 L0,1.50199958 C0,0.396325744 0.772797585,-0.0509419441 1.73495997,0.508152418 L35.26504,19.9918476 Z'>
-                                                            </path>
-                                                        </svg>
+                                                    <a class="toggle">
                                                     </a>
                                                     <a class='forward skip'>
                                                         <svg viewBox='0 0 36 20'>
@@ -451,13 +434,14 @@
                                                     <h2>Song Title</h2>
                                                 </div>
                                                 <div class='controls bottom'>
-                                                    <a>
+                                                    <a class="loop">
                                                         <svg viewBox='0 0 24 20'>
                                                             <path
                                                                 d='M18,2.00104344 C18,2.55275191 18.4426603,3 18.9989566,3 L21,3 L21,17 L3,17 L3,3 L11.0024554,3 C11.553384,3 12,2.55733967 12,2.00104344 L12,0.998956561 C12,0.447248087 11.544239,5.68434189e-14 10.9975267,5.68434189e-14 L1.00247329,5.68434189e-14 C0.448822582,5.68434189e-14 0,0.455305576 0,0.99180311 L0,19.0081969 C0,19.5559546 0.44746922,20 1.00069463,20 L22.9993054,20 C23.5519738,20 24,19.5446944 24,19.0081969 L24,0.99180311 C24,0.444045377 23.5490248,9.4128217e-14 23.009222,9.05011945e-14 L18.990778,6.35006168e-14 C18.4435864,5.98239479e-14 18,0.442660332 18,0.998956561 L18,2.00104344 Z'>
                                                             </path>
                                                         </svg>
                                                     </a>
+                                                    <% if(musicQueue.songs.length > 1) { %>
                                                     <a class='flip update-playlist'>
                                                         <svg viewBox='0 0 24 20'>
                                                             <rect height='3' rx='1' width='3'></rect>
@@ -468,6 +452,7 @@
                                                             <rect height='3' rx='1' width='3' y='17'></rect>
                                                         </svg>
                                                     </a>
+                                                    <% } %>
                                                 </div>
                                             </div>
                                         </div>

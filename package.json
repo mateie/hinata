@@ -66,6 +66,7 @@
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
     "simple-youtube-api": "^5.2.1",
+    "socket.io": "^2.3.0",
     "superagent": "^5.2.2",
     "toastr": "^2.1.4",
     "twitch": "^4.1.3",

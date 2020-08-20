@@ -9,14 +9,9 @@ const ejs = require('ejs');
 const parser = require('body-parser');
 const Canvas = require('canvas');
 const cookieParser = require('cookie-parser');
-const sassMiddleware = require('node-sass-middleware');
 
 // Main Client
 const { client } = require('../index');
-
-// Template Util
-const flash = require('connect-flash');
-const toastr = require('express-toastr');
 
 // Routes
 const indexRoute = require('./routes/index');
@@ -28,6 +23,10 @@ const ownerRoute = require('./routes/owner');
 // Initialize App
 const app = express();
 const MemoryStore = require('memorystore')(session);
+const server = app.listen(process.env.PORT, () => {
+    console.info('Dashboard running...');
+});
+const io = require('socket.io')(server);
 
 // Directory Setup
 const dataDir = path.resolve(`${process.cwd()}${path.sep}dashboard`);
@@ -73,8 +72,11 @@ module.exports = async () => {
         extended: true,
     }));
 
-    app.use(flash());
-    app.use(toastr());
+    // Set up Socket.io
+    app.use(function (req, res, next) {
+        res.io = io;
+        next();
+    });
 
     // Login Page Route
     app.get('/login', (req, res, next) => {
@@ -120,11 +122,6 @@ module.exports = async () => {
     app.use('/commands', commandsRoute);
     app.use('/guild', this.checkAuth, guildRoute);
     app.use('/owner', this.checkAuth, ownerRoute);
-
-    // Makes App Online
-    app.listen(process.env.PORT, () => {
-        console.info('Dashboard is Running...');
-    });
 };
 
 /*  renderTemplate

@@ -113,6 +113,17 @@ client.on('message', async message => {
                 }
             });
 
+            if (res.toggles.strict_commands) {
+                let strictCommandsChannel = message.guild.channels.cache.get(res.channels.commands.id);
+                if (message.channel.id !== strictCommandsChannel.id) {
+                    message.delete({ timeout: 300 });
+                    message.channel.send(`Commands can be used only in ${strictCommandsChannel}`).then(msg => {
+                        msg.delete({ timeout: 2000 });
+                    });
+                    ok = false;
+                }
+            }
+
             if (commandFile.help.enabled === false) {
                 return message.channel.send(`${commandFile.help.name} command is **Disabled**`);
             }
@@ -130,14 +141,14 @@ client.on('message', async message => {
                     }
                 });
 
+                message.delete({ timeout: 250 });
+
                 if (args.length >= requiredArgs) {
                     commandFile.run(client, message, args, permission);
                 } else {
                     let err = `Usage:\`\`\`${client.prefix}${commandFile.help.name} ${commandFile.help.args.join(' ')}\`\`\``;
                     message.channel.send(err);
                 }
-            } else {
-                message.reply('Not enough permission');
             }
         });
     } else {

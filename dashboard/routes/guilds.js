@@ -30,10 +30,38 @@ guilds.get('/:guildID', async (req, res) => {
 
     let bgColor = guild.icon ? await Main.colorHex(`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=128`) : '#007bff';
 
+    if (queue) {
+        setInterval(() => {
+            if (queue.connection.dispatcher) {
+                let progress = '';
+                progress = queue.connection.dispatcher.streamTime / 1000;
+                progress = Math.floor(progress);
+                progress = Main.secondsToDuration(progress);
+
+                let info = {
+                    current: {
+                        artist: queue.songs[0].author,
+                        title: queue.songs[0].title,
+                        duration: Main.secondsToDuration(queue.songs[0].duration),
+                        progress: progress,
+                        thumbnail: queue.songs[0].thumbnail,
+                    },
+                    songs: queue.songs,
+                    playing: queue.playing,
+                    loop: queue.loop,
+                };
+
+                res.io.emit('player update', info);
+            } else {
+                res.io.emit('player end');
+            }
+        }, 1000);
+    }
+
     Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor, convert: Main.secondsToDuration });
 });
 
-guilds.get('/:guildID/player', async (req, res) => {
+/* guilds.get('/:guildID/player', async (req, res) => {
     const guild = client.guilds.cache.get(req.params.guildID);
     if (!guild) {
         return res.redirect('/');
@@ -56,8 +84,8 @@ guilds.get('/:guildID/player', async (req, res) => {
         progress = Math.floor(progress);
         progress = Main.secondsToDuration(progress);
 
-        res.json({
-            track: {
+        let info = {
+            current: {
                 artist: queue.songs[0].author,
                 title: queue.songs[0].title,
                 duration: Main.secondsToDuration(queue.songs[0].duration),
@@ -66,7 +94,44 @@ guilds.get('/:guildID/player', async (req, res) => {
                 playing: queue.playing,
             },
             songs: queue.songs,
-        });
+        };
+        
+        setInterval(() => {
+            res.io.emit('player', info);
+        })
+    }
+}); */
+
+guilds.post('/:guildID/player', async (req, res) => {
+    const guild = client.guilds.cache.get(req.params.guildID);
+    if (!guild) {
+        return res.redirect('/');
+    }
+    const member = guild.members.cache.get(req.user.id);
+    if (!member) {
+        return res.redirect('/');
+    }
+    if (!member.permissions.has('MANAGE_GUILD')) {
+        return res.redirect('/');
+    }
+
+    const queue = client.queue.get(guild.id);
+
+    if (queue && req.body.player) {
+        let action = req.body.player;
+        switch (action) {
+            case 'play':
+                queue.playing = true;
+                queue.connection.dispatcher.resume();
+                break;
+            case 'pause':
+                queue.playing = false;
+                queue.connection.dispatcher.pause();
+                break;
+            case 'skip':
+                queue.connection.dispatcher.end();
+                break;
+        }
     }
 });
 

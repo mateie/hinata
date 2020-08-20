@@ -29,6 +29,7 @@ hr {
     align-content: center;
     position: relative;
     width: 100%;
+    left: 65%;
     height: 100%;
     padding: 12px;
 }
@@ -227,7 +228,7 @@ hr {
     height: 20px;
 }
 
-.controls a.play {
+.controls a.toggle {
     width: 42px;
     height: 36px;
 }
@@ -343,6 +344,16 @@ hr {
     animation: rotateIn 1000ms cubic-bezier(0.215, 0.61, 0.355, 1) 500ms forwards;
 }
 
+#circle {
+    transition: stroke-dashoffset 300ms ease-in;
+    stroke-dashoffset: 0;
+    fill: none;
+}
+
+#circle.play {
+    stroke-dashoffset: 314;
+}
+
 @-webkit-keyframes rotateIn {
     0% {
         opacity: 0;
@@ -385,14 +396,6 @@ hr {
 }
 
 @media only screen and (min-width: 640px) {
-    .with-hover .player {
-        -webkit-transition: all 500ms ease-out;
-        transition: all 500ms ease-out;
-    }
-    .with-hover .player:hover {
-        -webkit-transition: all 1000ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        transition: all 1000ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
     .player {
         will-change: transform;
     }
