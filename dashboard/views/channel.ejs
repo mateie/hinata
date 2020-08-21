@@ -50,44 +50,51 @@
                 <div class="container mt-n10">
                     <div class="row">
                         <div class="col-xxl-12">
-                            <div class="card card-scrollable-chat">
+                            <div class="card card-primary direct-chat direct-chat-primary">
                                 <div class="card-body messages-card">
-                                    <div class="timeline messages">
+                                    <div class="direct-chat-messages">
                                         <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
                                         <% if(message.content.length > 0) { %>
-                                        <div class="timeline-item">
-                                            <div class="timeline-item-marker">
-                                                <div class="timeline-item-marker-text">
-                                                    <%= time(message.createdTimestamp) %>
-                                                </div>
-                                                <div class="timeline-item-marker-indicator"><img
-                                                        class="img-fluid avatar avatar-lg shadow-sm"
-                                                        src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>?size=128">
-                                                </div>
+                                        <% if(message.author.id === user.id) { %>
+                                        <div class="direct-chat-msg right">
+                                            <div class="direct-chat-infos clearfix">
+                                                <span class="direct-chat-name float-right"><%= message.author.username %>#<%= message.author.discriminator %></span>
+                                                <span class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
                                             </div>
-                                            <div class="timeline-item-content pt-0">
-                                                <div class="card rounded shadow-sm p-3 mb-3">
-                                                    <div class="card-body">
-                                                        <h6><%= message.author.username %>#<%= message.author.discriminator %>
-                                                        </h6>
-                                                        <%= message.content %>
-                                                    </div>
-                                                </div>
+                                            <img class="direct-chat-img" src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>?size=128"
+                                                alt="Message User Image">
+                                            <div class="direct-chat-text">
+                                                <%= message.content %>
                                             </div>
                                         </div>
+                                        <% } else { %>
+                                        <div class="direct-chat-msg">
+                                            <div class="direct-chat-infos clearfix">
+                                                <span class="direct-chat-name float-left"><%= message.author.username %>#<%= message.author.discriminator %></span>
+                                                <span class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
+                                            </div>
+                                            <img class="direct-chat-img" src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>?size=128"
+                                                alt="Message User Image">
+                                            <div class="direct-chat-text">
+                                                <%= message.content %>
+                                            </div>
+                                        </div>
+                                        <% } %>
                                         <% } %>
                                         <% }) %>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <form method="POST" class="submit-message">
-                                        <div class="form-group">
-                                            <input type="text" name="message" class="form-control msg"
-                                                placeholder="Your Message..." autocomplete="off">
+                            </div>
+                            <div class="card-footer">
+                                <form method="POST" class="submit-message">
+                                    <div class="input-group">
+                                        <input type="text" name="message" class="form-control msg"
+                                            placeholder="Your Message..." autocomplete="off">
+                                        <span class="input-group-append">
                                             <button type="submit" class="btn btn-success lift lift-sm">Send</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                        </span>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

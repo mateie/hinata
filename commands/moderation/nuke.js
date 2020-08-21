@@ -120,7 +120,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.help = {
-    enabled: true,
+    enabled: false,
     name: 'nuke',
     aliases: [],
     args: ['[channel category/channel name]'],

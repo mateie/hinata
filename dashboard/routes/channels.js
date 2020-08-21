@@ -62,12 +62,12 @@ channels.post('/:channelID', async (req, res) => {
                 username: member.user.username,
                 hashtag: member.user.discriminator,
             },
-            message: `\`\`\`From: ${member.user.username}#${member.user.discriminator}\`\`\` ${messageSent}`,
+            message: messageSent,
         };
 
         res.io.emit('channel message', msg);
 
-        channel.send(msg.message);
+        channel.send(`\`\`\`From: ${member.user.username}#${member.user.discriminator}\`\`\` ${msg.message}`);
     }
 });
 

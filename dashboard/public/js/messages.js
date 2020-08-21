@@ -1,5 +1,5 @@
 $(function () {
-    const msgs = $('.messages-card');
+    const msgs = $('.direct-chat-messages');
     if (msgs.length !== 0) {
         const height = msgs[0].scrollHeight;
         msgs.scrollTop(height);
@@ -20,28 +20,19 @@ $(function () {
     });
 
     socket.on('channel message', data => {
-        $('.messages').append(`<div class="timeline-item">
-        <div class="timeline-item-marker">
-            <div class="timeline-item-marker-text">
-                ${getTime(Date.now())}
-            </div>
-            <div class="timeline-item-marker-indicator"><img
-                    class="img-fluid avatar avatar-lg shadow-sm"
-                    src="https://cdn.discordapp.com/avatars/${data.author.id}/${data.author.avatar}.png?size=128">
-            </div>
-        </div>
-        <div class="timeline-item-content pt-0">
-            <div class="card rounded shadow-sm p-3 mb-3">
-                <div class="card-body">
-                    <h6>${data.author.username}#${data.author.hashtag}
-                    </h6>
-                    ${data.message}
-                </div>
-            </div>
-        </div>
-    </div>`);
+        $('.direct-chat-messages').append(`<div class="direct-chat-msg right">
+    <div class="direct-chat-infos clearfix">
+        <span class="direct-chat-name float-right">${data.author.username}#${data.author.hashtag}</span>
+        <span class="direct-chat-timestamp float-left">${getTime(Date.now())}</span>
+    </div>
+    <img class="direct-chat-img" src="https://cdn.discordapp.com/avatars/${data.author.id}/${data.author.avatar}?size=128"
+        alt="Message User Image">
+    <div class="direct-chat-text">
+    ${data.message}
+    </div>
+</div>`);
 
-        $('.messages-card').scrollTop($('.messages-card')[0].scrollHeight);
+        $('.direct-chat-messages').scrollTop($('.direct-chat-messages')[0].scrollHeight);
     });
 });
 
