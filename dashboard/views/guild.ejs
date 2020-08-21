@@ -110,7 +110,7 @@
 
                                                         <% guild.members.cache.filter(m => !m.user.bot).sort((a, b) => a.joinedTimestamp - a.joinedTimestamp).forEach(member => { %>
                                                         <tr>
-                                                            <td><%= member.user.username %></td>
+                                                            <td><a class="nav-link" href="/guild/<%= guild.id %>/member/<%= member.user.id %>"><%= member.user.username %></a></td>
                                                             <td><%= member.user.discriminator %></td>
                                                             <td><%= member.id %></td>
                                                             <td>
@@ -120,7 +120,7 @@
                                                                         class="fas fa-user-slash"></i></button>
                                                                 <button title="Ban User"
                                                                     class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark guild-ban-member">
-                                                                    <i class="fas fa-ban"></i></button>
+                                                                    <i class="fas fa-gavel"></i></button>
                                                             </td>
                                                         </tr>
                                                         <% }) %>

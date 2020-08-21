@@ -1,6 +1,8 @@
 <nav class="topnav navbar navbar-expand shadow navbar-dark bg-dark" id="sidenavAccordion">
-    <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=128" alt="Logo"
-        class="img-fluid avatar avatar-xl avatar-img">
+    <div class="avatar avatar-xl">
+        <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=128"
+            alt="Logo" class="img-fluid avatar-img">
+    </div>
     <a class="navbar-brand" href="/">
         <%= bot.user.username %>
     </a>
@@ -23,9 +25,11 @@
                 aria-labelledby="navbarDropdownUserImage">
                 <h6 class="dropdown-header d-flex align-items-center">
                     <% if(user.avatar !== undefined && user.avatar !== null) { %>
-                    <img class="dropdown-user-img" src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>?size=64" />
+                    <img class="dropdown-user-img"
+                        src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>?size=64" />
                     <% } else { %>
-                    <img class="dropdown-user-img" src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
+                    <img class="dropdown-user-img"
+                        src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
                     <% } %>
                     <div class="dropdown-user-details">
                         <div class="dropdown-user-details-name"><%= user.username %></div>

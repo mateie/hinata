@@ -1,41 +1,63 @@
 <html lang="en">
 <%- include('../partials/_head', { bot, user, path, title: `${user.username}'s Profile` }) %>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
-        <%- include('../partials/_navbar') %>
+<body class="nav-fixed">
+    <%- include('../partials/_navbar') %>
+    <div id="layoutSidenav">
         <%- include('../partials/_sidebar') %>
-
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-widget widget-user">
-                                <% if(member.user.id === member.guild.ownerID) { %>
-                                <div class="ribbon-wrapper ribbon-lg">
-                                    <div class="ribbon bg-danger text-lg">
-                                        Owner
+        <div id="layoutSidenav_content">
+            <main>
+                <header class="page-header page-header-dark pb-10 fixed" style="background-color: <%= color %>">
+                    <div class="container">
+                        <div class="page-header-content pt-4">
+                            <div class="row align-items-center justify-content-between">
+                                <div class="col-auto mt-4">
+                                    <% if(member.user.id === member.guild.ownerID) { %>
+                                    <span class="badge badge-sm badge-danger">Server Owner</span>
+                                    <% } %>
+                                    <% if(member.user.id === ownerID) { %>
+                                        <span class="badge badge-sm badge-danger">Bot Owner</span>
+                                    <% } %>
+                                
+                                    <h1 class="page-header-title">
+                                        <div class="page-header-icon">
+                                            <div class="avatar avatar-lg">
+                                                <% if(member.user.avatar !== undefined && member.user.avatar !== null) { %>
+                                                <img class="img-fluid avatar-img"
+                                                    src="https://cdn.discordapp.com/avatars/<%= member.user.id %>/<%= member.user.avatar %>?size=64" />
+                                                <% } else { %>
+                                                <img class="img-fluid avatar-img"
+                                                    src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png" />
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                        <%= member.user.username %>
+                                    </h1>
+                                    <div class="page-header-subtitle"><%= member.user.discriminator %></div>
+                                </div>
+                                <div class="col-auto mt-4">
+                                    <h1 class="page-header-title">
+                                        Actions
+                                    </h1>
+                                    <div class="page-header-subtitle">
+                                        <button title="Kick User"
+                                            class="btn lift lift-sm bg-success btn-icon mr-2 guild-kick-member"
+                                            type="button"><i class="fas fa-user-slash"></i></button>
+                                        <button title="Ban User"
+                                            class="btn lift lift-sm bg-danger btn-icon guild-ban-member">
+                                            <i class="fas fa-gavel"></i></button>
                                     </div>
                                 </div>
-                                <% } %>
-                                <div class="widget-user-header" style="background-color: <%= color %>">
-                                    <h3 class="widget-user-username <%= brightness %>"><%= member.user.username %></h3>
-                                    <h5 class="widget-user-desc <%= brightness %>"><%= member.user.discriminator %></h5>
-                                </div>
-                                <div class="widget-user-image">
-                                    <% if(member.user.avatar !== undefined && member.user.avatar !== null) { %>
-                                    <img class="img-circle elevation-2"
-                                        src="https://cdn.discordapp.com/avatars/<%= member.user.id %>/<%= member.user.avatar %>.png?size=128"
-                                        alt="Member Avatar" />
-                                    <% } else { %>
-                                    <img class="img-circle elevation-2"
-                                        src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
-                                        alt="Member Avatar" />
-                                    <% } %>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="row">
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div class="container mt-n10">
+                    <div class="row">
+                        <div class="col-xxl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row justify-content-between">
                                         <div class="col-sm-4 border-right">
                                             <div class="description-block">
                                                 <h5 class="description-header">Status</h5>
@@ -80,37 +102,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card card-primary">
-                                <div class="card-header <%= brightness %>" style="background-color: <%= color %>">
-                                    <h3 class="card-title">Member Settings</h3>
-                                </div>
-
-                                <form role="form" method="POST">
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="nickname">Nickname</label>
-                                            <input type="text" class="form-control" name="memberNickname"
-                                                placeholder="<%= member.nickname ? member.nickname : 'None' %>">
-                                        </div>
-                                    </div>
-
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn <%= brightness %>"
-                                            style="background-color: <%= color %>">Submit</button>
-                                        <button class="btn <%= brightness %>" name="clearNickname"
-                                            style="background-color: <%= color %>">Clear</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+            </main>
+            <%- include('../partials/_footer') %>
         </div>
     </div>
-    <%- include('../partials/_footer') %>
-    </div>
+
     <%- include('../partials/_scripts') %>
 </body>
 
