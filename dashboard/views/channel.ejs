@@ -55,27 +55,57 @@
                                     <div class="direct-chat-messages">
                                         <% messages.sort((a, b) => a.createdTimestamp - b.createdTimestamp).forEach(message => { %>
                                         <% if(message.content.length > 0) { %>
+                                        <% let mentionRegex = /[^A-Za-z ]/g %>
+                                        <% let allMentions = [] %>
+                                        <% if(message.mentions.users.size > 0) { %>
+                                        <% message.mentions.users.forEach(user => { %>
+                                        <% allMentions.push(user.username) %>
+                                        <% }) %>
+                                        <% allMentions = allMentions.join(', ') %>
+                                        <% } %>
                                         <% if(message.author.id === user.id) { %>
                                         <div class="direct-chat-msg right">
                                             <div class="direct-chat-infos clearfix">
-                                                <span class="direct-chat-name float-right"><%= message.author.username %>#<%= message.author.discriminator %></span>
-                                                <span class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
+                                                <span class="direct-chat-name float-right">
+                                                    <%= message.author.username %>#<%= message.author.discriminator %>
+                                                    <% if(message.mentions.users.size > 0) { %>
+                                                    <span class="badge badge-sm badge-primary">Mentioned:
+                                                        <%= allMentions %></span>
+                                                    <% } %>
+                                                </span>
+                                                <span
+                                                    class="direct-chat-timestamp float-left"><%= time(message.createdTimestamp) %></span>
                                             </div>
-                                            <img class="direct-chat-img" src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>?size=128"
+                                            <img class="direct-chat-img"
+                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>?size=128"
                                                 alt="Message User Image">
                                             <div class="direct-chat-text">
+                                                <% if(message.mentions.users.size > 0) { %>
+                                                <% message.content = message.content.replace(mentionRegex, '') %>
+                                                <% } %>
                                                 <%= message.content %>
                                             </div>
                                         </div>
                                         <% } else { %>
                                         <div class="direct-chat-msg">
                                             <div class="direct-chat-infos clearfix">
-                                                <span class="direct-chat-name float-left"><%= message.author.username %>#<%= message.author.discriminator %></span>
-                                                <span class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
+                                                <span class="direct-chat-name float-left">
+                                                    <%= message.author.username %>#<%= message.author.discriminator %>
+                                                    <% if(message.mentions.users.size > 0) { %>
+                                                    <span class="badge badge-sm badge-primary">Mentioned:
+                                                        <%= allMentions %></span>
+                                                    <% } %>
+                                                </span>
+                                                <span
+                                                    class="direct-chat-timestamp float-right"><%= time(message.createdTimestamp) %></span>
                                             </div>
-                                            <img class="direct-chat-img" src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>?size=128"
+                                            <img class="direct-chat-img"
+                                                src="https://cdn.discordapp.com/avatars/<%= message.author.id %>/<%= message.author.avatar %>?size=128"
                                                 alt="Message User Image">
                                             <div class="direct-chat-text">
+                                                <% if(message.mentions.users.size > 0) { %>
+                                                <% message.content = message.content.replace(mentionRegex, '') %>
+                                                <% } %>
                                                 <%= message.content %>
                                             </div>
                                         </div>
@@ -85,7 +115,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
+                            <div class=" card-footer">
                                 <form method="POST" class="submit-message">
                                     <div class="input-group">
                                         <input type="text" name="message" class="form-control msg"
