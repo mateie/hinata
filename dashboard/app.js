@@ -164,6 +164,53 @@ exports.calculateBitwise = (from, to) => {
     return from << to;
 };
 
+// Uses an Image URL to get it's Hex Colors
+exports.colorHex = async (imgURL) => {
+    let blockSize = 5,
+        defaultRGB = { r: 0, g: 0, b: 0 },
+        canvas = Canvas.createCanvas(128, 128),
+        context = canvas.getContext('2d'),
+        data, width, height,
+        i = -4,
+        length,
+        rgb = { r: 0, g: 0, b: 0 },
+        count = 0;
+
+    if (!context) {
+        return "#" + this.componentToHex(defaultRGB.r) + this.componentToHex(defaultRGB.g) + this.componentToHex(defaultRGB.b);
+    }
+
+    let image = await Canvas.loadImage(imgURL);
+
+    height = canvas.height = image.naturalHeight || image.offsetHeight || image.height;
+    width = canvas.width = image.naturalWidth || image.offsetWidth || image.width;
+
+    context.drawImage(image, 0, 0);
+
+    try {
+        data = context.getImageData(0, 0, width, height);
+    } catch (e) {
+        console.error(e);
+        return "#" + this.componentToHex(defaultRGB.r) + this.componentToHex(defaultRGB.g) + this.componentToHex(defaultRGB.b);
+    }
+    length = data.data.length;
+
+    while ((i += blockSize * 4) < length) {
+        ++count;
+        rgb.r += data.data[i];
+        rgb.g += data.data[i + 1];
+        rgb.b += data.data[i + 2];
+    }
+
+    rgb.r = ~~(rgb.r / count);
+    rgb.g = ~~(rgb.g / count);
+    rgb.b = ~~(rgb.b / count);
+
+    let hex = "#" + this.componentToHex(rgb.r) + this.componentToHex(rgb.g) + this.componentToHex(rgb.b);
+
+    return hex;
+};
+
 // Get's Time in Date format when timestamp given
 exports.getTime = timestamp => {
     const d = new Date(timestamp);

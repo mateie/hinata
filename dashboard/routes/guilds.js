@@ -28,6 +28,8 @@ guilds.get('/:guildID', async (req, res) => {
 
     let storedSettings = await Servers.findOne({ serverID: guild.id });
 
+    let bgColor = guild.icon ? await Main.colorHex(`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=128`) : '#007bff';
+
     if (queue) {
         setInterval(() => {
             if (queue.connection.dispatcher) {
@@ -56,7 +58,7 @@ guilds.get('/:guildID', async (req, res) => {
         }, 1000);
     }
 
-    Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, convert: Main.secondsToDuration });
+    Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, color: bgColor, musicQueue: queue, color: bgColor, convert: Main.secondsToDuration });
 });
 
 /* guilds.get('/:guildID/player', async (req, res) => {
