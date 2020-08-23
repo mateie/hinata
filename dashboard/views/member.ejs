@@ -13,12 +13,15 @@
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-auto mt-4">
                                     <% if(member.user.id === member.guild.ownerID) { %>
-                                    <span class="badge badge-sm badge-danger">Server Owner</span>
+                                    <span class="badge badge-sm badge-danger">Guild Owner</span>
                                     <% } %>
                                     <% if(member.user.id === ownerID) { %>
-                                        <span class="badge badge-sm badge-danger">Bot Owner</span>
+                                    <span class="badge badge-sm badge-danger">Bot Owner</span>
                                     <% } %>
-                                
+                                    <% if(member.user.id !== ownerID && member.user.id !== member.guild.ownerID) { %>
+                                    <span class="badge badge-sm badge-success">Guild Member</span>
+                                    <% } %>
+
                                     <h1 class="page-header-title">
                                         <div class="page-header-icon">
                                             <div class="avatar avatar-lg">
