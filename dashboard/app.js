@@ -211,6 +211,12 @@ exports.colorHex = async (imgURL) => {
     return hex;
 };
 
+// Converts color to hex
+exports.componentToHex = (c) => {
+    let hex = c.toString(16);
+    return hex.length == 1 ? '0' + hex : hex;
+};
+
 // Get's Time in Date format when timestamp given
 exports.getTime = timestamp => {
     const d = new Date(timestamp);
