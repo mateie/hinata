@@ -27,9 +27,7 @@ guilds.get('/:guildID', async (req, res) => {
     const queue = client.queue.get(guild.id);
 
     let storedSettings = await Servers.findOne({ serverID: guild.id });
-
-    let bgColor = guild.icon ? await Main.colorHex(`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=128`) : '#007bff';
-
+    
     if (queue) {
         setInterval(() => {
             if (queue.connection.dispatcher) {
