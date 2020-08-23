@@ -59,17 +59,7 @@ members.get('/:memberID', async (req, res) => {
         }
     }
 
-    let bgColor;
-
-    if (member.user.avatar) {
-        bgColor = await Main.colorHex(`https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png?size=128`);
-    } else {
-        bgColor = '#007bff';
-    }
-
-    let brightness = Main.lightOrDark(bgColor) ? 'text-dark' : 'text-light';
-
-    Main.renderTemplate(res, req, 'member.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: bgColor, activity: activity, ownerID: process.env.OWNER_ID });
+    Main.renderTemplate(res, req, 'member.ejs', { perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, member: member, status: memberStatus, color: member.displayHexColor, activity: activity, ownerID: process.env.OWNER_ID });
 });
 
 module.exports = members;

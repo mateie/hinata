@@ -164,59 +164,6 @@ exports.calculateBitwise = (from, to) => {
     return from << to;
 };
 
-// Uses an Image URL to get it's Hex Colors
-exports.colorHex = async (imgURL) => {
-    let blockSize = 5,
-        defaultRGB = { r: 0, g: 0, b: 0 },
-        canvas = Canvas.createCanvas(128, 128),
-        context = canvas.getContext('2d'),
-        data, width, height,
-        i = -4,
-        length,
-        rgb = { r: 0, g: 0, b: 0 },
-        count = 0;
-
-    if (!context) {
-        return "#" + this.componentToHex(defaultRGB.r) + this.componentToHex(defaultRGB.g) + this.componentToHex(defaultRGB.b);
-    }
-
-    let image = await Canvas.loadImage(imgURL);
-
-    height = canvas.height = image.naturalHeight || image.offsetHeight || image.height;
-    width = canvas.width = image.naturalWidth || image.offsetWidth || image.width;
-
-    context.drawImage(image, 0, 0);
-
-    try {
-        data = context.getImageData(0, 0, width, height);
-    } catch (e) {
-        console.error(e);
-        return "#" + this.componentToHex(defaultRGB.r) + this.componentToHex(defaultRGB.g) + this.componentToHex(defaultRGB.b);
-    }
-    length = data.data.length;
-
-    while ((i += blockSize * 4) < length) {
-        ++count;
-        rgb.r += data.data[i];
-        rgb.g += data.data[i + 1];
-        rgb.b += data.data[i + 2];
-    }
-
-    rgb.r = ~~(rgb.r / count);
-    rgb.g = ~~(rgb.g / count);
-    rgb.b = ~~(rgb.b / count);
-
-    let hex = "#" + this.componentToHex(rgb.r) + this.componentToHex(rgb.g) + this.componentToHex(rgb.b);
-
-    return hex;
-};
-
-// Converts color to hex
-exports.componentToHex = (c) => {
-    let hex = c.toString(16);
-    return hex.length == 1 ? '0' + hex : hex;
-};
-
 // Get's Time in Date format when timestamp given
 exports.getTime = timestamp => {
     const d = new Date(timestamp);
@@ -232,41 +179,6 @@ exports.getTime = timestamp => {
     let newDate = `${date} ${time}`;
     return newDate;
 };
-
-// Checks if the color is dark or light
-exports.lightOrDark = color => {
-    let r, g, b, hsp;
-
-    if (color.match(/^rgb/)) {
-
-        color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
-
-        r = color[1];
-        g = color[2];
-        b = color[3];
-    } else {
-        color = +("0x" + color.slice(1).replace(
-            color.length < 5 && /./g, '$&$&'));
-
-        r = color >> 16;
-        g = color >> 8 & 255;
-        b = color & 255;
-    }
-
-    hsp = Math.sqrt(
-        0.299 * (r * r) +
-        0.587 * (g * g) +
-        0.114 * (b * b)
-    );
-
-    if (hsp > 127.5) {
-        // Light
-        return true;
-    } else {
-        // Dark
-        return false;
-    }
-}
 
 exports.secondsToDuration = sec => {
     let hours = Math.floor(sec / 3600);
