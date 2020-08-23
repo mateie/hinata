@@ -27,7 +27,7 @@ guilds.get('/:guildID', async (req, res) => {
     const queue = client.queue.get(guild.id);
 
     let storedSettings = await Servers.findOne({ serverID: guild.id });
-    
+
     if (queue) {
         setInterval(() => {
             if (queue.connection.dispatcher) {
@@ -56,7 +56,7 @@ guilds.get('/:guildID', async (req, res) => {
         }, 1000);
     }
 
-    Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, color: bgColor, convert: Main.secondsToDuration });
+    Main.renderTemplate(res, req, 'guild.ejs', { guild, settings: storedSettings, alertMessage: null, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, musicQueue: queue, convert: Main.secondsToDuration });
 });
 
 /* guilds.get('/:guildID/player', async (req, res) => {
