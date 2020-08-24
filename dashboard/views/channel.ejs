@@ -57,17 +57,23 @@
                                         <% if(message.content.length > 0) { %>
                                         <% let mentionRegex = /[^A-Za-z ]/g %>
                                         <% let allMentions = [] %>
+                                        <% let highestRoleClr %>
                                         <% if(message.mentions.users.size > 0) { %>
                                         <% message.mentions.users.forEach(user => { %>
                                         <% allMentions.push(user.username) %>
                                         <% }) %>
                                         <% allMentions = allMentions.join(', ') %>
                                         <% } %>
+
+                                        <% if(message.author.id !== bot.user.id) { %>
+                                        <% highestRoleClr = guild.members.cache.get(message.author.id).roles.highest.hexColor %>
+                                        <% } %>
                                         <% if(message.author.id === user.id) { %>
                                         <div class="direct-chat-msg right">
                                             <div class="direct-chat-infos clearfix">
                                                 <span class="direct-chat-name float-right">
-                                                    <%= message.author.username %>#<%= message.author.discriminator %>
+                                                    <a
+                                                        href="/guild/<%= guild.id %>/member/<%= message.author.id %>" style="color: <%= highestRoleClr %>"><%= message.author.username %></a>
                                                     <% if(message.mentions.users.size > 0) { %>
                                                     <span class="badge badge-sm badge-primary">Mentioned:
                                                         <%= allMentions %></span>
@@ -90,7 +96,8 @@
                                         <div class="direct-chat-msg">
                                             <div class="direct-chat-infos clearfix">
                                                 <span class="direct-chat-name float-left">
-                                                    <%= message.author.username %>#<%= message.author.discriminator %>
+                                                    <a
+                                                        href="/guild/<%= guild.id %>/member/<%= message.author.id %>" style="color: <%= highestRoleClr %>"><%= message.author.username %></a>
                                                     <% if(message.mentions.users.size > 0) { %>
                                                     <span class="badge badge-sm badge-primary">Mentioned:
                                                         <%= allMentions %></span>
