@@ -110,7 +110,7 @@
 
                                                         <% guild.members.cache.filter(m => !m.user.bot).sort((a, b) => a.joinedTimestamp - a.joinedTimestamp).forEach(member => { %>
                                                         <tr>
-                                                            <td><a class="nav-link"
+                                                            <td><a
                                                                     href="/guild/<%= guild.id %>/member/<%= member.user.id %>"><%= member.user.username %></a>
                                                             </td>
                                                             <td><%= member.user.discriminator %></td>
@@ -201,8 +201,8 @@
                                                                 <button title="View Category"
                                                                     class="btn lift lift-sm btn-datatable btn-icon btn-transparent-dark"
                                                                     aria-haspopup="true" aria-expanded="false"
-                                                                    type="button"><i
-                                                                        data-feather="arrow-right-circle"gut></i></button>
+                                                                    type="button"><i data-feather="arrow-right-circle"
+                                                                        gut></i></button>
                                                                 <% } %>
                                                             </td>
                                                         </tr>
