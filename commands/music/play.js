@@ -129,17 +129,19 @@ const play = async (message, song) => {
         .on("error", error => console.error(error));
 
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 100);
-    const embed = new MessageEmbed()
-        .setColor('RANDOM')
-        .setTitle(song.title)
-        .setURL(song.url)
-        .setAuthor(song.author.name, song.author.avatar, song.author.channel)
-        .setDescription('Now Playing')
-        .setImage(song.thumbnail)
-        .addField('Video Length', this.secondsToDuration(song.duration), true)
-        .addField('Likes', song.likes, true)
-        .addField('Dislikes', song.dislikes, true);
-    serverQueue.textChannel.send({ embed });
+    if (!serverQueue.loop) {
+        const embed = new MessageEmbed()
+            .setColor('RANDOM')
+            .setTitle(song.title)
+            .setURL(song.url)
+            .setAuthor(song.author.name, song.author.avatar, song.author.channel)
+            .setDescription('Now Playing')
+            .setImage(song.thumbnail)
+            .addField('Video Length', this.secondsToDuration(song.duration), true)
+            .addField('Likes', song.likes, true)
+            .addField('Dislikes', song.dislikes, true);
+        serverQueue.textChannel.send({ embed });
+    }
 };
 
 exports.secondsToDuration = sec => {
