@@ -67,7 +67,7 @@ channels.post('/:channelID', async (req, res) => {
 
         res.io.emit('channel message', msg);
 
-        channel.send(`**${member.user.username}**#${member.user.discriminator}: ${msg.message}`);
+        channel.send(`**${member}**: ${msg.message}`);
     }
 });
 
