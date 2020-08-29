@@ -27,6 +27,12 @@ channels.get('/:channelID', async (req, res) => {
 
     let messages = channel.messages.cache;
 
+    let markdownRegex = /[*`_]/gm;
+
+    messages.forEach(message => {
+        message.content = message.content.replace(markdownRegex, '');
+    });
+
     Main.renderTemplate(res, req, 'channel.ejs', { guild, channel, messages, perms: Discord.Permissions, capL: Main.capFirstLetter, capA: Main.capAllLetters, time: Main.getTime });
 });
 
