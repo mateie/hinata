@@ -32,28 +32,30 @@ guilds.get('/:guildID', async (req, res) => {
 
     if (queue) {
         setInterval(() => {
-            if (queue.connection.dispatcher) {
-                let progress = '';
-                progress = queue.connection.dispatcher.streamTime / 1000;
-                progress = Math.floor(progress);
-                progress = Main.secondsToDuration(progress);
+            if (queue) {
+                if (queue.connection.dispatcher) {
+                    let progress = '';
+                    progress = queue.connection.dispatcher.streamTime / 1000;
+                    progress = Math.floor(progress);
+                    progress = Main.secondsToDuration(progress);
 
-                let info = {
-                    current: {
-                        artist: queue.songs[0].author,
-                        title: queue.songs[0].title,
-                        duration: Main.secondsToDuration(queue.songs[0].duration),
-                        progress: progress,
-                        thumbnail: queue.songs[0].thumbnail,
-                    },
-                    songs: queue.songs,
-                    playing: queue.playing,
-                    loop: queue.loop,
-                };
+                    let info = {
+                        current: {
+                            artist: queue.songs[0].author,
+                            title: queue.songs[0].title,
+                            duration: Main.secondsToDuration(queue.songs[0].duration),
+                            progress: progress,
+                            thumbnail: queue.songs[0].thumbnail,
+                        },
+                        songs: queue.songs,
+                        playing: queue.playing,
+                        loop: queue.loop,
+                    };
 
-                res.io.emit('player update', info);
-            } else {
-                res.io.emit('player end');
+                    res.io.emit('player update', info);
+                } else {
+                    res.io.emit('player end');
+                }
             }
         }, 1000);
     }

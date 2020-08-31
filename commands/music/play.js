@@ -47,7 +47,7 @@ exports.run = async (client, message, args) => {
             duration: songInfo.videoDetails.lengthSeconds,
             likes: songInfo.videoDetails.likes,
             dislikes: songInfo.videoDetails.dislikes,
-            thumbnail: songInfo.videoDetails.thumbnail.thumbnails[4].url ? songInfo.videoDetails.thumbnail.thumbnails[4].url : songInfo.videoDetails.thumbnail.thumbnails[0].url,
+            thumbnail: songInfo.videoDetails.thumbnail.thumbnails[0].url ? songInfo.videoDetails.thumbnail.thumbnails[0].url : songInfo.videoDetails.thumbnail.thumbnails[songInfo.videoDetails.thumbnail.thumbnails.length - 1].url,
         };
 
         if (!serverQueue) {

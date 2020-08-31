@@ -51,6 +51,8 @@ $(function () {
     });
 
     socket.on('player end', () => {
+        $('.music-player').css('style', 'none');
+
         // Times
         $('.current-duration').text('');
         $('.total-duration').text('');
