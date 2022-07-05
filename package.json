@@ -26,7 +26,7 @@
   "homepage": "https://github.com/mateie/hinata#readme",
   "description": "",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
+    "@discordjs/opus": "^0.8.0",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
